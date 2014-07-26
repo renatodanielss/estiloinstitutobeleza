@@ -7,11 +7,17 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
 
 public class FormCliente {
 
-	private JFrame frame;
+	private JFrame frmClientes;
 	private JTextField textField;
+	private JMenuBar menuBar;
+	private JMenu mnArquivo;
+	private JMenuItem mntmNovo;
 
 	/**
 	 * Launch the application.
@@ -21,7 +27,7 @@ public class FormCliente {
 			public void run() {
 				try {
 					FormCliente window = new FormCliente();
-					window.frame.setVisible(true);
+					window.frmClientes.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -40,22 +46,33 @@ public class FormCliente {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 989, 424);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmClientes = new JFrame();
+		frmClientes.setTitle("Clientes");
+		frmClientes.setBounds(100, 100, 1032, 424);
+		frmClientes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		textField = new JTextField();
-		textField.setBounds(70, 11, 86, 20);
+		textField.setBounds(99, 36, 86, 20);
 		textField.setColumns(10);
 		
 		JButton btnTeste = new JButton("Teste");
-		btnTeste.setBounds(70, 52, 77, 23);
+		btnTeste.setBounds(99, 67, 77, 23);
 		btnTeste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().setLayout(null);
-		frame.getContentPane().add(textField);
-		frame.getContentPane().add(btnTeste);
+		frmClientes.getContentPane().setLayout(null);
+		frmClientes.getContentPane().add(textField);
+		frmClientes.getContentPane().add(btnTeste);
+		
+		menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 1016, 21);
+		frmClientes.getContentPane().add(menuBar);
+		
+		mnArquivo = new JMenu("Arquivo");
+		menuBar.add(mnArquivo);
+		
+		mntmNovo = new JMenuItem("Novo");
+		mnArquivo.add(mntmNovo);
 	}
 }
