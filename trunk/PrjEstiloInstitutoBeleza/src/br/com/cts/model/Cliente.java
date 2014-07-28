@@ -1,8 +1,13 @@
 package br.com.cts.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class Cliente {
 	private int idCliente;
 	private String nomeCliente;
+	private boolean sexoCliente;
 	private String dataNascimentoCliente;
 	private String logradouroCliente;
 	private int numeroCliente;
@@ -21,10 +26,11 @@ public class Cliente {
 		
 	}
 
-	public Cliente(int idCliente, String nomeCliente, String dataNascimentoCliente, String logradouroCliente, int numeroCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente, String telefoneCliente, String celular1Cliente, String celular2Cliente, String email1Cliente, String email2Cliente) {
+	public Cliente(int idCliente, String nomeCliente, boolean sexoCliente, String dataNascimentoCliente, String logradouroCliente, int numeroCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente, String telefoneCliente, String celular1Cliente, String celular2Cliente, String email1Cliente, String email2Cliente) {
 		super();
 		this.idCliente = idCliente;
 		this.nomeCliente = nomeCliente;
+		this.sexoCliente = sexoCliente;
 		this.dataNascimentoCliente = dataNascimentoCliente;
 		this.logradouroCliente = logradouroCliente;
 		this.numeroCliente = numeroCliente;
@@ -56,12 +62,26 @@ public class Cliente {
 		this.nomeCliente = nomeCliente;
 	}
 
+	public boolean getSexoCliente() {
+		return sexoCliente;
+	}
+
+	public void setSexoCliente(boolean sexoCliente) {
+		this.sexoCliente = sexoCliente;
+	}
+
 	public String getDataNascimentoCliente() {
 		return dataNascimentoCliente;
 	}
 
-	public void setDataNascimentoCliente(String dataNascimentoCliente) {
-		this.dataNascimentoCliente = dataNascimentoCliente;
+	public boolean setDataNascimentoCliente(String dataNascimentoCliente) throws ParseException {
+		if (isDate(dataNascimentoCliente)){
+			this.dataNascimentoCliente = dataNascimentoCliente;
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public String getLogradouroCliente() {
@@ -158,5 +178,17 @@ public class Cliente {
 
 	public void setEmail2Cliente(String email2Cliente) {
 		this.email2Cliente = email2Cliente;
+	}
+	
+	public boolean isDate(String dataNascimentoCliente) throws ParseException {
+		try{
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			dateFormat.setLenient(false);
+			dateFormat.parse(dataNascimentoCliente).toString();
+			return true;
+		}catch(Exception ex){
+			ex.printStackTrace();
+			return false;
+		}
 	}
 }

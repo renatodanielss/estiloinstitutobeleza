@@ -8,7 +8,7 @@ import br.com.cts.model.Cliente;
 public class ClienteBLL {
 	private ClienteDAO clienteDao;
 	
-	public ClienteBLL() throws Exception{
+	public ClienteBLL(){
 		clienteDao = new ClienteDAO();
 	}
 	
