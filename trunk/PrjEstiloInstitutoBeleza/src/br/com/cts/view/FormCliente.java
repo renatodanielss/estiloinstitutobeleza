@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,9 +20,11 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
-
 import br.com.cts.bll.ClienteBLL;
 import br.com.cts.model.Cliente;
+import br.com.cts.util.Calendario;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class FormCliente {
 	private JFrame frmClientes;
@@ -56,6 +57,7 @@ public class FormCliente {
 	private JTextField txtEmail1;
 	private JLabel lblEmail_1;
 	private JTextField txtEmail2;
+	private String message;
 	private JPanel panel_1;
 
 	/**
@@ -141,6 +143,19 @@ public class FormCliente {
 		MaskFormatter mfDataNascimento = new MaskFormatter("##/##/####");
 		mfDataNascimento.setPlaceholderCharacter('_');
 		txtDataNascimento = new JFormattedTextField(mfDataNascimento);
+		txtDataNascimento.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				try {
+					if (!Calendario.isDate(txtDataNascimento.getText())){
+						txtDataNascimento.setText("");
+						txtDataNascimento.requestFocus();
+					}
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		txtDataNascimento.setBounds(490, 96, 165, 20);
 		frmClientes.getContentPane().add(txtDataNascimento);
 		
@@ -286,13 +301,11 @@ public class FormCliente {
 	
 	private void salvar(){
 		try {
-			int erro = 0;
 			Cliente cliente = new Cliente();
 			
 			cliente.setNomeCliente(txtNome.getText());
 			cliente.setSexoCliente(cbSexo.getSelectedIndex());
-			if (!cliente.setDataNascimentoCliente(txtDataNascimento.getText()))
-				erro++;
+			cliente.setDataNascimentoCliente(txtDataNascimento.getText());
 			cliente.setLogradouroCliente(txtLogradouro.getText());
 			cliente.setNumeroCliente(Integer.parseInt(txtNumero.getText()));
 			cliente.setComplementoCliente(txtComplemento.getText());
@@ -307,14 +320,109 @@ public class FormCliente {
 			cliente.setEmail2Cliente(txtEmail2.getText());
 		
 			ClienteBLL clienteBll = new ClienteBLL();
-			if (erro == 0){
+			if (getQtdCamposIncorretos() < 1){
 				clienteBll.salvar(cliente);
 				JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+			}
+			else{
+				JOptionPane.showMessageDialog(null, this.message);
 			}
 		}catch (ParseException ex) {
 			ex.printStackTrace();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	private int getQtdCamposIncorretos(){
+		int contador = 0;
+		this.message = "";
+		if (!estaCampoTextoPreenchido(txtNome, " - Preencha o campo nome!\n"))
+			contador++;
+		if (!estaCampoComboBoxPreenchido(cbSexo, " - Preencha o campo sexo!\n"))
+			contador++;
+		
+		if (txtDataNascimento.getText().equals("__/__/____")){
+			setErrorTextField(txtDataNascimento);
+			this.message += " - Preencha o campo data de nascimento!\n";
+			contador++;
+		}
+		else
+			setCorrectTextField(txtDataNascimento);
+		
+		if (!estaCampoTextoPreenchido(txtLogradouro, " - Preencha o campo logradouro!\n"))
+			contador++;
+		if (!estaCampoTextoPreenchido(txtNumero, " - Preencha o campo número!\n"))
+			contador++;
+		if (!estaCampoTextoPreenchido(txtBairro, " - Preencha o campo bairro!\n"))
+			contador++;
+		if (!estaCampoTextoPreenchido(txtCidade, " - Preencha o campo cidade!\n"))
+			contador++;
+		if (!estaCampoComboBoxPreenchido(cbUf, " - Preencha o campo UF!\n"))
+			contador++;
+
+		if (txtCep.getText().equals("_____-___")){
+			setErrorTextField(txtCep);
+			this.message += " - Preencha o campo data de CEP!\n";
+			contador++;
+		}
+		else
+			setCorrectTextField(txtCep);
+		
+		if (txtTelefone.getText().equals("(__) ____-____")){
+			setErrorTextField(txtTelefone);
+			this.message += " - Preencha o campo data de telefone!\n";
+			contador++;
+		}
+		else
+			setCorrectTextField(txtTelefone);
+		
+		return contador;
+	}
+	
+	private boolean estaCampoTextoPreenchido(JTextField jTextField, String errorMessage){
+		if (jTextField.getText().equals("")){
+			setErrorTextField(jTextField);
+			this.message += errorMessage;
+			return false;
+		}
+		else{
+			setCorrectTextField(jTextField);
+			return true;
+		}
+	}
+	
+	private void setErrorTextField(JTextField jTextField){
+		Color errorColor = new Color(255, 102, 102);
+		jTextField.setBackground(errorColor);
+		jTextField.setForeground(Color.WHITE);
+	}
+	
+	private void setCorrectTextField(JTextField jTextField){
+		jTextField.setBackground(Color.WHITE);
+		jTextField.setForeground(Color.BLACK);
+	}
+	
+	private boolean estaCampoComboBoxPreenchido(@SuppressWarnings("rawtypes") JComboBox jComboBox, String errorMessage){
+		if (jComboBox.getSelectedIndex() < 1){
+			setErrorComboField(jComboBox);
+			this.message += errorMessage;
+			return false;
+		}
+		else{
+			setCorrectComboField(jComboBox);
+			return true;
+		}
+	}
+	
+	private void setErrorComboField(@SuppressWarnings("rawtypes") JComboBox jComboBox){
+		Color errorColor = new Color(255, 102, 102);
+		jComboBox.setBackground(errorColor);
+		jComboBox.setForeground(Color.WHITE);
+	}
+	
+	private void setCorrectComboField(@SuppressWarnings("rawtypes") JComboBox jComboBox){
+		jComboBox.setBackground(Color.WHITE);
+		jComboBox.setForeground(Color.BLACK);
 	}
 }

@@ -1,9 +1,5 @@
 package br.com.cts.model;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 public class Cliente {
 	private int idCliente;
 	private String nomeCliente;
@@ -74,14 +70,8 @@ public class Cliente {
 		return dataNascimentoCliente;
 	}
 
-	public boolean setDataNascimentoCliente(String dataNascimentoCliente) throws ParseException {
-		if (isDate(dataNascimentoCliente)){
-			this.dataNascimentoCliente = dataNascimentoCliente;
-			return true;
-		}
-		else{
-			return false;
-		}
+	public void setDataNascimentoCliente(String dataNascimentoCliente) {
+		this.dataNascimentoCliente = dataNascimentoCliente;
 	}
 
 	public String getLogradouroCliente() {
@@ -178,17 +168,5 @@ public class Cliente {
 
 	public void setEmail2Cliente(String email2Cliente) {
 		this.email2Cliente = email2Cliente;
-	}
-	
-	public boolean isDate(String dataNascimentoCliente) throws ParseException {
-		try{
-			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			dateFormat.setLenient(false);
-			dateFormat.parse(dataNascimentoCliente).toString();
-			return true;
-		}catch(Exception ex){
-			ex.printStackTrace();
-			return false;
-		}
 	}
 }
