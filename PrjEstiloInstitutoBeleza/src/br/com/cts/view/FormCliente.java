@@ -245,7 +245,9 @@ public class FormCliente {
 		lblCelular.setBounds(257, 270, 62, 14);
 		frmClientes.getContentPane().add(lblCelular);
 		
-		txtCelular1 = new JFormattedTextField();
+		MaskFormatter mfCelular = new MaskFormatter("(##) 9####-####");
+		mfTelefone.setPlaceholderCharacter('_');
+		txtCelular1 = new JFormattedTextField(mfCelular);
 		txtCelular1.setBounds(257, 285, 201, 20);
 		frmClientes.getContentPane().add(txtCelular1);
 		
@@ -253,7 +255,7 @@ public class FormCliente {
 		lblCelular_1.setBounds(468, 270, 62, 14);
 		frmClientes.getContentPane().add(lblCelular_1);
 		
-		txtCelular2 = new JFormattedTextField();
+		txtCelular2 = new JFormattedTextField(mfCelular);
 		txtCelular2.setBounds(468, 285, 187, 20);
 		frmClientes.getContentPane().add(txtCelular2);
 		
@@ -288,21 +290,15 @@ public class FormCliente {
 			Cliente cliente = new Cliente();
 			
 			cliente.setNomeCliente(txtNome.getText());
-
-			if (cbSexo.getSelectedItem().toString() == "Masculino")
-				cliente.setSexoCliente(true);
-			else if (cbSexo.getSelectedItem().toString() == "Feminino")
-				cliente.setSexoCliente(false);
-				
+			cliente.setSexoCliente(cbSexo.getSelectedIndex());
 			if (!cliente.setDataNascimentoCliente(txtDataNascimento.getText()))
 				erro++;
-			
 			cliente.setLogradouroCliente(txtLogradouro.getText());
 			cliente.setNumeroCliente(Integer.parseInt(txtNumero.getText()));
 			cliente.setComplementoCliente(txtComplemento.getText());
 			cliente.setBairroCliente(txtBairro.getText());
 			cliente.setCidadeCliente(txtCidade.getText());
-			cliente.setUfCliente(cbUf.getSelectedItem().toString());
+			cliente.setUfCliente(cbUf.getSelectedIndex());
 			cliente.setCepCliente(txtCep.getText());
 			cliente.setTelefoneCliente(txtTelefone.getText());
 			cliente.setCelular1Cliente(txtCelular1.getText());
@@ -311,9 +307,10 @@ public class FormCliente {
 			cliente.setEmail2Cliente(txtEmail2.getText());
 		
 			ClienteBLL clienteBll = new ClienteBLL();
-			if (erro == 0)
+			if (erro == 0){
 				clienteBll.salvar(cliente);
-			JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+				JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+			}
 		}catch (ParseException ex) {
 			ex.printStackTrace();
 		}catch(Exception ex){
