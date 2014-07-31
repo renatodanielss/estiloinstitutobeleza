@@ -1,12 +1,28 @@
 package br.com.cts.model;
 
-public class Produtos {
+public class Produto {
 	private int id;
 	private String nome;
 	private String codigoBarras;
 	private Double valor;
 	private Double valorPraVenda;
 	private String tipoUnidade;
+	private int qtdEstoque;
+
+	public Produto(){
+		
+	}
+	
+	public Produto(int id, String nome, String codigoBarras, Double valor, Double valorPraVenda, String tipoUnidade, int qtdEstoque) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.codigoBarras = codigoBarras;
+		this.valor = valor;
+		this.valorPraVenda = valorPraVenda;
+		this.tipoUnidade = tipoUnidade;
+		this.qtdEstoque = qtdEstoque;
+	}
 
 	public int getId() {
 		return id;
@@ -56,15 +72,23 @@ public class Produtos {
 		this.tipoUnidade = tipoUnidade;
 	}
 
-	public void calcQuantEstoque() {
+	public int getQtdEstoque() {
+		return qtdEstoque;
+	}
+
+	public void setQtdEstoque(int qtdEstoque) {
+		this.qtdEstoque = qtdEstoque;
+	}
+
+	public void calcQuantEstoque(){
 
 	}
 
-	public void calcQuantVendida() {
+	public void calcQuantVendida(){
 
 	}
 
-	public void calcLucro() {
+	public void calcLucro(){
 
 	}
 }

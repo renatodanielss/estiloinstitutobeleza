@@ -7,14 +7,14 @@ import java.text.SimpleDateFormat;
 public class Cliente {
 	private int idCliente;
 	private String nomeCliente;
-	private boolean sexoCliente;
+	private int sexoCliente;
 	private String dataNascimentoCliente;
 	private String logradouroCliente;
 	private int numeroCliente;
 	private String complementoCliente;
 	private String bairroCliente;
 	private String cidadeCliente;
-	private String ufCliente;
+	private int ufCliente;
 	private String cepCliente;
 	private String telefoneCliente;
 	private String celular1Cliente;
@@ -26,7 +26,7 @@ public class Cliente {
 		
 	}
 
-	public Cliente(int idCliente, String nomeCliente, boolean sexoCliente, String dataNascimentoCliente, String logradouroCliente, int numeroCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente, String telefoneCliente, String celular1Cliente, String celular2Cliente, String email1Cliente, String email2Cliente) {
+	public Cliente(int idCliente, String nomeCliente, int sexoCliente, String dataNascimentoCliente, String logradouroCliente, int numeroCliente, String complementoCliente, String bairroCliente, String cidadeCliente, int ufCliente, String cepCliente, String telefoneCliente, String celular1Cliente, String celular2Cliente, String email1Cliente, String email2Cliente) {
 		super();
 		this.idCliente = idCliente;
 		this.nomeCliente = nomeCliente;
@@ -62,11 +62,11 @@ public class Cliente {
 		this.nomeCliente = nomeCliente;
 	}
 
-	public boolean getSexoCliente() {
+	public int getSexoCliente() {
 		return sexoCliente;
 	}
 
-	public void setSexoCliente(boolean sexoCliente) {
+	public void setSexoCliente(int sexoCliente) {
 		this.sexoCliente = sexoCliente;
 	}
 
@@ -124,11 +124,11 @@ public class Cliente {
 		this.cidadeCliente = cidadeCliente;
 	}
 
-	public String getUfCliente() {
+	public int getUfCliente() {
 		return ufCliente;
 	}
 
-	public void setUfCliente(String ufCliente) {
+	public void setUfCliente(int ufCliente) {
 		this.ufCliente = ufCliente;
 	}
 

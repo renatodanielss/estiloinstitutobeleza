@@ -6,6 +6,18 @@ public class Cartao {
 	private String bandeira;
 	private int pocentagemDesconto;
 	
+	public Cartao(){
+		
+	}
+	
+	public Cartao(int id, String nomeCartao, String bandeira, int pocentagemDesconto) {
+		super();
+		this.id = id;
+		this.nomeCartao = nomeCartao;
+		this.bandeira = bandeira;
+		this.pocentagemDesconto = pocentagemDesconto;
+	}
+	
 	public int getId() {
 		return id;
 	}

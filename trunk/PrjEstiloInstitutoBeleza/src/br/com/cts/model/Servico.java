@@ -11,7 +11,23 @@ public class Servico {
 	private Cliente cliente;
 	private Funcionario funcionario;
 	private Cartao[] cartao;
+
+	public Servico(){
+		
+	}
 	
+	public Servico(int id, Date dataHora, String statusServico, Double valor, Double comissao, Cliente cliente, Funcionario funcionario, Cartao[] cartao){
+		super();
+		this.id = id;
+		this.dataHora = dataHora;
+		this.statusServico = statusServico;
+		this.valor = valor;
+		this.comissao = comissao;
+		this.cliente = cliente;
+		this.funcionario = funcionario;
+		this.cartao = cartao;
+	}
+
 	public int getId() {
 		return id;
 	}
