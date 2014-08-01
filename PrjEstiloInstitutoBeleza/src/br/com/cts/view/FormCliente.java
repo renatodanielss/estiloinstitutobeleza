@@ -4,7 +4,14 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,11 +27,11 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
+
 import br.com.cts.bll.ClienteBLL;
 import br.com.cts.model.Cliente;
 import br.com.cts.util.Calendario;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import javax.swing.JTable;
 
 public class FormCliente {
 	private JFrame frmClientes;
@@ -59,6 +66,7 @@ public class FormCliente {
 	private JTextField txtEmail2;
 	private String message;
 	private JPanel panel_1;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -93,6 +101,7 @@ public class FormCliente {
 		frmClientes.setTitle("Clientes");
 		frmClientes.setBounds(100, 100, 1032, 439);
 		frmClientes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmClientes.setMinimumSize(frmClientes.getSize());
 		
 		txtNome = new JTextField();
 		txtNome.setBounds(22, 96, 355, 20);
@@ -115,11 +124,6 @@ public class FormCliente {
 		menuBar.add(mnArquivo);
 		
 		mntmNovo = new JMenuItem("Novo");
-		mntmNovo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		mnArquivo.add(mntmNovo);
 		
 		JMenuItem mntmSalvar = new JMenuItem("Salvar");
@@ -131,6 +135,17 @@ public class FormCliente {
 		mnArquivo.add(mntmSalvar);
 		frmClientes.getContentPane().add(txtNome);
 		frmClientes.getContentPane().add(btnSalvar);
+		
+		frmClientes.getContentPane().addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				menuBar.repaint(menuBar.getX(), menuBar.getY(), frmClientes.getContentPane().getWidth(), menuBar.getHeight());
+				menuBar.paintImmediately(menuBar.getX(), menuBar.getY(), frmClientes.getContentPane().getWidth(), menuBar.getHeight());
+				menuBar.doLayout();
+				menuBar.updateUI();
+				frmClientes.doLayout();
+			}
+		});
 		
 		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setBounds(22, 82, 37, 14);
@@ -183,6 +198,13 @@ public class FormCliente {
 		frmClientes.getContentPane().add(lblNmero);
 		
 		txtNumero = new JTextField();
+		txtNumero.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if ((e.getKeyChar() < '0' || e.getKeyChar() > '9') && e.getKeyChar() != 8)
+					txtNumero.setText(txtNumero.getText().replaceAll("[^0-9]", ""));
+			}
+		});
 		txtNumero.setBounds(389, 170, 86, 20);
 		frmClientes.getContentPane().add(txtNumero);
 		txtNumero.setColumns(10);
@@ -297,6 +319,12 @@ public class FormCliente {
 		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contato", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
 		panel_1.setBounds(10, 249, 664, 108);
 		frmClientes.getContentPane().add(panel_1);
+		
+		table = new JTable();
+		table.setBounds(724, 60, 165, 131);
+		frmClientes.getContentPane().add(table);
+		//ClienteBLL clienteBll = new ClienteBLL();
+		//table.setModel(dataModel);
 	}
 	
 	private void salvar(){
@@ -307,7 +335,8 @@ public class FormCliente {
 			cliente.setSexoCliente(cbSexo.getSelectedIndex());
 			cliente.setDataNascimentoCliente(txtDataNascimento.getText());
 			cliente.setLogradouroCliente(txtLogradouro.getText());
-			cliente.setNumeroCliente(Integer.parseInt(txtNumero.getText()));
+			if (txtNumero.getText().length() > 0)
+				cliente.setNumeroCliente(Integer.parseInt(txtNumero.getText()));
 			cliente.setComplementoCliente(txtComplemento.getText());
 			cliente.setBairroCliente(txtBairro.getText());
 			cliente.setCidadeCliente(txtCidade.getText());

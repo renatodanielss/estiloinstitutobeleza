@@ -146,7 +146,7 @@ public class ClienteDAO {
 		ResultSet rs = null;
 		try{
 			Connection conn = this.conn;
-			String SQL = "SELECT * FROM tbl_cliente WHERE NOME LIKE %?%";
+			String SQL = "SELECT * FROM tbl_cliente WHERE NOME LIKE '%?%'";
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, nome);
 			rs = ps.executeQuery();
