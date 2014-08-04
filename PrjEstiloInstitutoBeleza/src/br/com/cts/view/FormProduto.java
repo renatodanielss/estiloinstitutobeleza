@@ -15,16 +15,16 @@ import java.awt.event.ActionEvent;
 public class FormProduto {
 
 	private JFrame frmProdutos;
-	private JTextField textField;
-	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JLabel lblNewLabel_4;
+	private JTextField txtNomeProduto;
+	private JLabel lblNome;
+	private JLabel lblCodigoBarras;
+	private JTextField txtCodigoBarras;
+	private JTextField txtTipoUnidade;
+	private JLabel lblTipoUnidade;
+	private JLabel lblValor;
+	private JTextField txtValor;
+	private JTextField txtValorVenda;
+	private JLabel lblValorVenda;
 
 	/**
 	 * Launch the application.
@@ -65,50 +65,50 @@ public class FormProduto {
 		frmProdutos.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(10, 38, 285, 20);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtNomeProduto = new JTextField();
+		txtNomeProduto.setBounds(10, 38, 285, 20);
+		panel.add(txtNomeProduto);
+		txtNomeProduto.setColumns(10);
 		
-		lblNewLabel = new JLabel("Nome:");
-		lblNewLabel.setBounds(11, 24, 46, 14);
-		panel.add(lblNewLabel);
+		lblNome = new JLabel("Nome:");
+		lblNome.setBounds(11, 24, 46, 14);
+		panel.add(lblNome);
 		
-		lblNewLabel_1 = new JLabel("C\u00F3digo de Barras:");
-		lblNewLabel_1.setBounds(11, 60, 119, 14);
-		panel.add(lblNewLabel_1);
+		lblCodigoBarras = new JLabel("C\u00F3digo de Barras:");
+		lblCodigoBarras.setBounds(11, 60, 119, 14);
+		panel.add(lblCodigoBarras);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(10, 75, 499, 20);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		txtCodigoBarras = new JTextField();
+		txtCodigoBarras.setBounds(10, 75, 499, 20);
+		panel.add(txtCodigoBarras);
+		txtCodigoBarras.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(305, 38, 204, 20);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		txtTipoUnidade = new JTextField();
+		txtTipoUnidade.setBounds(305, 38, 204, 20);
+		panel.add(txtTipoUnidade);
+		txtTipoUnidade.setColumns(10);
 		
-		lblNewLabel_2 = new JLabel("Tipo de Unidade: ");
-		lblNewLabel_2.setBounds(305, 24, 101, 14);
-		panel.add(lblNewLabel_2);
+		lblTipoUnidade = new JLabel("Tipo de Unidade: ");
+		lblTipoUnidade.setBounds(305, 24, 101, 14);
+		panel.add(lblTipoUnidade);
 		
-		lblNewLabel_3 = new JLabel("Valor:");
-		lblNewLabel_3.setBounds(11, 99, 46, 14);
-		panel.add(lblNewLabel_3);
+		lblValor = new JLabel("Valor:");
+		lblValor.setBounds(11, 99, 46, 14);
+		panel.add(lblValor);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(10, 113, 252, 20);
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		txtValor = new JTextField();
+		txtValor.setBounds(10, 113, 252, 20);
+		panel.add(txtValor);
+		txtValor.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(272, 113, 237, 20);
-		panel.add(textField_4);
-		textField_4.setColumns(10);
+		txtValorVenda = new JTextField();
+		txtValorVenda.setBounds(272, 113, 237, 20);
+		panel.add(txtValorVenda);
+		txtValorVenda.setColumns(10);
 		
-		lblNewLabel_4 = new JLabel("Valor de Venda:");
-		lblNewLabel_4.setBounds(273, 99, 95, 14);
-		panel.add(lblNewLabel_4);
+		lblValorVenda = new JLabel("Valor de Venda:");
+		lblValorVenda.setBounds(273, 99, 95, 14);
+		panel.add(lblValorVenda);
 		
 		JButton btnNewButton = new JButton("Salvar");
 		btnNewButton.addActionListener(new ActionListener() {
