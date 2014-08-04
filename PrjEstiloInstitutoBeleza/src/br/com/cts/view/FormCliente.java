@@ -1,16 +1,16 @@
 package br.com.cts.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -23,15 +23,24 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
+
+import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import br.com.cts.bll.ClienteBLL;
 import br.com.cts.model.Cliente;
 import br.com.cts.util.Calendario;
-import javax.swing.JTable;
 
 public class FormCliente {
 	private JFrame frmClientes;
@@ -66,7 +75,11 @@ public class FormCliente {
 	private JTextField txtEmail2;
 	private String message;
 	private JPanel panel_1;
-	private JTable table;
+	private JTable jTblClientes;
+	private JTextField txtPesquisar;
+	private JButton btnNovo;
+	private JButton btnSalvar;
+	private JButton btnExcluir;
 
 	/**
 	 * Launch the application.
@@ -86,20 +99,21 @@ public class FormCliente {
 
 	/**
 	 * Create the application.
-	 * @throws ParseException 
+	 * @throws Exception 
 	 */
-	public FormCliente() throws ParseException {
+	public FormCliente() throws Exception {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @throws ParseException 
+	 * @throws Exception 
 	 */
-	private void initialize() throws ParseException {
+	@SuppressWarnings("serial")
+	private void initialize() throws Exception {
 		frmClientes = new JFrame();
 		frmClientes.setTitle("Clientes");
-		frmClientes.setBounds(100, 100, 1032, 439);
+		frmClientes.setBounds(100, 100, 1251, 520);
 		frmClientes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmClientes.setMinimumSize(frmClientes.getSize());
 		
@@ -107,23 +121,34 @@ public class FormCliente {
 		txtNome.setBounds(22, 96, 355, 20);
 		txtNome.setColumns(10);
 		
-		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(22, 366, 86, 23);
+		btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(783, 398, 86, 23);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				salvar();
+				try {
+					salvar();
+					popularJTablePorNome(txtPesquisar.getText());
+					limparCampos();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		frmClientes.getContentPane().setLayout(null);
 		
 		menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 1016, 21);
+		menuBar.setBounds(0, 0, 1235, 21);
 		frmClientes.getContentPane().add(menuBar);
 		
 		mnArquivo = new JMenu("Arquivo");
 		menuBar.add(mnArquivo);
 		
 		mntmNovo = new JMenuItem("Novo");
+		mntmNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				novo();
+			}
+		});
 		mnArquivo.add(mntmNovo);
 		
 		JMenuItem mntmSalvar = new JMenuItem("Salvar");
@@ -135,17 +160,6 @@ public class FormCliente {
 		mnArquivo.add(mntmSalvar);
 		frmClientes.getContentPane().add(txtNome);
 		frmClientes.getContentPane().add(btnSalvar);
-		
-		frmClientes.getContentPane().addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				menuBar.repaint(menuBar.getX(), menuBar.getY(), frmClientes.getContentPane().getWidth(), menuBar.getHeight());
-				menuBar.paintImmediately(menuBar.getX(), menuBar.getY(), frmClientes.getContentPane().getWidth(), menuBar.getHeight());
-				menuBar.doLayout();
-				menuBar.updateUI();
-				frmClientes.doLayout();
-			}
-		});
 		
 		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setBounds(22, 82, 37, 14);
@@ -162,9 +176,11 @@ public class FormCliente {
 			@Override
 			public void focusLost(FocusEvent e) {
 				try {
-					if (!Calendario.isDate(txtDataNascimento.getText())){
-						txtDataNascimento.setText("");
-						txtDataNascimento.requestFocus();
+					if (!txtDataNascimento.getText().equals("__/__/____")){
+						if (!Calendario.isDate(txtDataNascimento.getText())){
+							txtDataNascimento.setText(null);
+							JOptionPane.showMessageDialog(null, "Data de inválida!");
+						}
 					}
 				} catch (ParseException e1) {
 					e1.printStackTrace();
@@ -172,6 +188,7 @@ public class FormCliente {
 			}
 		});
 		txtDataNascimento.setBounds(490, 96, 165, 20);
+		txtDataNascimento.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtDataNascimento);
 		
 		JLabel lblSexo = new JLabel("Sexo:");
@@ -254,6 +271,7 @@ public class FormCliente {
 		mfCep.setPlaceholderCharacter('_');
 		txtCep = new JFormattedTextField(mfCep);
 		txtCep.setBounds(516, 209, 139, 20);
+		txtCep.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtCep);
 		
 		lblTelefone = new JLabel("Telefone:");
@@ -264,6 +282,7 @@ public class FormCliente {
 		mfTelefone.setPlaceholderCharacter('_');
 		txtTelefone = new JFormattedTextField(mfTelefone);
 		txtTelefone.setBounds(22, 285, 223, 20);
+		txtTelefone.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtTelefone);
 		
 		pnlDadosPessoais = new JPanel();
@@ -283,17 +302,21 @@ public class FormCliente {
 		frmClientes.getContentPane().add(lblCelular);
 		
 		MaskFormatter mfCelular = new MaskFormatter("(##) 9####-####");
-		mfTelefone.setPlaceholderCharacter('_');
+		mfCelular.setPlaceholderCharacter('_');
 		txtCelular1 = new JFormattedTextField(mfCelular);
 		txtCelular1.setBounds(257, 285, 201, 20);
+		txtCelular1.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtCelular1);
 		
 		lblCelular_1 = new JLabel("Celular 2:");
 		lblCelular_1.setBounds(468, 270, 62, 14);
 		frmClientes.getContentPane().add(lblCelular_1);
 		
-		txtCelular2 = new JFormattedTextField(mfCelular);
+		MaskFormatter mfCelular2 = new MaskFormatter("(##) 9####-####");
+		mfCelular2.setPlaceholderCharacter('_');
+		txtCelular2 = new JFormattedTextField(mfCelular2);
 		txtCelular2.setBounds(468, 285, 187, 20);
+		txtCelular2.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtCelular2);
 		
 		lblEmail = new JLabel("E-mail 1:");
@@ -320,11 +343,111 @@ public class FormCliente {
 		panel_1.setBounds(10, 249, 664, 108);
 		frmClientes.getContentPane().add(panel_1);
 		
-		table = new JTable();
-		table.setBounds(724, 60, 165, 131);
-		frmClientes.getContentPane().add(table);
-		//ClienteBLL clienteBll = new ClienteBLL();
-		//table.setModel(dataModel);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(684, 92, 541, 295);
+		frmClientes.getContentPane().add(scrollPane);
+		
+		jTblClientes = new JTable();
+		jTblClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		scrollPane.setViewportView(jTblClientes);
+		jTblClientes.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID", "Nome", "Data de Nascimento"
+			}
+		) {
+			@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] {
+				Object.class, String.class, String.class
+			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		
+		jTblClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	ClienteBLL clienteBll = new ClienteBLL();
+				Cliente cliente = new Cliente();
+				try {
+					if (jTblClientes.getSelectedRow() > -1){
+						cliente = clienteBll.procuraClientePorId(Integer.valueOf(jTblClientes.getValueAt(jTblClientes.getSelectedRow(), 0).toString()));
+						btnSalvar.setText("Alterar");
+					}
+					else{
+						btnSalvar.setText("Salvar");
+					}
+					
+					preencherCampos(cliente);
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+	        }
+	    });
+		
+		txtPesquisar = new JTextField();
+		txtPesquisar.setBounds(761, 67, 464, 20);
+		txtPesquisar.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				warn();
+			}
+			public void removeUpdate(DocumentEvent e) {
+				warn();
+			}
+			
+			public void insertUpdate(DocumentEvent e) {
+				warn();
+			}
+			
+			public void warn() {
+				try {
+					popularJTablePorNome(txtPesquisar.getText());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		frmClientes.getContentPane().add(txtPesquisar);
+		txtPesquisar.setColumns(10);
+		
+		JLabel lblPesquisar = new JLabel("Pesquisar");
+		lblPesquisar.setBounds(684, 70, 67, 14);
+		frmClientes.getContentPane().add(lblPesquisar);
+		
+		btnNovo = new JButton("Novo");
+		btnNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				novo();
+			}
+		});
+		btnNovo.setBounds(684, 398, 89, 23);
+		frmClientes.getContentPane().add(btnNovo);
+		
+		btnExcluir = new JButton("Excluir");
+		btnExcluir.setBounds(879, 398, 89, 23);
+		frmClientes.getContentPane().add(btnExcluir);
+		frmClientes.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtNome, cbSexo, txtDataNascimento, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cbUf, txtCep, txtTelefone, txtCelular1, txtCelular2, txtEmail1, txtEmail2, txtPesquisar, jTblClientes, btnNovo, btnSalvar, btnExcluir}));
+		jTblClientes.getColumnModel().getColumn(1).setPreferredWidth(255);
+		jTblClientes.getColumnModel().getColumn(2).setPreferredWidth(134);
+
+		popularJTableCompleto();
+	}
+	
+	private void novo(){
+		limparCampos();
+		btnSalvar.setText("Salvar");
 	}
 	
 	private void salvar(){
@@ -361,6 +484,10 @@ public class FormCliente {
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	private void alterar(){
+		
 	}
 	
 	private int getQtdCamposIncorretos(){
@@ -400,7 +527,7 @@ public class FormCliente {
 		
 		if (txtTelefone.getText().equals("(__) ____-____")){
 			setErrorTextField(txtTelefone);
-			this.message += " - Preencha o campo data de telefone!\n";
+			this.message += " - Preencha o campo telefone!\n";
 			contador++;
 		}
 		else
@@ -453,5 +580,83 @@ public class FormCliente {
 	private void setCorrectComboField(@SuppressWarnings("rawtypes") JComboBox jComboBox){
 		jComboBox.setBackground(Color.WHITE);
 		jComboBox.setForeground(Color.BLACK);
+	}
+	
+	private void preencherCampos(Cliente cliente){
+		txtNome.setText(cliente.getNomeCliente());
+		cbSexo.setSelectedIndex(cliente.getSexoCliente());
+		txtDataNascimento.setText(cliente.getDataNascimentoCliente());
+		txtLogradouro.setText(cliente.getLogradouroCliente());
+		txtNumero.setText(String.valueOf(cliente.getNumeroCliente()));
+		txtComplemento.setText(cliente.getComplementoCliente());
+		txtBairro.setText(cliente.getBairroCliente());
+		txtCidade.setText(cliente.getCidadeCliente());
+		cbUf.setSelectedIndex(cliente.getUfCliente());
+		txtCep.setText(cliente.getCepCliente());
+		txtTelefone.setText(cliente.getTelefoneCliente());
+		txtCelular1.setText(null);
+		txtCelular1.setText(cliente.getCelular1Cliente());
+		txtCelular2.setText(null);
+		txtCelular2.setText(cliente.getCelular2Cliente());
+		txtEmail1.setText(cliente.getEmail1Cliente());
+		txtEmail2.setText(cliente.getEmail2Cliente());
+	}
+	
+	private void popularJTableCompleto() throws Exception{
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
+		ClienteBLL clienteBll = new ClienteBLL();
+		List<Cliente> clientes = clienteBll.procuraCliente();
+		
+		for (Cliente c : clientes) {
+			String strSexo = null;
+			if (c.getSexoCliente() == 1)
+				strSexo = "Masculino";
+			else if (c.getSexoCliente() == 2)
+				strSexo = "Feminino";
+			
+            modeloTable.addRow(new Object[] { c.getIdCliente(),
+                    c.getNomeCliente(), strSexo });
+        }
+	}
+	
+	private void popularJTablePorNome(String nome) throws Exception{
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
+		ClienteBLL clienteBll = new ClienteBLL();
+		List<Cliente> clientes = clienteBll.procuraClientePorNome(nome);
+		
+		int rowCount = modeloTable.getRowCount();
+		for (int i = 0; i < rowCount; i++) {
+			modeloTable.removeRow(0);
+		}
+		
+		for (Cliente c : clientes) {
+			String strSexo = null;
+			if (c.getSexoCliente() == 1)
+				strSexo = "Masculino";
+			else if (c.getSexoCliente() == 2)
+				strSexo = "Feminino";
+			
+            modeloTable.addRow(new Object[] { c.getIdCliente(),
+                    c.getNomeCliente(), strSexo });
+        }
+	}
+	
+	private void limparCampos(){
+		txtNome.setText(null);
+		cbSexo.setSelectedIndex(0);
+		txtDataNascimento.setText(null);
+		txtLogradouro.setText(null);
+		txtNumero.setText(null);
+		txtComplemento.setText(null);
+		txtBairro.setText(null);
+		txtCidade.setText(null);
+		cbUf.setSelectedIndex(0);
+		txtCep.setText(null);
+		txtTelefone.setText(null);
+		txtCelular1.setText(null);
+		txtCelular2.setText(null);
+		txtEmail1.setText(null);
+		txtEmail2.setText(null);
+		txtNome.requestFocus();
 	}
 }

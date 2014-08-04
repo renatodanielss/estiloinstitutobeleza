@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import br.com.cts.model.Cliente;
 import br.com.cts.util.ConnectionFactory;
 
@@ -105,9 +106,9 @@ public class ClienteDAO {
 	
 	public Cliente procuraClientePorId(int id) throws Exception{
 		PreparedStatement ps = null;
+		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			Connection conn = this.conn;
 			String SQL = "SELECT * FROM tbl_cliente WHERE id = ?";
 			ps = conn.prepareStatement(SQL);
 			ps.setInt(1, id);
@@ -141,17 +142,56 @@ public class ClienteDAO {
 		}
 	}
 	
-	public List<Cliente> procuraClientePorNome(String nome) throws Exception{
+	public List<Cliente> procuraCliente() throws Exception{
 		PreparedStatement ps = null;
+		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			Connection conn = this.conn;
-			String SQL = "SELECT * FROM tbl_cliente WHERE NOME LIKE '%?%'";
+			String SQL = "SELECT * FROM tbl_cliente";
 			ps = conn.prepareStatement(SQL);
-			ps.setString(1, nome);
 			rs = ps.executeQuery();
 			
-			ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+			List<Cliente> clientes = new ArrayList<Cliente>();
+			while (rs.next()){
+				Cliente cliente1 = new Cliente();
+				cliente1.setIdCliente(rs.getInt(1));
+				cliente1.setNomeCliente(rs.getString(2));
+				cliente1.setSexoCliente(rs.getInt(3));
+				cliente1.setDataNascimentoCliente(rs.getString(4));
+				cliente1.setLogradouroCliente(rs.getString(5));
+				cliente1.setNumeroCliente(rs.getInt(6));
+				cliente1.setComplementoCliente(rs.getString(7));
+				cliente1.setBairroCliente(rs.getString(8));
+				cliente1.setCidadeCliente(rs.getString(9));
+				cliente1.setUfCliente(rs.getInt(10));
+				cliente1.setCepCliente(rs.getString(11));
+				cliente1.setTelefoneCliente(rs.getString(12));
+				cliente1.setCelular1Cliente(rs.getString(13));
+				cliente1.setCelular2Cliente(rs.getString(14));
+				cliente1.setEmail1Cliente(rs.getString(15));
+				cliente1.setEmail2Cliente(rs.getString(16));
+				clientes.add(cliente1);
+				cliente1 = null;
+			}
+			return clientes;
+		}catch(SQLException sqle){
+			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
+		}finally{
+			conn.close();
+		}
+	}
+	
+	public List<Cliente> procuraClientePorNome(String nome) throws Exception{
+		PreparedStatement ps = null;
+		Connection conn = this.conn;
+		ResultSet rs = null;
+		try{
+			String SQL = "SELECT * FROM tbl_cliente WHERE nome LIKE ?";
+			ps = conn.prepareStatement(SQL);
+			ps.setString(1, "%" + nome + "%");
+			rs = ps.executeQuery();
+			
+			List<Cliente> clientes = new ArrayList<Cliente>();
 			while (rs.next()){
 				Cliente cliente1 = new Cliente();
 				cliente1.setIdCliente(rs.getInt(1));

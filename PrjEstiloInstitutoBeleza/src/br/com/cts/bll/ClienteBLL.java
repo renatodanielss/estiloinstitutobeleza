@@ -24,6 +24,10 @@ public class ClienteBLL {
 		clienteDao.Excluir(cliente);
 	}
 	
+	public List<Cliente> procuraCliente() throws Exception{
+		return clienteDao.procuraCliente();
+	}
+	
 	public Cliente procuraClientePorId(int id) throws Exception{
 		return clienteDao.procuraClientePorId(id);
 	}
