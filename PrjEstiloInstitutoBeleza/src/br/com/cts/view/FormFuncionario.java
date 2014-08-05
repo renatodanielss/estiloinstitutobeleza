@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
+import javax.swing.JButton;
 
 public class FormFuncionario {
 
@@ -25,6 +26,8 @@ public class FormFuncionario {
 	private JTextField txtBairro;
 	private JTextField txtCidade;
 	private JFormattedTextField txtCep;
+	private JTextField txtEmail1;
+	private JTextField txtEmail2;
 
 	/**
 	 * Launch the application.
@@ -57,7 +60,7 @@ public class FormFuncionario {
 	private void initialize() throws ParseException {
 		frmFuncionrio = new JFrame();
 		frmFuncionrio.setTitle("Funcion\u00E1rio");
-		frmFuncionrio.setBounds(100, 100, 763, 419);
+		frmFuncionrio.setBounds(100, 100, 763, 473);
 		frmFuncionrio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmFuncionrio.getContentPane().setLayout(null);
 		
@@ -102,7 +105,7 @@ public class FormFuncionario {
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBackground(Color.WHITE);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Masculino", "Feminino"}));
-		comboBox.setBounds(16, 73, 128, 20);
+		comboBox.setBounds(15, 73, 128, 20);
 		panel.add(comboBox);
 		
 		JPanel panel_1 = new JPanel();
@@ -174,5 +177,59 @@ public class FormFuncionario {
 		JLabel lblCep = new JLabel("CEP: ");
 		lblCep.setBounds(477, 57, 46, 14);
 		panel_1.add(lblCep);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "Contato", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
+		panel_2.setBounds(11, 277, 660, 111);
+		frmFuncionrio.getContentPane().add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblTelefone = new JLabel("Telefone:");
+		lblTelefone.setBounds(15, 19, 64, 14);
+		panel_2.add(lblTelefone);
+		
+		MaskFormatter mfTelefone = new MaskFormatter("(##) ####-####");
+		mfTelefone.setPlaceholderCharacter('_');
+		JFormattedTextField txtTelefone = new JFormattedTextField(mfTelefone);
+		txtTelefone.setBounds(16, 34, 209, 20);
+		panel_2.add(txtTelefone);
+		
+		MaskFormatter mfCelular1 = new MaskFormatter("(##) 9####-####");
+		mfCelular1.setPlaceholderCharacter('_');
+		JFormattedTextField txtCelular1 = new JFormattedTextField(mfCelular1);
+		txtCelular1.setBounds(236, 34, 193, 20);
+		panel_2.add(txtCelular1);
+		
+		JLabel lblCelular1 = new JLabel("Celular 1:");
+		lblCelular1.setBounds(236, 19, 58, 14);
+		panel_2.add(lblCelular1);
+		
+		MaskFormatter mfCelular2 = new MaskFormatter("(##) 9####-####");
+		mfCelular2.setPlaceholderCharacter('_');
+		JFormattedTextField txtCelular2 = new JFormattedTextField(mfCelular2);
+		txtCelular2.setBounds(439, 34, 200, 20);
+		panel_2.add(txtCelular2);
+		
+		JLabel lblCelular2 = new JLabel("Celular 2:");
+		lblCelular2.setBounds(439, 19, 64, 11);
+		panel_2.add(lblCelular2);
+		
+		JLabel lblEmail1 = new JLabel("E-mail 1:");
+		lblEmail1.setBounds(16, 58, 63, 14);
+		panel_2.add(lblEmail1);
+		
+		txtEmail1 = new JTextField();
+		txtEmail1.setBounds(15, 73, 301, 20);
+		panel_2.add(txtEmail1);
+		txtEmail1.setColumns(10);
+		
+		txtEmail2 = new JTextField();
+		txtEmail2.setBounds(326, 73, 313, 20);
+		panel_2.add(txtEmail2);
+		txtEmail2.setColumns(10);
+		
+		JLabel lblEmail2 = new JLabel("E-mail 2:");
+		lblEmail2.setBounds(326, 58, 64, 14);
+		panel_2.add(lblEmail2);
 	}
 }
