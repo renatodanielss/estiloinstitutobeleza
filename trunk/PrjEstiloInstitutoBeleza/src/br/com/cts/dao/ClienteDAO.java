@@ -185,7 +185,7 @@ public class ClienteDAO {
 		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			String SQL = "SELECT * FROM tbl_cliente WHERE nome LIKE ? order by id";
+			String SQL = "SELECT * FROM tbl_cliente WHERE lower(nome) LIKE lower(?) order by id";
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, "%" + nome + "%");
 			rs = ps.executeQuery();
