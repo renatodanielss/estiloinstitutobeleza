@@ -126,7 +126,7 @@ public class FormCliente {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					salvar();
+					salvarAlterar();
 					popularJTablePorNome(txtPesquisar.getText());
 					limparCampos();
 				} catch (Exception e1) {
@@ -154,7 +154,7 @@ public class FormCliente {
 		JMenuItem mntmSalvar = new JMenuItem("Salvar");
 		mntmSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				salvar();
+				salvarAlterar();
 			}
 		});
 		mnArquivo.add(mntmSalvar);
@@ -451,10 +451,12 @@ public class FormCliente {
 		btnSalvar.setText("Salvar");
 	}
 	
-	private void salvar(){
+	private void salvarAlterar(){
 		try {
 			Cliente cliente = new Cliente();
 			
+			if (jTblClientes.getSelectedRow() > -1)
+				cliente.setIdCliente(Integer.valueOf(jTblClientes.getValueAt(jTblClientes.getSelectedRow(), 0).toString()));
 			cliente.setNomeCliente(txtNome.getText());
 			cliente.setSexoCliente(cbSexo.getSelectedIndex());
 			cliente.setDataNascimentoCliente(txtDataNascimento.getText());
@@ -474,8 +476,14 @@ public class FormCliente {
 		
 			ClienteBLL clienteBll = new ClienteBLL();
 			if (getQtdCamposIncorretos() < 1){
-				clienteBll.salvar(cliente);
-				JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+				if (btnSalvar.getText() == "Salvar"){
+					clienteBll.salvar(cliente);
+					JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+				}
+				else{
+					clienteBll.alterar(cliente);
+					JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+				}
 			}
 			else{
 				JOptionPane.showMessageDialog(null, this.message);
@@ -486,10 +494,6 @@ public class FormCliente {
 			ex.printStackTrace();
 		}
 	}
-	
-	/*private void alterar(){
-		
-	}*/
 	
 	private int getQtdCamposIncorretos(){
 		int contador = 0;

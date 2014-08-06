@@ -78,6 +78,7 @@ public class ClienteDAO {
 			ps.setString(13, cliente.getCelular2Cliente());
 			ps.setString(14, cliente.getEmail1Cliente());
 			ps.setString(15, cliente.getEmail2Cliente());
+			ps.setInt(16, cliente.getIdCliente());
 			ps.executeUpdate();
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao atualizar dados "+sqle.getMessage());
@@ -147,7 +148,7 @@ public class ClienteDAO {
 		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			String SQL = "SELECT * FROM tbl_cliente";
+			String SQL = "SELECT * FROM tbl_cliente order by id";
 			ps = conn.prepareStatement(SQL);
 			rs = ps.executeQuery();
 			
@@ -186,7 +187,7 @@ public class ClienteDAO {
 		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			String SQL = "SELECT * FROM tbl_cliente WHERE nome LIKE ?";
+			String SQL = "SELECT * FROM tbl_cliente WHERE nome LIKE ? order by id";
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, "%" + nome + "%");
 			rs = ps.executeQuery();
