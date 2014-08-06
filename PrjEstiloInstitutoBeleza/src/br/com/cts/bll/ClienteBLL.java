@@ -16,11 +16,11 @@ public class ClienteBLL {
 		clienteDao.salvar(cliente);
 	}
 	
-	public void Alterar(Cliente cliente) throws Exception{
+	public void alterar(Cliente cliente) throws Exception{
 		clienteDao.Alterar(cliente);
 	}
 	
-	public void Excluir(Cliente cliente) throws Exception{
+	public void excluir(Cliente cliente) throws Exception{
 		clienteDao.Excluir(cliente);
 	}
 	
