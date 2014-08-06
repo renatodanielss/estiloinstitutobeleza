@@ -14,11 +14,7 @@ public class ClienteDAO {
 	private Connection conn;
 	
 	public ClienteDAO(){
-		try{
-			this.conn = ConnectionFactory.getConnection();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		open();
 	}
 	
 	public void salvar(Cliente cliente) throws Exception{
@@ -89,10 +85,12 @@ public class ClienteDAO {
 	
 	public void Excluir(Cliente cliente) throws Exception{
 		PreparedStatement ps = null;
-		Connection conn = null;
+		Connection conn = this.conn;
 		if (cliente == null)
 			throw new Exception("O valor passado não pode ser nulo!");
 		try{
+			if (this.conn.isClosed())
+				open();
 			String SQL = "DELETE FROM tbl_cliente WHERE id = ?";
 			conn = this.conn;
 			ps = conn.prepareStatement(SQL);
@@ -219,6 +217,14 @@ public class ClienteDAO {
 			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
 		}finally{
 			conn.close();
+		}
+	}
+	
+	private void open(){
+		try{
+			this.conn = ConnectionFactory.getConnection();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 }
