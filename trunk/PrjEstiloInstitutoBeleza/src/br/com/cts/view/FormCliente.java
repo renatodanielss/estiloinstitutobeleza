@@ -160,7 +160,12 @@ public class FormCliente {
 		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
 		mntmGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Relatorio.chamarRelatorio("reports/clientereport.jasper");
+				try{
+					//ClienteBLL clienteBll = new ClienteBLL();
+					Relatorio.chamarRelatorio(txtPesquisar.getText());
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
 			}
 		});
 		mnArquivo.add(mntmGerarRelatorio);
