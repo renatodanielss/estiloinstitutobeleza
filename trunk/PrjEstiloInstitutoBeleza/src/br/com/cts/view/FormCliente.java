@@ -161,7 +161,6 @@ public class FormCliente {
 		mntmGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-					//ClienteBLL clienteBll = new ClienteBLL();
 					Relatorio.chamarRelatorio(txtPesquisar.getText());
 				}catch(Exception e1){
 					e1.printStackTrace();
