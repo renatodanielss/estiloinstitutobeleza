@@ -127,8 +127,6 @@ public class FormCliente {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					salvarAlterar();
-					popularJTablePorNome(txtPesquisar.getText());
-					limparCampos();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -488,10 +486,17 @@ public class FormCliente {
 				if (btnSalvar.getText() == "Salvar"){
 					clienteBll.salvar(cliente);
 					JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+					popularJTablePorNome(txtPesquisar.getText());
+					limparCampos();
 				}
 				else{
-					clienteBll.alterar(cliente);
-					JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja confirmar as alteraçções?","Alterar!", JOptionPane.YES_NO_OPTION);
+					if(dialogResult == JOptionPane.YES_OPTION){
+						clienteBll.alterar(cliente);
+						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+						popularJTablePorNome(txtPesquisar.getText());
+						limparCampos();
+					}
 				}
 			}
 			else{
