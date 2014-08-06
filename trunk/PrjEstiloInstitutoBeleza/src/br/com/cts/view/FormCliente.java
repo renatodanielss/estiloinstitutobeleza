@@ -36,11 +36,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import br.com.cts.bll.ClienteBLL;
 import br.com.cts.model.Cliente;
 import br.com.cts.util.Calendario;
+import br.com.cts.util.FocusTraversalOnArray;
+import br.com.cts.util.Relatorio;
 
 public class FormCliente {
 	private JFrame frmClientes;
@@ -156,6 +156,14 @@ public class FormCliente {
 			}
 		});
 		mnArquivo.add(mntmSalvar);
+		
+		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
+		mntmGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Relatorio.chamarRelatorio("reports/clientereport.jasper");
+			}
+		});
+		mnArquivo.add(mntmGerarRelatorio);
 		frmClientes.getContentPane().add(txtNome);
 		frmClientes.getContentPane().add(btnSalvar);
 		
