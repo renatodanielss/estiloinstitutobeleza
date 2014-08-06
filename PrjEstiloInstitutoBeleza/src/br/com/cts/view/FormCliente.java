@@ -353,7 +353,7 @@ public class FormCliente {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Data de Nascimento"
+				"ID", "Nome", "Sexo"
 			}
 		) {
 			@SuppressWarnings("rawtypes")
@@ -371,6 +371,8 @@ public class FormCliente {
 				return columnEditables[column];
 			}
 		});
+		jTblClientes.getColumnModel().getColumn(1).setPreferredWidth(255);
+		jTblClientes.getColumnModel().getColumn(2).setPreferredWidth(134);
 		
 		jTblClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
@@ -446,8 +448,6 @@ public class FormCliente {
 		btnExcluir.setBounds(879, 398, 89, 23);
 		frmClientes.getContentPane().add(btnExcluir);
 		frmClientes.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtNome, cbSexo, txtDataNascimento, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cbUf, txtCep, txtTelefone, txtCelular1, txtCelular2, txtEmail1, txtEmail2, txtPesquisar, jTblClientes, btnNovo, btnSalvar, btnExcluir}));
-		jTblClientes.getColumnModel().getColumn(1).setPreferredWidth(255);
-		jTblClientes.getColumnModel().getColumn(2).setPreferredWidth(134);
 
 		popularJTableCompleto();
 	}
