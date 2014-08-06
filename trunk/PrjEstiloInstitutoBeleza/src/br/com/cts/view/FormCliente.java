@@ -447,6 +447,7 @@ public class FormCliente {
 	
 	private void novo(){
 		limparCampos();
+		jTblClientes.clearSelection();
 		btnSalvar.setText("Salvar");
 	}
 	
@@ -486,9 +487,9 @@ public class FormCliente {
 		}
 	}
 	
-	private void alterar(){
+	/*private void alterar(){
 		
-	}
+	}*/
 	
 	private int getQtdCamposIncorretos(){
 		int contador = 0;

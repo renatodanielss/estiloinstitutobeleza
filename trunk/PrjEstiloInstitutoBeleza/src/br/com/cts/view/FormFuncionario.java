@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
-import javax.swing.JButton;
 
 public class FormFuncionario {
 
@@ -87,7 +86,7 @@ public class FormFuncionario {
 		lblDataDeNascimento.setBounds(155, 59, 155, 14);
 		panel.add(lblDataDeNascimento);
 		
-		JComboBox cbFuncao = new JComboBox();
+		JComboBox<String> cbFuncao = new JComboBox<String>();
 		cbFuncao.setBackground(Color.WHITE);
 		cbFuncao.setBounds(332, 74, 307, 20);
 		panel.add(cbFuncao);
@@ -98,15 +97,15 @@ public class FormFuncionario {
 		
 		MaskFormatter mfDataNascimento = new MaskFormatter("##/##/####");
 		mfDataNascimento.setPlaceholderCharacter('_');
-		JFormattedTextField txtDataNascimento = new JFormattedTextField(mfDataNascimento);
+		txtDataNascimento = new JFormattedTextField(mfDataNascimento);
 		txtDataNascimento.setBounds(154, 74, 168, 20);
 		panel.add(txtDataNascimento);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBackground(Color.WHITE);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Masculino", "Feminino"}));
-		comboBox.setBounds(15, 73, 128, 20);
-		panel.add(comboBox);
+		JComboBox<String> cbSexo = new JComboBox<String>();
+		cbSexo.setBackground(Color.WHITE);
+		cbSexo.setModel(new DefaultComboBoxModel<String>(new String[] {"", "Masculino", "Feminino"}));
+		cbSexo.setBounds(15, 73, 128, 20);
+		panel.add(cbSexo);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Endere\u00E7o", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
@@ -159,10 +158,10 @@ public class FormFuncionario {
 		lblCidade.setBounds(233, 57, 59, 14);
 		panel_1.add(lblCidade);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBackground(Color.WHITE);
-		comboBox_1.setBounds(372, 72, 93, 20);
-		panel_1.add(comboBox_1);
+		JComboBox<String> cbUf = new JComboBox<String>();
+		cbUf.setBackground(Color.WHITE);
+		cbUf.setBounds(372, 72, 93, 20);
+		panel_1.add(cbUf);
 		
 		JLabel lblUf = new JLabel("UF:");
 		lblUf.setBounds(374, 58, 46, 14);
@@ -170,7 +169,7 @@ public class FormFuncionario {
 		
 		MaskFormatter mfCep = new MaskFormatter("#####-###");
 		mfCep.setPlaceholderCharacter('_');
-		JFormattedTextField txtCep = new JFormattedTextField(mfCep);
+		txtCep = new JFormattedTextField(mfCep);
 		txtCep.setBounds(475, 72, 165, 20);
 		panel_1.add(txtCep);
 		
