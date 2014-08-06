@@ -436,6 +436,15 @@ public class FormCliente {
 		frmClientes.getContentPane().add(btnNovo);
 		
 		btnExcluir = new JButton("Excluir");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					excluir();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnExcluir.setBounds(879, 398, 89, 23);
 		frmClientes.getContentPane().add(btnExcluir);
 		frmClientes.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtNome, cbSexo, txtDataNascimento, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cbUf, txtCep, txtTelefone, txtCelular1, txtCelular2, txtEmail1, txtEmail2, txtPesquisar, jTblClientes, btnNovo, btnSalvar, btnExcluir}));
@@ -492,6 +501,20 @@ public class FormCliente {
 			ex.printStackTrace();
 		}catch(Exception ex){
 			ex.printStackTrace();
+		}
+	}
+	
+	private void excluir() throws NumberFormatException, Exception{
+		if (jTblClientes.getSelectedRow() > -1){
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente excluir?","Excluir!", JOptionPane.YES_NO_OPTION);
+			if(dialogResult == JOptionPane.YES_OPTION){
+				ClienteBLL clienteBll = new ClienteBLL();
+				Cliente cliente = clienteBll.procuraClientePorId(Integer.valueOf(jTblClientes.getValueAt(jTblClientes.getSelectedRow(), 0).toString()));
+				clienteBll.excluir(cliente);
+				JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
+				jTblClientes.clearSelection();
+				popularJTablePorNome(txtPesquisar.getText());
+			}
 		}
 	}
 	
