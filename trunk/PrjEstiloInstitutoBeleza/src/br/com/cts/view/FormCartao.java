@@ -9,7 +9,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class Cartao {
+public class FormCartao {
 
 	private JFrame frmCartes;
 	private JTextField txtNomeCartao;
@@ -23,7 +23,7 @@ public class Cartao {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Cartao window = new Cartao();
+					FormCartao window = new FormCartao();
 					window.frmCartes.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,7 +35,7 @@ public class Cartao {
 	/**
 	 * Create the application.
 	 */
-	public Cartao() {
+	public FormCartao() {
 		initialize();
 	}
 
