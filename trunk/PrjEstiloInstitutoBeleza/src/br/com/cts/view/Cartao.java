@@ -14,7 +14,7 @@ public class Cartao {
 	private JFrame frmCartes;
 	private JTextField txtNomeCartao;
 	private JTextField txtBandeira;
-	private JTextField textField;
+	private JTextField txtDesconto;
 
 	/**
 	 * Launch the application.
@@ -73,10 +73,10 @@ public class Cartao {
 		panel.add(txtBandeira);
 		txtBandeira.setColumns(10);
 		
-		textField = new JTextField();
-		textField.setBounds(394, 77, 115, 20);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtDesconto = new JTextField();
+		txtDesconto.setBounds(394, 77, 115, 20);
+		panel.add(txtDesconto);
+		txtDesconto.setColumns(10);
 		
 		JLabel lblDesconto = new JLabel("Desconto:");
 		lblDesconto.setBounds(395, 61, 72, 14);
