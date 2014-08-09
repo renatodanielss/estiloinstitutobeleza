@@ -3,6 +3,7 @@ package br.com.cts.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -13,6 +14,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -29,8 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -80,6 +80,10 @@ public class FormCliente {
 	private JButton btnNovo;
 	private JButton btnSalvar;
 	private JButton btnExcluir;
+	private JComboBox<String> cbQtdPorPagina;
+	private JTextField txtPagina;
+	private JLabel lblDe;
+	private JTextField txtQtdPaginas;
 
 	/**
 	 * Launch the application.
@@ -122,7 +126,7 @@ public class FormCliente {
 		txtNome.setColumns(10);
 		
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(783, 398, 86, 23);
+		btnSalvar.setBounds(772, 387, 89, 23);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -200,6 +204,10 @@ public class FormCliente {
 		txtDataNascimento.setBounds(490, 96, 165, 20);
 		txtDataNascimento.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtDataNascimento);
+		
+		ImageIcon icon = new ImageIcon("images/estiloicone.png");
+		Image img = icon.getImage();
+		frmClientes.setIconImage(img);
 		
 		JLabel lblSexo = new JLabel("Sexo:");
 		lblSexo.setBounds(389, 82, 37, 14);
@@ -365,7 +373,7 @@ public class FormCliente {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Sexo"
+				"ID", "Nome", "Data de Nascimento"
 			}
 		) {
 			@SuppressWarnings("rawtypes")
@@ -408,34 +416,44 @@ public class FormCliente {
 	        }
 	    });
 		
-		txtPesquisar = new JTextField();
-		txtPesquisar.setBounds(761, 67, 464, 20);
-		txtPesquisar.getDocument().addDocumentListener(new DocumentListener() {
-			public void changedUpdate(DocumentEvent e) {
-				warn();
-			}
-			public void removeUpdate(DocumentEvent e) {
-				warn();
-			}
-			
-			public void insertUpdate(DocumentEvent e) {
-				warn();
-			}
-			
-			public void warn() {
+		cbQtdPorPagina = new JComboBox<String>();
+		cbQtdPorPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				try {
-					popularJTablePorNome(txtPesquisar.getText());
-				} catch (Exception e) {
-					e.printStackTrace();
+					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+					txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 			}
 		});
+		cbQtdPorPagina.setModel(new DefaultComboBoxModel<String>(new String[] {"10", "30", "50"}));
+		cbQtdPorPagina.setBounds(951, 387, 55, 23);
+		frmClientes.getContentPane().add(cbQtdPorPagina);
+		
+		txtPesquisar = new JTextField();
+		txtPesquisar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == 10){
+					try {
+						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+						txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		txtPesquisar.setBounds(686, 67, 363, 20);
 		
 		frmClientes.getContentPane().add(txtPesquisar);
 		txtPesquisar.setColumns(10);
 		
 		JLabel lblPesquisar = new JLabel("Pesquisar");
-		lblPesquisar.setBounds(684, 70, 67, 14);
+		lblPesquisar.setBounds(686, 50, 67, 14);
 		frmClientes.getContentPane().add(lblPesquisar);
 		
 		btnNovo = new JButton("Novo");
@@ -444,7 +462,7 @@ public class FormCliente {
 				novo();
 			}
 		});
-		btnNovo.setBounds(684, 398, 89, 23);
+		btnNovo.setBounds(684, 387, 89, 23);
 		frmClientes.getContentPane().add(btnNovo);
 		
 		btnExcluir = new JButton("Excluir");
@@ -457,11 +475,69 @@ public class FormCliente {
 				}
 			}
 		});
-		btnExcluir.setBounds(879, 398, 89, 23);
+		btnExcluir.setBounds(860, 387, 89, 23);
 		frmClientes.getContentPane().add(btnExcluir);
+		
+		JButton btnFirst = new JButton("|<<");
+		btnFirst.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToFirst();
+			}
+		});
+		btnFirst.setBounds(1007, 387, 55, 23);
+		frmClientes.getContentPane().add(btnFirst);
+		
+		JButton btnPrevious = new JButton("<<");
+		btnPrevious.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToPrevious();
+			}
+		});
+		btnPrevious.setBounds(1061, 387, 55, 23);
+		frmClientes.getContentPane().add(btnPrevious);
+		
+		JButton btnNext = new JButton(">>");
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToNext();
+			}
+		});
+		btnNext.setBounds(1115, 387, 55, 23);
+		frmClientes.getContentPane().add(btnNext);
+		
+		JButton btnLast = new JButton(">>|");
+		btnLast.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				goToLast();
+			}
+		});
+		btnLast.setBounds(1169, 387, 55, 23);
+		frmClientes.getContentPane().add(btnLast);
+		
+		txtPagina = new JTextField();
+		txtPagina.setBounds(1052, 67, 85, 20);
+		frmClientes.getContentPane().add(txtPagina);
+		txtPagina.setColumns(10);
+		
+		JLabel lblPgina = new JLabel("P\u00E1gina");
+		lblPgina.setBounds(1052, 50, 67, 14);
+		frmClientes.getContentPane().add(lblPgina);
+		
+		lblDe = new JLabel("De");
+		lblDe.setBounds(1140, 50, 57, 14);
+		frmClientes.getContentPane().add(lblDe);
+		
+		txtQtdPaginas = new JTextField();
+		txtQtdPaginas.setEditable(false);
+		txtQtdPaginas.setColumns(10);
+		txtQtdPaginas.setBounds(1140, 67, 85, 20);
+		frmClientes.getContentPane().add(txtQtdPaginas);
 		frmClientes.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtNome, cbSexo, txtDataNascimento, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cbUf, txtCep, txtTelefone, txtCelular1, txtCelular2, txtEmail1, txtEmail2, txtPesquisar, jTblClientes, btnNovo, btnSalvar, btnExcluir}));
 
-		popularJTableCompleto();
+		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+		
+		txtPagina.setText("1");
+		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 	}
 	
 	private void novo(){
@@ -498,7 +574,7 @@ public class FormCliente {
 				if (btnSalvar.getText() == "Salvar"){
 					clienteBll.salvar(cliente);
 					JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-					popularJTablePorNome(txtPesquisar.getText());
+					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 					limparCampos();
 				}
 				else{
@@ -506,7 +582,7 @@ public class FormCliente {
 					if(dialogResult == JOptionPane.YES_OPTION){
 						clienteBll.alterar(cliente);
 						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
-						popularJTablePorNome(txtPesquisar.getText());
+						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 						limparCampos();
 					}
 				}
@@ -530,7 +606,7 @@ public class FormCliente {
 				clienteBll.excluir(cliente);
 				JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
 				jTblClientes.clearSelection();
-				popularJTablePorNome(txtPesquisar.getText());
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 			}
 		}
 	}
@@ -647,43 +723,31 @@ public class FormCliente {
 		txtEmail2.setText(cliente.getEmail2Cliente());
 	}
 	
-	private void popularJTableCompleto() throws Exception{
+	private void popularJTableCompleto(int qtdPorPagina, int numeroDaPagina) throws Exception{
 		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
 		ClienteBLL clienteBll = new ClienteBLL();
-		List<Cliente> clientes = clienteBll.procuraCliente();
+		List<Cliente> clientes = clienteBll.procuraCliente(qtdPorPagina, numeroDaPagina);
 		
 		for (Cliente c : clientes) {
-			String strSexo = null;
-			if (c.getSexoCliente() == 1)
-				strSexo = "Masculino";
-			else if (c.getSexoCliente() == 2)
-				strSexo = "Feminino";
-			
-            modeloTable.addRow(new Object[] { c.getIdCliente(),
-                    c.getNomeCliente(), strSexo });
+            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getDataNascimentoCliente() });
         }
+		
+		txtPagina.setText(String.valueOf(numeroDaPagina));
 	}
 	
-	private void popularJTablePorNome(String nome) throws Exception{
+	//Aqui
+	private void popularJTablePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{
 		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
 		ClienteBLL clienteBll = new ClienteBLL();
-		List<Cliente> clientes = clienteBll.procuraClientePorNome(nome);
+		List<Cliente> clientes = clienteBll.procuraClientePorNome(nome, qtdPorPagina, numeroDaPagina);
 		
-		int rowCount = modeloTable.getRowCount();
-		for (int i = 0; i < rowCount; i++) {
-			modeloTable.removeRow(0);
-		}
+		modeloTable.setNumRows(0);
 		
 		for (Cliente c : clientes) {
-			String strSexo = null;
-			if (c.getSexoCliente() == 1)
-				strSexo = "Masculino";
-			else if (c.getSexoCliente() == 2)
-				strSexo = "Feminino";
-			
-            modeloTable.addRow(new Object[] { c.getIdCliente(),
-                    c.getNomeCliente(), strSexo });
+            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getDataNascimentoCliente() });
         }
+		
+		txtPagina.setText(String.valueOf(numeroDaPagina));
 	}
 	
 	private void limparCampos(){
@@ -703,5 +767,61 @@ public class FormCliente {
 		txtEmail1.setText(null);
 		txtEmail2.setText(null);
 		txtNome.requestFocus();
+	}
+	
+	private int qtdPaginasJTable() throws Exception{
+		ClienteBLL clienteBll = new ClienteBLL();
+		int qtdPaginas = clienteBll.recordCount(txtPesquisar.getText()) / Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString());
+		if (clienteBll.recordCount() % Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()) > 0)
+			qtdPaginas++;
+		return qtdPaginas;
+	}
+	
+	private void goToFirst(){
+		try {
+			if (!txtPagina.getText().equals("1")){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void goToPrevious(){
+		try {
+			if (Integer.valueOf(txtPagina.getText()) > 1){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText())-1);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void goToNext(){
+		try {
+			if (Integer.valueOf(txtPagina.getText()) < Integer.valueOf(txtQtdPaginas.getText())){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText())+1);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void goToLast(){
+		try {
+			if (!txtPagina.getText().equals(txtQtdPaginas.getText())){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

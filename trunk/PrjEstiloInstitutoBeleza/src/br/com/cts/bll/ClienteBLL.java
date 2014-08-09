@@ -24,15 +24,23 @@ public class ClienteBLL {
 		clienteDao.Excluir(cliente);
 	}
 	
-	public List<Cliente> procuraCliente() throws Exception{
-		return clienteDao.procuraCliente();
+	public List<Cliente> procuraCliente(int qtdPorPagina, int numeroDaPagina) throws Exception{
+		return clienteDao.procuraCliente(qtdPorPagina, numeroDaPagina);
 	}
 	
 	public Cliente procuraClientePorId(int id) throws Exception{
 		return clienteDao.procuraClientePorId(id);
 	}
 	
-	public List<Cliente> procuraClientePorNome(String nome) throws Exception{
-		return clienteDao.procuraClientePorNome(nome);
+	public List<Cliente> procuraClientePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{
+		return clienteDao.procuraClientePorNome(nome, qtdPorPagina, numeroDaPagina);
+	}
+	
+	public int recordCount() throws Exception{
+		return clienteDao.recordCount();
+	}
+	
+	public int recordCount(String nome) throws Exception{
+		return clienteDao.recordCount(nome);
 	}
 }
