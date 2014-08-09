@@ -24,6 +24,8 @@ public class ClienteDAO {
 			throw new Exception("O valor passado não pode ser nulo!");
 		try{
 			String SQL = "INSERT INTO tbl_cliente values (default,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			if (this.conn.isClosed())
+				open();
 			conn = this.conn;
 			
 			ps = conn.prepareStatement(SQL);
@@ -46,7 +48,8 @@ public class ClienteDAO {
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
 		}finally{
-			conn.close();
+			if (!conn.isClosed())
+				conn.close();
 		}
 	}
 	
@@ -57,6 +60,8 @@ public class ClienteDAO {
 			throw new Exception("O valor passado não pode ser nulo!");
 		try{
 			String SQL = "UPDATE tbl_cliente SET nome = ?, sexo = ?, dataNascimento = ?, logradouro = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, uf = ?, cep = ?, telefone = ?, celular1 = ?, celular2 = ?, email1 = ?, email2 = ?"+" WHERE id = ?";
+			if (this.conn.isClosed())
+				open();
 			conn = this.conn;
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, cliente.getNomeCliente());
@@ -79,7 +84,8 @@ public class ClienteDAO {
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao atualizar dados "+sqle.getMessage());
 		}finally{
-			conn.close();
+			if (!conn.isClosed())
+				conn.close();
 		}
 	}
 	
@@ -89,9 +95,9 @@ public class ClienteDAO {
 		if (cliente == null)
 			throw new Exception("O valor passado não pode ser nulo!");
 		try{
+			String SQL = "DELETE FROM tbl_cliente WHERE id = ?";
 			if (this.conn.isClosed())
 				open();
-			String SQL = "DELETE FROM tbl_cliente WHERE id = ?";
 			conn = this.conn;
 			ps = conn.prepareStatement(SQL);
 			ps.setInt(1, cliente.getIdCliente());
@@ -99,12 +105,15 @@ public class ClienteDAO {
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao excluir dados "+sqle.getMessage());
 		}finally{
-			conn.close();
+			if (!conn.isClosed())
+				conn.close();
 		}
 	}
 	
 	public Cliente procuraClientePorId(int id) throws Exception{
 		PreparedStatement ps = null;
+		if (this.conn.isClosed())
+			open();
 		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
@@ -137,16 +146,19 @@ public class ClienteDAO {
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
 		}finally{
-			conn.close();
+			if (!conn.isClosed())
+				conn.close();
 		}
 	}
 	
-	public List<Cliente> procuraCliente() throws Exception{
+	public List<Cliente> procuraCliente(int qtdPorPagina, int numeroDaPagina) throws Exception{
 		PreparedStatement ps = null;
+		if (this.conn.isClosed())
+			open();
 		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			String SQL = "SELECT * FROM tbl_cliente order by id";
+			String SQL = "SELECT * FROM tbl_cliente order by id limit " + qtdPorPagina + " offset " + (numeroDaPagina-1)*qtdPorPagina;
 			ps = conn.prepareStatement(SQL);
 			rs = ps.executeQuery();
 			
@@ -176,16 +188,19 @@ public class ClienteDAO {
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
 		}finally{
-			conn.close();
+			if (!conn.isClosed())
+				conn.close();
 		}
 	}
 	
-	public List<Cliente> procuraClientePorNome(String nome) throws Exception{
+	public List<Cliente> procuraClientePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{
 		PreparedStatement ps = null;
+		if (this.conn.isClosed())
+			open();
 		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			String SQL = "SELECT * FROM tbl_cliente WHERE lower(nome) LIKE lower(?) order by id";
+			String SQL = "SELECT * FROM tbl_cliente WHERE lower(nome) LIKE lower(?) order by id limit " + qtdPorPagina + " offset " + (numeroDaPagina-1)*qtdPorPagina;
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, "%" + nome + "%");
 			rs = ps.executeQuery();
@@ -216,7 +231,8 @@ public class ClienteDAO {
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
 		}finally{
-			conn.close();
+			if (!conn.isClosed())
+				conn.close();
 		}
 	}
 	
@@ -225,6 +241,55 @@ public class ClienteDAO {
 			this.conn = ConnectionFactory.getConnection();
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+	}
+	
+	public int recordCount() throws Exception{
+		PreparedStatement ps = null;
+		if (this.conn.isClosed())
+			open();
+		Connection conn = this.conn;
+		ResultSet rs = null;
+		try{
+			String SQL = "select count(*) from tbl_cliente";
+			ps = conn.prepareStatement(SQL);
+			rs = ps.executeQuery();
+			
+			int rowCount = 0;
+			if (rs.next())
+				rowCount = rs.getInt(1);
+			
+			return rowCount;
+		}catch(SQLException sqle){
+			throw new Exception("Erro ao efetuar consulta "+sqle.getMessage());
+		}finally{
+			if (!conn.isClosed())
+				conn.close();
+		}
+	}
+	
+	public int recordCount(String nome) throws Exception{
+		PreparedStatement ps = null;
+		if (this.conn.isClosed())
+			open();
+		Connection conn = this.conn;
+		ResultSet rs = null;
+		try{
+			String SQL = "SELECT count(*) FROM tbl_cliente WHERE lower(nome) LIKE lower(?)";
+			ps = conn.prepareStatement(SQL);
+			ps.setString(1, "%" + nome + "%");
+			rs = ps.executeQuery();
+			
+			int rowCount = 0;
+			if (rs.next())
+				rowCount = rs.getInt(1);
+			
+			return rowCount;
+		}catch(SQLException sqle){
+			throw new Exception("Erro ao efetuar consulta "+sqle.getMessage());
+		}finally{
+			if (!conn.isClosed())
+				conn.close();
 		}
 	}
 }
