@@ -84,6 +84,7 @@ public class FormCliente {
 	private JTextField txtPagina;
 	private JLabel lblDe;
 	private JTextField txtQtdPaginas;
+	private ClienteBLL clienteBll;
 
 	/**
 	 * Launch the application.
@@ -120,6 +121,8 @@ public class FormCliente {
 		frmClientes.setBounds(100, 100, 1251, 520);
 		frmClientes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmClientes.setMinimumSize(frmClientes.getSize());
+		
+		clienteBll = new ClienteBLL();
 		
 		txtNome = new JTextField();
 		txtNome.setBounds(22, 96, 355, 20);
@@ -396,7 +399,6 @@ public class FormCliente {
 		
 		jTblClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-	        	ClienteBLL clienteBll = new ClienteBLL();
 				Cliente cliente = new Cliente();
 				try {
 					if (jTblClientes.getSelectedRow() > -1){
@@ -568,8 +570,7 @@ public class FormCliente {
 			cliente.setCelular2Cliente(txtCelular2.getText());
 			cliente.setEmail1Cliente(txtEmail1.getText());
 			cliente.setEmail2Cliente(txtEmail2.getText());
-		
-			ClienteBLL clienteBll = new ClienteBLL();
+
 			if (getQtdCamposIncorretos() < 1){
 				if (btnSalvar.getText() == "Salvar"){
 					clienteBll.salvar(cliente);
@@ -601,7 +602,6 @@ public class FormCliente {
 		if (jTblClientes.getSelectedRow() > -1){
 			int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente excluir?","Excluir!", JOptionPane.YES_NO_OPTION);
 			if(dialogResult == JOptionPane.YES_OPTION){
-				ClienteBLL clienteBll = new ClienteBLL();
 				Cliente cliente = clienteBll.procuraClientePorId(Integer.valueOf(jTblClientes.getValueAt(jTblClientes.getSelectedRow(), 0).toString()));
 				clienteBll.excluir(cliente);
 				JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
@@ -725,7 +725,6 @@ public class FormCliente {
 	
 	private void popularJTableCompleto(int qtdPorPagina, int numeroDaPagina) throws Exception{
 		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
-		ClienteBLL clienteBll = new ClienteBLL();
 		List<Cliente> clientes = clienteBll.procuraCliente(qtdPorPagina, numeroDaPagina);
 		
 		for (Cliente c : clientes) {
@@ -738,7 +737,6 @@ public class FormCliente {
 	//Aqui
 	private void popularJTablePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{
 		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
-		ClienteBLL clienteBll = new ClienteBLL();
 		List<Cliente> clientes = clienteBll.procuraClientePorNome(nome, qtdPorPagina, numeroDaPagina);
 		
 		modeloTable.setNumRows(0);
@@ -769,10 +767,11 @@ public class FormCliente {
 		txtNome.requestFocus();
 	}
 	
+	//Aqui
 	private int qtdPaginasJTable() throws Exception{
-		ClienteBLL clienteBll = new ClienteBLL();
-		int qtdPaginas = clienteBll.recordCount(txtPesquisar.getText()) / Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString());
-		if (clienteBll.recordCount() % Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()) > 0)
+		int qtdRegistros = clienteBll.recordCount(txtPesquisar.getText());
+		int qtdPaginas = qtdRegistros / Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString());
+		if (qtdRegistros % Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()) > 0)
 			qtdPaginas++;
 		return qtdPaginas;
 	}
