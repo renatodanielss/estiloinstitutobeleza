@@ -377,28 +377,29 @@ public class FormCliente {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Telefone", "Email"
+				"ID", "Nome", "Telefone", "Celular", "Email"
 			}
 		) {
 			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
-				Object.class, Object.class, String.class, String.class
+				Object.class, Object.class, String.class, Object.class, String.class
 			};
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
+				false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		jTblClientes.getColumnModel().getColumn(0).setPreferredWidth(76);
+		jTblClientes.getColumnModel().getColumn(0).setPreferredWidth(65);
 		jTblClientes.getColumnModel().getColumn(1).setPreferredWidth(261);
-		jTblClientes.getColumnModel().getColumn(2).setPreferredWidth(103);
-		jTblClientes.getColumnModel().getColumn(3).setPreferredWidth(242);
+		jTblClientes.getColumnModel().getColumn(2).setPreferredWidth(107);
+		jTblClientes.getColumnModel().getColumn(3).setPreferredWidth(106);
+		jTblClientes.getColumnModel().getColumn(4).setPreferredWidth(242);
 		
 		
 		//aqui
@@ -642,7 +643,7 @@ public class FormCliente {
 		this.message = "";
 		if (!estaCampoTextoPreenchido(txtNome, " - Preencha o campo nome!\n"))
 			contador++;
-		if (!estaCampoComboBoxPreenchido(cbSexo, " - Preencha o campo sexo!\n"))
+		/*if (!estaCampoComboBoxPreenchido(cbSexo, " - Preencha o campo sexo!\n"))
 			contador++;
 		
 		if (txtDataNascimento.getText().equals("__/__/____")){
@@ -678,7 +679,7 @@ public class FormCliente {
 			contador++;
 		}
 		else
-			setCorrectTextField(txtTelefone);
+			setCorrectTextField(txtTelefone);*/
 		
 		return contador;
 	}
@@ -706,6 +707,7 @@ public class FormCliente {
 		jTextField.setForeground(Color.BLACK);
 	}
 	
+	@SuppressWarnings("unused")
 	private boolean estaCampoComboBoxPreenchido(@SuppressWarnings("rawtypes") JComboBox jComboBox, String errorMessage){
 		if (jComboBox.getSelectedIndex() < 1){
 			setErrorComboField(jComboBox);
@@ -754,7 +756,7 @@ public class FormCliente {
 		List<Cliente> clientes = clienteBll.procuraCliente(qtdPorPagina, numeroDaPagina);
 		
 		for (Cliente c : clientes) {
-            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getEmail1Cliente() });
+            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getCelular1Cliente(), c.getEmail1Cliente() });
         }
 		
 		txtPagina.setText(String.valueOf(numeroDaPagina));
@@ -768,7 +770,7 @@ public class FormCliente {
 		modeloTable.setNumRows(0);
 		
 		for (Cliente c : clientes) {
-            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getEmail1Cliente() });
+            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getCelular1Cliente(), c.getEmail1Cliente() });
         }
 		
 		txtPagina.setText(String.valueOf(numeroDaPagina));
