@@ -33,6 +33,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -376,27 +377,31 @@ public class FormCliente {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nome", "Data de Nascimento"
+				"ID", "Nome", "Telefone", "Email"
 			}
 		) {
 			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
-				Object.class, String.class, String.class
+				Object.class, Object.class, String.class, String.class
 			};
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				false, false, false
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		jTblClientes.getColumnModel().getColumn(1).setPreferredWidth(255);
-		jTblClientes.getColumnModel().getColumn(2).setPreferredWidth(134);
+		jTblClientes.getColumnModel().getColumn(0).setPreferredWidth(76);
+		jTblClientes.getColumnModel().getColumn(1).setPreferredWidth(261);
+		jTblClientes.getColumnModel().getColumn(2).setPreferredWidth(103);
+		jTblClientes.getColumnModel().getColumn(3).setPreferredWidth(242);
 		
+		
+		//aqui
 		jTblClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 				Cliente cliente = new Cliente();
@@ -417,6 +422,10 @@ public class FormCliente {
 				}
 	        }
 	    });
+		jTblClientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) jTblClientes.getTableHeader().getDefaultRenderer();
+		renderer.setHorizontalAlignment(JLabel.LEFT);
 		
 		cbQtdPorPagina = new JComboBox<String>();
 		cbQtdPorPagina.addActionListener(new ActionListener() {
@@ -520,6 +529,23 @@ public class FormCliente {
 		txtPagina.setBounds(1052, 67, 85, 20);
 		frmClientes.getContentPane().add(txtPagina);
 		txtPagina.setColumns(10);
+		txtPagina.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == 10){
+					try {
+						if (Integer.valueOf(txtPagina.getText()) <= Integer.valueOf(txtQtdPaginas.getText())){
+							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+							txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+						}
+						else
+							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 		
 		JLabel lblPgina = new JLabel("P\u00E1gina");
 		lblPgina.setBounds(1052, 50, 67, 14);
@@ -728,7 +754,7 @@ public class FormCliente {
 		List<Cliente> clientes = clienteBll.procuraCliente(qtdPorPagina, numeroDaPagina);
 		
 		for (Cliente c : clientes) {
-            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getDataNascimentoCliente() });
+            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getEmail1Cliente() });
         }
 		
 		txtPagina.setText(String.valueOf(numeroDaPagina));
@@ -742,7 +768,7 @@ public class FormCliente {
 		modeloTable.setNumRows(0);
 		
 		for (Cliente c : clientes) {
-            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getDataNascimentoCliente() });
+            modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getEmail1Cliente() });
         }
 		
 		txtPagina.setText(String.valueOf(numeroDaPagina));
@@ -767,7 +793,6 @@ public class FormCliente {
 		txtNome.requestFocus();
 	}
 	
-	//Aqui
 	private int qtdPaginasJTable() throws Exception{
 		int qtdRegistros = clienteBll.recordCount(txtPesquisar.getText());
 		int qtdPaginas = qtdRegistros / Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString());
