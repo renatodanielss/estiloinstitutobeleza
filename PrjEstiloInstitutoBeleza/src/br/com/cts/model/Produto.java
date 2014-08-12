@@ -1,94 +1,84 @@
 package br.com.cts.model;
 
 public class Produto {
-	private int id;
-	private String nome;
-	private String codigoBarras;
-	private Double valor;
-	private Double valorPraVenda;
-	private String tipoUnidade;
-	private int qtdEstoque;
+	private int idProduto;
+	private String nomeProduto;
+	private String codigoBarrasProduto;
+	private Double valorProduto;
+	private Double valorPraVendaProduto;
+	private String tipoUnidadeProduto;
+	private int qtdEstoqueProduto;
 
 	public Produto(){
 		
 	}
 	
-	public Produto(int id, String nome, String codigoBarras, Double valor, Double valorPraVenda, String tipoUnidade, int qtdEstoque) {
+	public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, Double valorProduto, Double valorPraVendaProduto, String tipoUnidadeProduto, int qtdEstoqueProduto) {
 		super();
-		this.id = id;
-		this.nome = nome;
-		this.codigoBarras = codigoBarras;
-		this.valor = valor;
-		this.valorPraVenda = valorPraVenda;
-		this.tipoUnidade = tipoUnidade;
-		this.qtdEstoque = qtdEstoque;
+		this.idProduto = idProduto;
+		this.nomeProduto = nomeProduto;
+		this.codigoBarrasProduto = codigoBarrasProduto;
+		this.valorProduto = valorProduto;
+		this.valorPraVendaProduto = valorPraVendaProduto;
+		this.tipoUnidadeProduto = tipoUnidadeProduto;
+		this.qtdEstoqueProduto = qtdEstoqueProduto;
 	}
 
-	public int getId() {
-		return id;
+	public int getIdProduto() {
+		return idProduto;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdProduto(int idProduto) {
+		this.idProduto = idProduto;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeProduto() {
+		return nomeProduto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeProduto(String nomeProduto) {
+		this.nomeProduto = nomeProduto;
 	}
 
-	public String getCodigoBarras() {
-		return codigoBarras;
+	public String getCodigoBarrasProduto() {
+		return codigoBarrasProduto;
 	}
 
-	public void setCodigoBarras(String codigoBarras) {
-		this.codigoBarras = codigoBarras;
+	public void setCodigoBarrasProduto(String codigoBarrasProduto) {
+		this.codigoBarrasProduto = codigoBarrasProduto;
 	}
 
-	public Double getValor() {
-		return valor;
+	public Double getValorProduto() {
+		return valorProduto;
 	}
 
-	public void setValor(Double valor) {
-		this.valor = valor;
+	public void setValorProduto(Double valorProduto) {
+		this.valorProduto = valorProduto;
 	}
 
-	public Double getValorPraVenda() {
-		return valorPraVenda;
+	public Double getValorPraVendaProduto() {
+		return valorPraVendaProduto;
 	}
 
-	public void setValorPraVenda(Double valorPraVenda) {
-		this.valorPraVenda = valorPraVenda;
+	public void setValorPraVendaProduto(Double valorPraVendaProduto) {
+		this.valorPraVendaProduto = valorPraVendaProduto;
 	}
 
-	public String getTipoUnidade() {
-		return tipoUnidade;
+	public String getTipoUnidadeProduto() {
+		return tipoUnidadeProduto;
 	}
 
-	public void setTipoUnidade(String tipoUnidade) {
-		this.tipoUnidade = tipoUnidade;
+	public void setTipoUnidadeProduto(String tipoUnidadeProduto) {
+		this.tipoUnidadeProduto = tipoUnidadeProduto;
 	}
 
-	public int getQtdEstoque() {
-		return qtdEstoque;
+	public int getQtdEstoqueProduto() {
+		return qtdEstoqueProduto;
 	}
 
-	public void setQtdEstoque(int qtdEstoque) {
-		this.qtdEstoque = qtdEstoque;
+	public void setQtdEstoqueProduto(int qtdEstoqueProduto) {
+		this.qtdEstoqueProduto = qtdEstoqueProduto;
 	}
 
-	public void calcQuantEstoque(){
-
-	}
-
-	public void calcQuantVendida(){
-
-	}
-
-	public void calcLucro(){
-
-	}
+	
 }
