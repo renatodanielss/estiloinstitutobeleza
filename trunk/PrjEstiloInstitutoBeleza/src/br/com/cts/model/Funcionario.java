@@ -18,12 +18,13 @@ public class Funcionario {
 	private String email1Funcionario;
 	private String email2Funcionario;
 	private Funcao[] funcao;
+	private Funcionario funcionario;
 	
 	public Funcionario(){
 		
 	}
 	
-	public Funcionario(int idFuncionario, String nomeFuncionario, int sexoFuncionario, String dataNascimentoFuncionario, String logradouroFuncionario, int numeroFuncionario, String complementoFuncionario, String bairroFuncionario, String cidadeFuncionario, int ufFuncionario, String cepFuncionario, String telefoneFuncionario, String celular1Funcionario, String celular2Funcionario, String email1Funcionario, String email2Funcionario, Funcao[] funcao) {
+	public Funcionario(int idFuncionario, String nomeFuncionario, int sexoFuncionario, String dataNascimentoFuncionario, String logradouroFuncionario, int numeroFuncionario, String complementoFuncionario, String bairroFuncionario, String cidadeFuncionario, int ufFuncionario, String cepFuncionario, String telefoneFuncionario, String celular1Funcionario, String celular2Funcionario, String email1Funcionario, String email2Funcionario, Funcao[] funcao, Funcionario funcionario) {
 		super();
 		this.idFuncionario = idFuncionario;
 		this.nomeFuncionario = nomeFuncionario;
@@ -42,6 +43,7 @@ public class Funcionario {
 		this.email1Funcionario = email1Funcionario;
 		this.email2Funcionario = email2Funcionario;
 		this.funcao = funcao;
+		this.funcionario = funcionario;
 	}
 	
 	public int getIdFuncionario() {
@@ -178,5 +180,13 @@ public class Funcionario {
 	
 	public void setFuncao(Funcao[] funcao) {
 		this.funcao = funcao;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 }
