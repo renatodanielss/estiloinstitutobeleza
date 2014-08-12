@@ -1,28 +1,28 @@
 package br.com.cts.model;
 
 public class Cartao {
-	private int id;
+	private int idCartao;
 	private String nomeCartao;
-	private String bandeira;
-	private int pocentagemDesconto;
+	private String bandeiraCartao;
+	private int pocentagemDescontoCartao;
 	
 	public Cartao(){
 		
 	}
 	
-	public Cartao(int id, String nomeCartao, String bandeira, int pocentagemDesconto) {
+	public Cartao(int idCartao, String nomeCartao, String bandeiraCartao, int pocentagemDescontoCartao) {
 		super();
-		this.id = id;
+		this.idCartao = idCartao;
 		this.nomeCartao = nomeCartao;
-		this.bandeira = bandeira;
-		this.pocentagemDesconto = pocentagemDesconto;
+		this.bandeiraCartao = bandeiraCartao;
+		this.pocentagemDescontoCartao = pocentagemDescontoCartao;
 	}
 	
-	public int getId() {
-		return id;
+	public int getIdCartao() {
+		return idCartao;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdCartao(int idCartao) {
+		this.idCartao = idCartao;
 	}
 	public String getNomeCartao() {
 		return nomeCartao;
@@ -30,16 +30,16 @@ public class Cartao {
 	public void setNomeCartao(String nomeCartao) {
 		this.nomeCartao = nomeCartao;
 	}
-	public String getBandeira() {
-		return bandeira;
+	public String getBandeiraCartao() {
+		return bandeiraCartao;
 	}
-	public void setBandeira(String bandeira) {
-		this.bandeira = bandeira;
+	public void setBandeiraCartao(String bandeiraCartao) {
+		this.bandeiraCartao = bandeiraCartao;
 	}
-	public int getPocentagemDesconto() {
-		return pocentagemDesconto;
+	public int getPocentagemDescontoCartao() {
+		return pocentagemDescontoCartao;
 	}
-	public void setPocentagemDesconto(int pocentagemDesconto) {
-		this.pocentagemDesconto = pocentagemDesconto;
+	public void setPocentagemDescontoCartao(int pocentagemDescontoCartao) {
+		this.pocentagemDescontoCartao = pocentagemDescontoCartao;
 	}
 }

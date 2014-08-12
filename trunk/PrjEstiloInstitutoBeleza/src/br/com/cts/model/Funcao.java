@@ -1,25 +1,25 @@
 package br.com.cts.model;
 
 public class Funcao {
-	private int id;
+	private int idFuncao;
 	private String nomeFuncao;
 	
 	public Funcao(){
 		
 	}
 	
-	public Funcao(int id, String nomeFuncao) {
+	public Funcao(int idFuncao, String nomeFuncao) {
 		super();
-		this.id = id;
+		this.idFuncao = idFuncao;
 		this.nomeFuncao = nomeFuncao;
 	}
 
-	public int getId() {
-		return id;
+	public int getIdFuncao() {
+		return idFuncao;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdFuncao(int idFuncao) {
+		this.idFuncao = idFuncao;
 	}
 
 	public String getNomeFuncao() {
