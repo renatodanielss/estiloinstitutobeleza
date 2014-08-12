@@ -14,9 +14,10 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
 
-public class FormFuncionario {
+@SuppressWarnings("serial")
+public class FormFuncionario extends JFrame {
 
-	private JFrame frmFuncionrio;
+	private JFrame frmFuncionario;
 	private JTextField txtNome;
 	private JFormattedTextField txtDataNascimento;
 	private JTextField txtLogradouro;
@@ -36,7 +37,7 @@ public class FormFuncionario {
 			public void run() {
 				try {
 					FormFuncionario window = new FormFuncionario();
-					window.frmFuncionrio.setVisible(true);
+					window.frmFuncionario.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -57,16 +58,17 @@ public class FormFuncionario {
 	 * @throws ParseException 
 	 */
 	private void initialize() throws ParseException {
-		frmFuncionrio = new JFrame();
-		frmFuncionrio.setTitle("Funcion\u00E1rio");
-		frmFuncionrio.setBounds(100, 100, 763, 473);
-		frmFuncionrio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmFuncionrio.getContentPane().setLayout(null);
+		frmFuncionario = new JFrame();
+		frmFuncionario.setTitle("Funcion\u00E1rio");
+		frmFuncionario.setBounds(100, 100, 763, 473);
+		frmFuncionario.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmFuncionario.getContentPane().setLayout(null);
+		frmFuncionario.setMinimumSize(frmFuncionario.getSize());
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Dados Pessoais", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
 		panel.setBounds(10, 43, 660, 106);
-		frmFuncionrio.getContentPane().add(panel);
+		frmFuncionario.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNome = new JLabel("Nome:");
@@ -110,7 +112,7 @@ public class FormFuncionario {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Endere\u00E7o", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
 		panel_1.setBounds(10, 160, 661, 106);
-		frmFuncionrio.getContentPane().add(panel_1);
+		frmFuncionario.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblLogradouro = new JLabel("Logradouro:");
@@ -180,7 +182,7 @@ public class FormFuncionario {
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Contato", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
 		panel_2.setBounds(11, 277, 660, 111);
-		frmFuncionrio.getContentPane().add(panel_2);
+		frmFuncionario.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		JLabel lblTelefone = new JLabel("Telefone:");

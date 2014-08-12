@@ -43,7 +43,8 @@ import br.com.cts.util.Calendario;
 import br.com.cts.util.FocusTraversalOnArray;
 import br.com.cts.util.Relatorio;
 
-public class FormCliente {
+@SuppressWarnings("serial")
+public class FormCliente extends JFrame{
 	private JFrame frmClientes;
 	private JTextField txtNome;
 	private JComboBox<String> cbSexo;
@@ -86,6 +87,7 @@ public class FormCliente {
 	private JLabel lblDe;
 	private JTextField txtQtdPaginas;
 	private ClienteBLL clienteBll;
+	private JMenu mnIr;
 
 	/**
 	 * Launch the application.
@@ -115,7 +117,6 @@ public class FormCliente {
 	 * Initialize the contents of the frame.
 	 * @throws Exception 
 	 */
-	@SuppressWarnings("serial")
 	private void initialize() throws Exception {
 		frmClientes = new JFrame();
 		frmClientes.setTitle("Clientes");
@@ -176,6 +177,17 @@ public class FormCliente {
 			}
 		});
 		mnArquivo.add(mntmGerarRelatorio);
+		
+		mnIr = new JMenu("Ir");
+		menuBar.add(mnIr);
+		
+		JMenuItem mntmFuncionarios = new JMenuItem("Funcion\u00E1rios");
+		mntmFuncionarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFuncionario();
+			}
+		});
+		mnIr.add(mntmFuncionarios);
 		frmClientes.getContentPane().add(txtNome);
 		frmClientes.getContentPane().add(btnSalvar);
 		
@@ -847,6 +859,17 @@ public class FormCliente {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFuncionario(){
+		try{
+			FormFuncionario frmFuncionario = new FormFuncionario();
+			frmFuncionario.setVisible(true);
+			frmClientes.setVisible(false);
+			
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
