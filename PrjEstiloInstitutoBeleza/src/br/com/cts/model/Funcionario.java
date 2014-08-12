@@ -1,175 +1,175 @@
 package br.com.cts.model;
 
 public class Funcionario {
-	private int id;
-	private String nome;
-	private int sexo;
-	private String dataNascimento;
-	private String logradouro;
-	private int numero;
-	private String complemento;
-	private String bairro;
-	private String cidade;
-	private int uf;
-	private String cep;
-	private String telefone;
-	private String celular1;
-	private String celular2;
-	private String email1;
-	private String email2;
+	private int idFuncionario;
+	private String nomeFuncionario;
+	private int sexoFuncionario;
+	private String dataNascimentoFuncionario;
+	private String logradouroFuncionario;
+	private int numeroFuncionario;
+	private String complementoFuncionario;
+	private String bairroFuncionario;
+	private String cidadeFuncionario;
+	private int ufFuncionario;
+	private String cepFuncionario;
+	private String telefoneFuncionario;
+	private String celular1Funcionario;
+	private String celular2Funcionario;
+	private String email1Funcionario;
+	private String email2Funcionario;
 	private Funcao[] funcao;
 	
 	public Funcionario(){
 		
 	}
 	
-	public Funcionario(int id, String nome, int sexo, String dataNascimento, String logradouro, int numero, String complemento, String bairro, String cidade, int uf, String cep, String telefone, String celular1, String celular2, String email1, String email2, Funcao[] funcao) {
+	public Funcionario(int idFuncionario, String nomeFuncionario, int sexoFuncionario, String dataNascimentoFuncionario, String logradouroFuncionario, int numeroFuncionario, String complementoFuncionario, String bairroFuncionario, String cidadeFuncionario, int ufFuncionario, String cepFuncionario, String telefoneFuncionario, String celular1Funcionario, String celular2Funcionario, String email1Funcionario, String email2Funcionario, Funcao[] funcao) {
 		super();
-		this.id = id;
-		this.nome = nome;
-		this.sexo = sexo;
-		this.dataNascimento = dataNascimento;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.bairro = bairro;
-		this.cidade = cidade;
-		this.uf = uf;
-		this.cep = cep;
-		this.telefone = telefone;
-		this.celular1 = celular1;
-		this.celular2 = celular2;
-		this.email1 = email1;
-		this.email2 = email2;
+		this.idFuncionario = idFuncionario;
+		this.nomeFuncionario = nomeFuncionario;
+		this.sexoFuncionario = sexoFuncionario;
+		this.dataNascimentoFuncionario = dataNascimentoFuncionario;
+		this.logradouroFuncionario = logradouroFuncionario;
+		this.numeroFuncionario = numeroFuncionario;
+		this.complementoFuncionario = complementoFuncionario;
+		this.bairroFuncionario = bairroFuncionario;
+		this.cidadeFuncionario = cidadeFuncionario;
+		this.ufFuncionario = ufFuncionario;
+		this.cepFuncionario = cepFuncionario;
+		this.telefoneFuncionario = telefoneFuncionario;
+		this.celular1Funcionario = celular1Funcionario;
+		this.celular2Funcionario = celular2Funcionario;
+		this.email1Funcionario = email1Funcionario;
+		this.email2Funcionario = email2Funcionario;
 		this.funcao = funcao;
 	}
 	
-	public int getId() {
-		return id;
+	public int getIdFuncionario() {
+		return idFuncionario;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	public void setIdFuncionario(int idFuncionario) {
+		this.idFuncionario = idFuncionario;
 	}
 	
-	public String getNome() {
-		return nome;
+	public String getNomeFuncionario() {
+		return nomeFuncionario;
 	}
 	
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeFuncionario(String nomeFuncionario) {
+		this.nomeFuncionario = nomeFuncionario;
 	}
 	
-	public int getSexo() {
-		return sexo;
+	public int getSexoFuncionario() {
+		return sexoFuncionario;
 	}
 	
-	public void setSexo(int sexo) {
-		this.sexo = sexo;
+	public void setSexoFuncionario(int sexoFuncionario) {
+		this.sexoFuncionario = sexoFuncionario;
 	}
 	
-	public String getDataNascimento() {
-		return dataNascimento;
+	public String getDataNascimentoFuncionario() {
+		return dataNascimentoFuncionario;
 	}
 	
-	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
+	public void setDataNascimentoFuncionario(String dataNascimentoFuncionario) {
+		this.dataNascimentoFuncionario = dataNascimentoFuncionario;
 	}
 	
-	public String getLogradouro() {
-		return logradouro;
+	public String getLogradouroFuncionario() {
+		return logradouroFuncionario;
 	}
 	
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
+	public void setLogradouroFuncionario(String logradouroFuncionario) {
+		this.logradouroFuncionario = logradouroFuncionario;
 	}
 	
-	public int getNumero() {
-		return numero;
+	public int getNumeroFuncionario() {
+		return numeroFuncionario;
 	}
 	
-	public void setNumero(int numero) {
-		this.numero = numero;
+	public void setNumeroFuncionario(int numeroFuncionario) {
+		this.numeroFuncionario = numeroFuncionario;
 	}
 	
-	public String getComplemento() {
-		return complemento;
+	public String getComplementoFuncionario() {
+		return complementoFuncionario;
 	}
 	
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
+	public void setComplementoFuncionario(String complementoFuncionario) {
+		this.complementoFuncionario = complementoFuncionario;
 	}
 	
-	public String getBairro() {
-		return bairro;
+	public String getBairroFuncionario() {
+		return bairroFuncionario;
 	}
 	
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
+	public void setBairroFuncionario(String bairroFuncionario) {
+		this.bairroFuncionario = bairroFuncionario;
 	}
 	
-	public String getCidade() {
-		return cidade;
+	public String getCidadeFuncionario() {
+		return cidadeFuncionario;
 	}
 	
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+	public void setCidadeFuncionario(String cidadeFuncionario) {
+		this.cidadeFuncionario = cidadeFuncionario;
 	}
 	
-	public int getUf() {
-		return uf;
+	public int getUfFuncionario() {
+		return ufFuncionario;
 	}
 	
-	public void setUf(int uf) {
-		this.uf = uf;
+	public void setUfFuncionario(int ufFuncionario) {
+		this.ufFuncionario = ufFuncionario;
 	}
 	
-	public String getCep() {
-		return cep;
+	public String getCepFuncionario() {
+		return cepFuncionario;
 	}
 	
-	public void setCep(String cep) {
-		this.cep = cep;
+	public void setCepFuncionario(String cepFuncionario) {
+		this.cepFuncionario = cepFuncionario;
 	}
 	
-	public String getTelefone() {
-		return telefone;
+	public String getTelefoneFuncionario() {
+		return telefoneFuncionario;
 	}
 	
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	public void setTelefoneFuncionario(String telefoneFuncionario) {
+		this.telefoneFuncionario = telefoneFuncionario;
 	}
 	
-	public String getCelular1() {
-		return celular1;
+	public String getCelular1Funcionario() {
+		return celular1Funcionario;
 	}
 	
-	public void setCelular1(String celular1) {
-		this.celular1 = celular1;
+	public void setCelular1Funcionario(String celular1Funcionario) {
+		this.celular1Funcionario = celular1Funcionario;
 	}
 	
-	public String getCelular2() {
-		return celular2;
+	public String getCelular2Funcionario() {
+		return celular2Funcionario;
 	}
 	
-	public void setCelular2(String celular2) {
-		this.celular2 = celular2;
+	public void setCelular2Funcionario(String celular2Funcionario) {
+		this.celular2Funcionario = celular2Funcionario;
 	}
 	
-	public String getEmail1() {
-		return email1;
+	public String getEmail1Funcionario() {
+		return email1Funcionario;
 	}
 	
-	public void setEmail1(String email1) {
-		this.email1 = email1;
+	public void setEmail1Funcionario(String email1Funcionario) {
+		this.email1Funcionario = email1Funcionario;
 	}
 	
 	public String getEmail2() {
-		return email2;
+		return email2Funcionario;
 	}
 	
-	public void setEmail2(String email2) {
-		this.email2 = email2;
+	public void setEmail2Funcionario(String email2Funcionario) {
+		this.email2Funcionario = email2Funcionario;
 	}
 	
 	public Funcao[] getFuncao() {
