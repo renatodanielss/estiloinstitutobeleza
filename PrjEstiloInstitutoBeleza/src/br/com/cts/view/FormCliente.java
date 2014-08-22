@@ -88,6 +88,7 @@ public class FormCliente extends JFrame{
 	private JTextField txtQtdPaginas;
 	private ClienteBLL clienteBll;
 	private JMenu mnIr;
+	private JTextField txtId;
 
 	/**
 	 * Launch the application.
@@ -127,7 +128,7 @@ public class FormCliente extends JFrame{
 		clienteBll = new ClienteBLL();
 		
 		txtNome = new JTextField();
-		txtNome.setBounds(22, 96, 355, 20);
+		txtNome.setBounds(24, 161, 355, 20);
 		txtNome.setColumns(10);
 		
 		btnSalvar = new JButton("Salvar");
@@ -192,11 +193,11 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(btnSalvar);
 		
 		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setBounds(22, 82, 37, 14);
+		lblNome.setBounds(24, 147, 37, 14);
 		frmClientes.getContentPane().add(lblNome);
 		
 		JLabel lblDataDeNascimento = new JLabel("Data de Nascimento:");
-		lblDataDeNascimento.setBounds(490, 82, 120, 14);
+		lblDataDeNascimento.setBounds(492, 147, 120, 14);
 		frmClientes.getContentPane().add(lblDataDeNascimento);
 		
 		MaskFormatter mfDataNascimento = new MaskFormatter("##/##/####");
@@ -217,7 +218,7 @@ public class FormCliente extends JFrame{
 				}
 			}
 		});
-		txtDataNascimento.setBounds(490, 96, 165, 20);
+		txtDataNascimento.setBounds(492, 161, 165, 20);
 		txtDataNascimento.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtDataNascimento);
 		
@@ -226,26 +227,26 @@ public class FormCliente extends JFrame{
 		frmClientes.setIconImage(img);
 		
 		JLabel lblSexo = new JLabel("Sexo:");
-		lblSexo.setBounds(389, 82, 37, 14);
+		lblSexo.setBounds(391, 147, 37, 14);
 		frmClientes.getContentPane().add(lblSexo);
 		
 		cbSexo = new JComboBox<String>();
 		cbSexo.setBackground(Color.WHITE);
 		cbSexo.setModel(new DefaultComboBoxModel<String>(new String[] {"", "Masculino", "Feminino"}));
-		cbSexo.setBounds(387, 96, 94, 20);
+		cbSexo.setBounds(389, 161, 94, 20);
 		frmClientes.getContentPane().add(cbSexo);
 		
 		JLabel lblLogradouro = new JLabel("Logradouro:");
-		lblLogradouro.setBounds(22, 153, 71, 14);
+		lblLogradouro.setBounds(24, 218, 71, 14);
 		frmClientes.getContentPane().add(lblLogradouro);
 		
 		txtLogradouro = new JTextField();
-		txtLogradouro.setBounds(22, 170, 355, 20);
+		txtLogradouro.setBounds(24, 235, 355, 20);
 		frmClientes.getContentPane().add(txtLogradouro);
 		txtLogradouro.setColumns(10);
 		
 		JLabel lblNmero = new JLabel("N\u00FAmero");
-		lblNmero.setBounds(389, 153, 46, 14);
+		lblNmero.setBounds(391, 218, 46, 14);
 		frmClientes.getContentPane().add(lblNmero);
 		
 		txtNumero = new JTextField();
@@ -256,125 +257,125 @@ public class FormCliente extends JFrame{
 					txtNumero.setText(txtNumero.getText().replaceAll("[^0-9]", ""));
 			}
 		});
-		txtNumero.setBounds(389, 170, 86, 20);
+		txtNumero.setBounds(391, 235, 86, 20);
 		frmClientes.getContentPane().add(txtNumero);
 		txtNumero.setColumns(10);
 		
 		JLabel lblComplemento = new JLabel("Complemento:");
-		lblComplemento.setBounds(486, 153, 86, 14);
+		lblComplemento.setBounds(488, 218, 86, 14);
 		frmClientes.getContentPane().add(lblComplemento);
 		
 		txtComplemento = new JTextField();
-		txtComplemento.setBounds(486, 170, 169, 20);
+		txtComplemento.setBounds(488, 235, 169, 20);
 		frmClientes.getContentPane().add(txtComplemento);
 		txtComplemento.setColumns(10);
 		
 		lblBairro = new JLabel("Bairro:");
-		lblBairro.setBounds(22, 193, 46, 14);
+		lblBairro.setBounds(24, 258, 46, 14);
 		frmClientes.getContentPane().add(lblBairro);
 		
 		txtBairro = new JTextField();
-		txtBairro.setBounds(22, 209, 221, 20);
+		txtBairro.setBounds(24, 274, 221, 20);
 		frmClientes.getContentPane().add(txtBairro);
 		txtBairro.setColumns(10);
 		
 		lblCidade = new JLabel("Cidade:");
-		lblCidade.setBounds(253, 193, 46, 14);
+		lblCidade.setBounds(255, 258, 46, 14);
 		frmClientes.getContentPane().add(lblCidade);
 		
 		txtCidade = new JTextField();
-		txtCidade.setBounds(253, 209, 146, 20);
+		txtCidade.setBounds(255, 274, 146, 20);
 		frmClientes.getContentPane().add(txtCidade);
 		txtCidade.setColumns(10);
 		
 		lblUf = new JLabel("UF:");
-		lblUf.setBounds(409, 193, 34, 14);
+		lblUf.setBounds(411, 258, 34, 14);
 		frmClientes.getContentPane().add(lblUf);
 		
 		cbUf = new JComboBox<String>();
 		cbUf.setBackground(Color.WHITE);
 		cbUf.setModel(new DefaultComboBoxModel<String>(new String[] {"", "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"}));
-		cbUf.setBounds(409, 209, 97, 20);
+		cbUf.setBounds(411, 274, 97, 20);
 		frmClientes.getContentPane().add(cbUf);
 		
 		lblCep = new JLabel("CEP:");
-		lblCep.setBounds(516, 193, 46, 14);
+		lblCep.setBounds(518, 258, 46, 14);
 		frmClientes.getContentPane().add(lblCep);
 		
 		MaskFormatter mfCep = new MaskFormatter("#####-###");
 		mfCep.setPlaceholderCharacter('_');
 		txtCep = new JFormattedTextField(mfCep);
-		txtCep.setBounds(516, 209, 139, 20);
+		txtCep.setBounds(518, 274, 139, 20);
 		txtCep.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtCep);
 		
 		lblTelefone = new JLabel("Telefone:");
-		lblTelefone.setBounds(22, 270, 62, 14);
+		lblTelefone.setBounds(24, 335, 62, 14);
 		frmClientes.getContentPane().add(lblTelefone);
 		
 		MaskFormatter mfTelefone = new MaskFormatter("(##) ####-####");
 		mfTelefone.setPlaceholderCharacter('_');
 		txtTelefone = new JFormattedTextField(mfTelefone);
-		txtTelefone.setBounds(22, 285, 223, 20);
+		txtTelefone.setBounds(24, 350, 223, 20);
 		txtTelefone.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtTelefone);
 		
 		pnlDadosPessoais = new JPanel();
 		pnlDadosPessoais.setForeground(Color.WHITE);
 		pnlDadosPessoais.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Dados Pessoais", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		pnlDadosPessoais.setBounds(10, 60, 664, 69);
+		pnlDadosPessoais.setBounds(12, 125, 664, 69);
 		frmClientes.getContentPane().add(pnlDadosPessoais);
 		
 		panel = new JPanel();
 		panel.setForeground(Color.WHITE);
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Endere\u00E7o", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		panel.setBounds(10, 132, 664, 113);
+		panel.setBounds(12, 197, 664, 113);
 		frmClientes.getContentPane().add(panel);
 		
 		lblCelular = new JLabel("Celular 1:");
-		lblCelular.setBounds(257, 270, 62, 14);
+		lblCelular.setBounds(259, 335, 62, 14);
 		frmClientes.getContentPane().add(lblCelular);
 		
 		MaskFormatter mfCelular = new MaskFormatter("(##) 9####-####");
 		mfCelular.setPlaceholderCharacter('_');
 		txtCelular1 = new JFormattedTextField(mfCelular);
-		txtCelular1.setBounds(257, 285, 201, 20);
+		txtCelular1.setBounds(259, 350, 201, 20);
 		txtCelular1.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtCelular1);
 		
 		lblCelular_1 = new JLabel("Celular 2:");
-		lblCelular_1.setBounds(468, 270, 62, 14);
+		lblCelular_1.setBounds(470, 335, 62, 14);
 		frmClientes.getContentPane().add(lblCelular_1);
 		
 		MaskFormatter mfCelular2 = new MaskFormatter("(##) 9####-####");
 		mfCelular2.setPlaceholderCharacter('_');
 		txtCelular2 = new JFormattedTextField(mfCelular2);
-		txtCelular2.setBounds(468, 285, 187, 20);
+		txtCelular2.setBounds(470, 350, 187, 20);
 		txtCelular2.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtCelular2);
 		
 		lblEmail = new JLabel("E-mail 1:");
-		lblEmail.setBounds(22, 310, 55, 14);
+		lblEmail.setBounds(24, 375, 55, 14);
 		frmClientes.getContentPane().add(lblEmail);
 		
 		txtEmail1 = new JTextField();
-		txtEmail1.setBounds(22, 326, 312, 20);
+		txtEmail1.setBounds(24, 391, 312, 20);
 		frmClientes.getContentPane().add(txtEmail1);
 		txtEmail1.setColumns(10);
 		
 		lblEmail_1 = new JLabel("E-mail 2:");
-		lblEmail_1.setBounds(343, 310, 56, 14);
+		lblEmail_1.setBounds(345, 375, 56, 14);
 		frmClientes.getContentPane().add(lblEmail_1);
 		
 		txtEmail2 = new JTextField();
 		txtEmail2.setColumns(10);
-		txtEmail2.setBounds(343, 326, 312, 20);
+		txtEmail2.setBounds(345, 391, 312, 20);
 		frmClientes.getContentPane().add(txtEmail2);
 		
 		panel_1 = new JPanel();
 		panel_1.setForeground(Color.WHITE);
 		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contato", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		panel_1.setBounds(10, 249, 664, 108);
+		panel_1.setBounds(12, 314, 664, 108);
 		frmClientes.getContentPane().add(panel_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -422,12 +423,12 @@ public class FormCliente extends JFrame{
 					if (jTblClientes.getSelectedRow() > -1){
 						cliente = clienteBll.procuraClientePorId(Integer.valueOf(jTblClientes.getValueAt(jTblClientes.getSelectedRow(), 0).toString()));
 						btnSalvar.setText("Alterar");
+						preencherCampos(cliente);
 					}
 					else{
 						btnSalvar.setText("Salvar");
+						limparCampos();
 					}
-					
-					preencherCampos(cliente);
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
 				} catch (Exception e1) {
@@ -444,8 +445,14 @@ public class FormCliente extends JFrame{
 		cbQtdPorPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
-					txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+					if (isInteger(txtPesquisar.getText())){
+						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+						txtQtdPaginas.setText("1");
+					}
+					else{
+						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+						txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+					}
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
 				} catch (Exception e1) {
@@ -463,8 +470,14 @@ public class FormCliente extends JFrame{
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == 10){
 					try {
-						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
-						txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+						if (isInteger(txtPesquisar.getText())){
+							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+							txtQtdPaginas.setText("1");
+						}
+						else{
+							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+							txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -579,6 +592,23 @@ public class FormCliente extends JFrame{
 		
 		txtPagina.setText("1");
 		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setForeground(Color.WHITE);
+		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "ID", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
+		panel_2.setBounds(12, 50, 664, 69);
+		frmClientes.getContentPane().add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblId = new JLabel("ID:");
+		lblId.setBounds(12, 22, 37, 14);
+		panel_2.add(lblId);
+		
+		txtId = new JTextField();
+		txtId.setEditable(false);
+		txtId.setColumns(10);
+		txtId.setBounds(12, 36, 355, 20);
+		panel_2.add(txtId);
 	}
 	
 	private void novo(){
@@ -744,6 +774,7 @@ public class FormCliente extends JFrame{
 	}
 	
 	private void preencherCampos(Cliente cliente){
+		txtId.setText(String.valueOf(cliente.getIdCliente()));
 		txtNome.setText(cliente.getNomeCliente());
 		cbSexo.setSelectedIndex(cliente.getSexoCliente());
 		txtDataNascimento.setText(cliente.getDataNascimentoCliente());
@@ -788,7 +819,19 @@ public class FormCliente extends JFrame{
 		txtPagina.setText(String.valueOf(numeroDaPagina));
 	}
 	
+	private void popularJTablePorId(int id, int qtdPorPagina, int numeroDaPagina) throws Exception{
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
+		Cliente c = clienteBll.procuraClientePorId(id);
+		
+		modeloTable.setNumRows(0);
+		
+		modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getCelular1Cliente(), c.getEmail1Cliente() });
+		
+		txtPagina.setText(String.valueOf(numeroDaPagina));
+	}
+	
 	private void limparCampos(){
+		txtId.setText(null);
 		txtNome.setText(null);
 		cbSexo.setSelectedIndex(0);
 		txtDataNascimento.setText(null);
@@ -872,5 +915,15 @@ public class FormCliente extends JFrame{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	private boolean isInteger(String number){
+		try  {
+			@SuppressWarnings("unused")
+			int numberInt = Integer.parseInt(number);
+		}catch(NumberFormatException nfe){
+			return false;  
+		}  
+		return true; 
 	}
 }
