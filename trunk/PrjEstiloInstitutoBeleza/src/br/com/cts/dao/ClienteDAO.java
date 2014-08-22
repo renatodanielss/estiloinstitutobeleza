@@ -27,7 +27,7 @@ public class ClienteDAO {
 			if (this.conn.isClosed())
 				open();
 			conn = this.conn;
-			
+			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, cliente.getNomeCliente());
 			ps.setInt(2, cliente.getSexoCliente());
@@ -45,7 +45,9 @@ public class ClienteDAO {
 			ps.setString(14, cliente.getEmail1Cliente());
 			ps.setString(15, cliente.getEmail2Cliente());
 			ps.executeUpdate();
+			conn.commit();
 		}catch(SQLException sqle){
+			conn.rollback();
 			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
 		}finally{
 			if (!conn.isClosed())
@@ -63,6 +65,7 @@ public class ClienteDAO {
 			if (this.conn.isClosed())
 				open();
 			conn = this.conn;
+			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, cliente.getNomeCliente());
 			ps.setInt(2, cliente.getSexoCliente());
@@ -81,7 +84,9 @@ public class ClienteDAO {
 			ps.setString(15, cliente.getEmail2Cliente());
 			ps.setInt(16, cliente.getIdCliente());
 			ps.executeUpdate();
+			conn.commit();
 		}catch(SQLException sqle){
+			conn.rollback();
 			throw new Exception("Erro ao atualizar dados "+sqle.getMessage());
 		}finally{
 			if (!conn.isClosed())
@@ -95,6 +100,7 @@ public class ClienteDAO {
 		if (cliente == null)
 			throw new Exception("O valor passado não pode ser nulo!");
 		try{
+			conn.setAutoCommit(false);
 			String SQL = "DELETE FROM tbl_cliente WHERE id = ?";
 			if (this.conn.isClosed())
 				open();
@@ -102,7 +108,9 @@ public class ClienteDAO {
 			ps = conn.prepareStatement(SQL);
 			ps.setInt(1, cliente.getIdCliente());
 			ps.executeUpdate();
+			conn.commit();
 		}catch(SQLException sqle){
+			conn.rollback();
 			throw new Exception("Erro ao excluir dados "+sqle.getMessage());
 		}finally{
 			if (!conn.isClosed())
@@ -142,6 +150,7 @@ public class ClienteDAO {
 				cliente.setEmail1Cliente(rs.getString(15));
 				cliente.setEmail2Cliente(rs.getString(16));
 			}
+			
 			return cliente;
 		}catch(SQLException sqle){
 			throw new Exception("Erro ao inserir dados "+sqle.getMessage());
@@ -200,9 +209,11 @@ public class ClienteDAO {
 		Connection conn = this.conn;
 		ResultSet rs = null;
 		try{
-			String SQL = "SELECT * FROM tbl_cliente WHERE lower(nome) LIKE lower(?) order by id limit " + qtdPorPagina + " offset " + (numeroDaPagina-1)*qtdPorPagina;
+			String SQL = "SELECT * FROM tbl_cliente WHERE lower(nome) LIKE lower(?) order by id limit ? offset ?";
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, "%" + nome + "%");
+			ps.setInt(2, qtdPorPagina);
+			ps.setInt(3, (numeroDaPagina-1)*qtdPorPagina);
 			rs = ps.executeQuery();
 			
 			List<Cliente> clientes = new ArrayList<Cliente>();
