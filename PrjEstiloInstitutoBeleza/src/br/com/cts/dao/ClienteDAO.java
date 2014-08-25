@@ -96,15 +96,14 @@ public class ClienteDAO {
 	
 	public void Excluir(Cliente cliente) throws Exception{
 		PreparedStatement ps = null;
+		if (this.conn.isClosed())
+			open();
 		Connection conn = this.conn;
 		if (cliente == null)
 			throw new Exception("O valor passado não pode ser nulo!");
 		try{
-			conn.setAutoCommit(false);
 			String SQL = "DELETE FROM tbl_cliente WHERE id = ?";
-			if (this.conn.isClosed())
-				open();
-			conn = this.conn;
+			conn.setAutoCommit(false);
 			ps = conn.prepareStatement(SQL);
 			ps.setInt(1, cliente.getIdCliente());
 			ps.executeUpdate();

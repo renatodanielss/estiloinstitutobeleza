@@ -171,7 +171,10 @@ public class FormCliente extends JFrame{
 		mntmGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-					Relatorio.chamarRelatorio(txtPesquisar.getText());
+					if (isInteger(txtPesquisar.getText()))
+						Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()));
+					else
+						Relatorio.chamarRelatorio(txtPesquisar.getText());
 				}catch(Exception e1){
 					e1.printStackTrace();
 				}
@@ -253,8 +256,7 @@ public class FormCliente extends JFrame{
 		txtNumero.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if ((e.getKeyChar() < '0' || e.getKeyChar() > '9') && e.getKeyChar() != 8)
-					txtNumero.setText(txtNumero.getText().replaceAll("[^0-9]", ""));
+				txtNumero.setText(txtNumero.getText().replaceAll("[^0-9]", ""));
 			}
 		});
 		txtNumero.setBounds(391, 235, 86, 20);
@@ -452,6 +454,8 @@ public class FormCliente extends JFrame{
 					else{
 						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 						txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+						if (txtQtdPaginas.getText().equals("0"))
+							txtPagina.setText("0");
 					}
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
@@ -477,8 +481,12 @@ public class FormCliente extends JFrame{
 						else{
 							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 							txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+							if (txtQtdPaginas.getText().equals("0"))
+								txtPagina.setText("0");
 						}
 					} catch (Exception e1) {
+						txtPagina.setText("0");
+						txtQtdPaginas.setText("0");
 						e1.printStackTrace();
 					}
 				}
@@ -561,15 +569,32 @@ public class FormCliente extends JFrame{
 				if (e.getKeyCode() == 10){
 					try {
 						if (Integer.valueOf(txtPagina.getText()) <= Integer.valueOf(txtQtdPaginas.getText())){
-							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
-							txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+							if (Integer.valueOf(txtPagina.getText()) > 0){
+								if (isInteger(txtPesquisar.getText()))
+									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+								else
+									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+								txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+							}
+							else{
+								if (isInteger(txtPesquisar.getText()))
+									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+								else
+									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+							}
 						}
-						else
-							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+						else{
+							if (isInteger(txtPesquisar.getText()))
+								popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+							else
+								popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 				}
+				else
+					txtPagina.setText(txtPagina.getText().replaceAll("[^0-9]", ""));
 			}
 		});
 		
@@ -644,7 +669,10 @@ public class FormCliente extends JFrame{
 				if (btnSalvar.getText() == "Salvar"){
 					clienteBll.salvar(cliente);
 					JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+					if (isInteger(txtPesquisar.getText()))
+						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+					else
+						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 					limparCampos();
 				}
 				else{
@@ -652,7 +680,10 @@ public class FormCliente extends JFrame{
 					if(dialogResult == JOptionPane.YES_OPTION){
 						clienteBll.alterar(cliente);
 						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
-						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+						if (isInteger(txtPesquisar.getText()))
+							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+						else
+							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 						limparCampos();
 					}
 				}
@@ -675,7 +706,10 @@ public class FormCliente extends JFrame{
 				clienteBll.excluir(cliente);
 				JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
 				jTblClientes.clearSelection();
-				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+				if (isInteger(txtPesquisar.getText()))
+					popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+				else
+					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 			}
 		}
 	}
@@ -860,7 +894,7 @@ public class FormCliente extends JFrame{
 	
 	private void goToFirst(){
 		try {
-			if (!txtPagina.getText().equals("1")){
+			if (Integer.valueOf(txtPagina.getText()) > 1){
 				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 			}
 		} catch (NumberFormatException e) {
@@ -911,7 +945,6 @@ public class FormCliente extends JFrame{
 			FormFuncionario frmFuncionario = new FormFuncionario();
 			frmFuncionario.setVisible(true);
 			frmClientes.setVisible(false);
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
