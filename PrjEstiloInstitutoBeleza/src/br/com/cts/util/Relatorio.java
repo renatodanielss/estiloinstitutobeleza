@@ -24,7 +24,7 @@ public class Relatorio {
 		JasperDesign desenho;  
 		  
 		try {  
-		    desenho = JRXmlLoader.load("reports/clientereport.jrxml");  
+		    desenho = JRXmlLoader.load("reports/clientereport2.jrxml");  
 		    relatorio = JasperCompileManager.compileReport( desenho );  
 		  
 		} catch (JRException e2) {  
@@ -63,7 +63,7 @@ public class Relatorio {
 		JasperDesign desenho;  
 		  
 		try {  
-		    desenho = JRXmlLoader.load("reports/clientereport.jrxml");  
+		    desenho = JRXmlLoader.load("reports/clientereport2.jrxml");  
 		    relatorio = JasperCompileManager.compileReport( desenho );  
 		  
 		} catch (JRException e2) {  
