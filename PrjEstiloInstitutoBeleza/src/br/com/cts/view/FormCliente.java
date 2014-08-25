@@ -3,7 +3,7 @@ package br.com.cts.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Image;
+//import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -12,9 +12,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.List;
-
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
+//import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -225,9 +224,10 @@ public class FormCliente extends JFrame{
 		txtDataNascimento.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtDataNascimento);
 		
+		/*
 		ImageIcon icon = new ImageIcon("images/estiloicone.png");
 		Image img = icon.getImage();
-		frmClientes.setIconImage(img);
+		frmClientes.setIconImage(img);*/
 		
 		JLabel lblSexo = new JLabel("Sexo:");
 		lblSexo.setBounds(391, 147, 37, 14);
