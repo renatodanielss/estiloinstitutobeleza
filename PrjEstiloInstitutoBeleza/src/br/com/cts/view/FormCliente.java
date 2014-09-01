@@ -87,6 +87,7 @@ public class FormCliente extends JFrame{
 	private JTextField txtQtdPaginas;
 	private ClienteBLL clienteBll;
 	private JMenu mnIr;
+	private JMenuItem mntmSalvar;
 	private JTextField txtId;
 
 	/**
@@ -144,7 +145,7 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().setLayout(null);
 		
 		menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 1235, 21);
+		menuBar.setBounds(0, 0, 2000, 21);
 		frmClientes.getContentPane().add(menuBar);
 		
 		mnArquivo = new JMenu("Arquivo");
@@ -158,7 +159,7 @@ public class FormCliente extends JFrame{
 		});
 		mnArquivo.add(mntmNovo);
 		
-		JMenuItem mntmSalvar = new JMenuItem("Salvar");
+		mntmSalvar = new JMenuItem("Salvar");
 		mntmSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salvarAlterar();
@@ -169,14 +170,7 @@ public class FormCliente extends JFrame{
 		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
 		mntmGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{
-					if (isInteger(txtPesquisar.getText()))
-						Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()));
-					else
-						Relatorio.chamarRelatorio(txtPesquisar.getText());
-				}catch(Exception e1){
-					e1.printStackTrace();
-				}
+				chamarRelatorio();
 			}
 		});
 		mnArquivo.add(mntmGerarRelatorio);
@@ -184,13 +178,37 @@ public class FormCliente extends JFrame{
 		mnIr = new JMenu("Ir");
 		menuBar.add(mnIr);
 		
-		JMenuItem mntmFuncionarios = new JMenuItem("Funcion\u00E1rios");
-		mntmFuncionarios.addActionListener(new ActionListener() {
+		JMenuItem mntmPrestadoresDeServicos = new JMenuItem("Prestadores de Servi\u00E7os");
+		mntmPrestadoresDeServicos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				chamarFuncionario();
+				chamarFormPrestadorDeServico();
 			}
 		});
-		mnIr.add(mntmFuncionarios);
+		
+		JMenuItem mntmCartoes = new JMenuItem("Cart\u00F5es");
+		mntmCartoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormCartao();
+			}
+		});
+		mnIr.add(mntmCartoes);
+		
+		JMenuItem mntmFuncoes = new JMenuItem("Fun\u00E7\u00F5es");
+		mntmFuncoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormFuncao();
+			}
+		});
+		mnIr.add(mntmFuncoes);
+		mnIr.add(mntmPrestadoresDeServicos);
+		
+		JMenuItem mntmProdutos = new JMenuItem("Produtos");
+		mntmProdutos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormProduto();
+			}
+		});
+		mnIr.add(mntmProdutos);
 		frmClientes.getContentPane().add(txtNome);
 		frmClientes.getContentPane().add(btnSalvar);
 		
@@ -425,10 +443,12 @@ public class FormCliente extends JFrame{
 					if (jTblClientes.getSelectedRow() > -1){
 						cliente = clienteBll.procuraClientePorId(Integer.valueOf(jTblClientes.getValueAt(jTblClientes.getSelectedRow(), 0).toString()));
 						btnSalvar.setText("Alterar");
+						mntmSalvar.setText("Alterar");
 						preencherCampos(cliente);
 					}
 					else{
 						btnSalvar.setText("Salvar");
+						mntmSalvar.setText("Salvar");
 						limparCampos();
 					}
 				} catch (NumberFormatException e1) {
@@ -615,9 +635,6 @@ public class FormCliente extends JFrame{
 
 		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 		
-		txtPagina.setText("1");
-		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
-		
 		JPanel panel_2 = new JPanel();
 		panel_2.setForeground(Color.WHITE);
 		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "ID", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
@@ -640,6 +657,7 @@ public class FormCliente extends JFrame{
 		limparCampos();
 		jTblClientes.clearSelection();
 		btnSalvar.setText("Salvar");
+		mntmSalvar.setText("Salvar");
 	}
 	
 	private void salvarAlterar(){
@@ -835,8 +853,6 @@ public class FormCliente extends JFrame{
 		for (Cliente c : clientes) {
             modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getCelular1Cliente(), c.getEmail1Cliente() });
         }
-		
-		txtPagina.setText(String.valueOf(numeroDaPagina));
 	}
 	
 	//Aqui
@@ -940,10 +956,40 @@ public class FormCliente extends JFrame{
 		}
 	}
 	
-	private void chamarFuncionario(){
+	private void chamarFormCartao(){
 		try{
-			FormFuncionario frmFuncionario = new FormFuncionario();
-			frmFuncionario.setVisible(true);
+			FormCartao window = new FormCartao();
+			window.getFrmCartoes().setVisible(true);
+			frmClientes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormFuncao(){
+		try{
+			FormFuncao window = new FormFuncao();
+			window.getFrmFuncao().setVisible(true);
+			frmClientes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormPrestadorDeServico(){
+		try{
+			FormPrestadorDeServico window = new FormPrestadorDeServico();
+			window.getFrmPrestadorDeServico().setVisible(true);
+			frmClientes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormProduto(){
+		try{
+			FormProduto window = new FormProduto();
+			window.getFrmProdutos().setVisible(true);
 			frmClientes.setVisible(false);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -958,5 +1004,20 @@ public class FormCliente extends JFrame{
 			return false;  
 		}  
 		return true; 
+	}
+
+	public JFrame getFrmClientes() {
+		return frmClientes;
+	}
+	
+	private void chamarRelatorio(){
+		try{
+			if (isInteger(txtPesquisar.getText()))
+				Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()), "id", "tbl_cliente", "reports/clientereport2.jrxml");
+			else
+				Relatorio.chamarRelatorio(txtPesquisar.getText(), "nome", "tbl_cliente", "reports/clientereport2.jrxml");
+		}catch(Exception e1){
+			e1.printStackTrace();
+		}
 	}
 }

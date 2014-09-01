@@ -2,6 +2,8 @@ package br.com.cts.view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 import javax.swing.DefaultComboBoxModel;
@@ -9,15 +11,19 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
+import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
-public class FormFuncionario extends JFrame {
+public class FormPrestadorDeServico extends JFrame {
 
-	private JFrame frmFuncionario;
+	private JFrame frmPrestadorDeServico;
 	private JTextField txtNome;
 	private JFormattedTextField txtDataNascimento;
 	private JTextField txtLogradouro;
@@ -28,6 +34,12 @@ public class FormFuncionario extends JFrame {
 	private JFormattedTextField txtCep;
 	private JTextField txtEmail1;
 	private JTextField txtEmail2;
+	private JMenuBar menuBar;
+	private JMenu mnArquivo;
+	private JMenuItem mntmNovo;
+	private JMenuItem mntmSalvar;
+	private JMenu mnIr;
+	private JTextField txtId;
 
 	/**
 	 * Launch the application.
@@ -36,8 +48,8 @@ public class FormFuncionario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FormFuncionario window = new FormFuncionario();
-					window.frmFuncionario.setVisible(true);
+					FormPrestadorDeServico window = new FormPrestadorDeServico();
+					window.frmPrestadorDeServico.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,7 +61,7 @@ public class FormFuncionario extends JFrame {
 	 * Create the application.
 	 * @throws ParseException 
 	 */
-	public FormFuncionario() throws ParseException {
+	public FormPrestadorDeServico() throws ParseException {
 		initialize();
 	}
 
@@ -58,30 +70,91 @@ public class FormFuncionario extends JFrame {
 	 * @throws ParseException 
 	 */
 	private void initialize() throws ParseException {
-		frmFuncionario = new JFrame();
-		frmFuncionario.setTitle("Funcion\u00E1rio");
-		frmFuncionario.setBounds(100, 100, 763, 473);
-		frmFuncionario.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmFuncionario.getContentPane().setLayout(null);
-		frmFuncionario.setMinimumSize(frmFuncionario.getSize());
+		frmPrestadorDeServico = new JFrame();
+		frmPrestadorDeServico.setTitle("Prestadores de Servi\u00E7os");
+		frmPrestadorDeServico.setBounds(100, 100, 763, 542);
+		frmPrestadorDeServico.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPrestadorDeServico.getContentPane().setLayout(null);
+		frmPrestadorDeServico.setMinimumSize(frmPrestadorDeServico.getSize());
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Dados Pessoais", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		panel.setBounds(10, 43, 660, 106);
-		frmFuncionario.getContentPane().add(panel);
+		panel.setBounds(12, 120, 660, 106);
+		frmPrestadorDeServico.getContentPane().add(panel);
 		panel.setLayout(null);
 		
+		menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 2000, 21);
+		frmPrestadorDeServico.getContentPane().add(menuBar);
+		
+		mnArquivo = new JMenu("Arquivo");
+		menuBar.add(mnArquivo);
+		
+		mntmNovo = new JMenuItem("Novo");
+		mntmNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				novo();
+			}
+		});
+		mnArquivo.add(mntmNovo);
+		
+		mntmSalvar = new JMenuItem("Salvar");
+		mntmSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				salvarAlterar();
+			}
+		});
+		mnArquivo.add(mntmSalvar);
+		
+		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
+		mnArquivo.add(mntmGerarRelatorio);
+		
+		mnIr = new JMenu("Ir");
+		menuBar.add(mnIr);
+		
+		JMenuItem mntmCartoes = new JMenuItem("Cart\u00F5es");
+		mntmCartoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormCartao();
+			}
+		});
+		mnIr.add(mntmCartoes);
+		
+		JMenuItem mntmClientes = new JMenuItem("Clientes");
+		mntmClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormCliente();
+			}
+		});
+		mnIr.add(mntmClientes);
+		
+		JMenuItem mntmProdutos = new JMenuItem("Produtos");
+		mntmProdutos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormProduto();
+			}
+		});
+		
+		JMenuItem mntmFuncoes = new JMenuItem("Fun\u00E7\u00F5es");
+		mntmFuncoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormFuncao();
+			}
+		});
+		mnIr.add(mntmFuncoes);
+		mnIr.add(mntmProdutos);
+		
 		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setBounds(16, 22, 46, 14);
+		lblNome.setBounds(15, 22, 46, 14);
 		panel.add(lblNome);
 		
 		txtNome = new JTextField();
-		txtNome.setBounds(14, 36, 625, 20);
+		txtNome.setBounds(15, 36, 625, 20);
 		panel.add(txtNome);
 		txtNome.setColumns(10);
 		
 		JLabel lblSexo = new JLabel("Sexo:");
-		lblSexo.setBounds(16, 59, 46, 14);
+		lblSexo.setBounds(15, 59, 46, 14);
 		panel.add(lblSexo);
 		
 		JLabel lblDataDeNascimento = new JLabel("Data de Nascimento:");
@@ -90,7 +163,7 @@ public class FormFuncionario extends JFrame {
 		
 		JComboBox<String> cbFuncao = new JComboBox<String>();
 		cbFuncao.setBackground(Color.WHITE);
-		cbFuncao.setBounds(332, 74, 307, 20);
+		cbFuncao.setBounds(332, 73, 307, 20);
 		panel.add(cbFuncao);
 		
 		JLabel lblFuncao = new JLabel("Fun\u00E7\u00E3o:");
@@ -100,7 +173,7 @@ public class FormFuncionario extends JFrame {
 		MaskFormatter mfDataNascimento = new MaskFormatter("##/##/####");
 		mfDataNascimento.setPlaceholderCharacter('_');
 		txtDataNascimento = new JFormattedTextField(mfDataNascimento);
-		txtDataNascimento.setBounds(154, 74, 168, 20);
+		txtDataNascimento.setBounds(154, 73, 168, 20);
 		panel.add(txtDataNascimento);
 		
 		JComboBox<String> cbSexo = new JComboBox<String>();
@@ -111,8 +184,8 @@ public class FormFuncionario extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Endere\u00E7o", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		panel_1.setBounds(10, 160, 661, 106);
-		frmFuncionario.getContentPane().add(panel_1);
+		panel_1.setBounds(12, 229, 661, 106);
+		frmPrestadorDeServico.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblLogradouro = new JLabel("Logradouro:");
@@ -166,7 +239,7 @@ public class FormFuncionario extends JFrame {
 		panel_1.add(cbUf);
 		
 		JLabel lblUf = new JLabel("UF:");
-		lblUf.setBounds(374, 58, 46, 14);
+		lblUf.setBounds(374, 57, 46, 14);
 		panel_1.add(lblUf);
 		
 		MaskFormatter mfCep = new MaskFormatter("#####-###");
@@ -181,8 +254,8 @@ public class FormFuncionario extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Contato", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		panel_2.setBounds(11, 277, 660, 111);
-		frmFuncionario.getContentPane().add(panel_2);
+		panel_2.setBounds(12, 338, 660, 111);
+		frmPrestadorDeServico.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		JLabel lblTelefone = new JLabel("Telefone:");
@@ -192,7 +265,7 @@ public class FormFuncionario extends JFrame {
 		MaskFormatter mfTelefone = new MaskFormatter("(##) ####-####");
 		mfTelefone.setPlaceholderCharacter('_');
 		JFormattedTextField txtTelefone = new JFormattedTextField(mfTelefone);
-		txtTelefone.setBounds(16, 34, 209, 20);
+		txtTelefone.setBounds(15, 34, 209, 20);
 		panel_2.add(txtTelefone);
 		
 		MaskFormatter mfCelular1 = new MaskFormatter("(##) 9####-####");
@@ -216,7 +289,7 @@ public class FormFuncionario extends JFrame {
 		panel_2.add(lblCelular2);
 		
 		JLabel lblEmail1 = new JLabel("E-mail 1:");
-		lblEmail1.setBounds(16, 58, 63, 14);
+		lblEmail1.setBounds(15, 58, 63, 14);
 		panel_2.add(lblEmail1);
 		
 		txtEmail1 = new JTextField();
@@ -232,5 +305,74 @@ public class FormFuncionario extends JFrame {
 		JLabel lblEmail2 = new JLabel("E-mail 2:");
 		lblEmail2.setBounds(326, 58, 64, 14);
 		panel_2.add(lblEmail2);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setForeground(Color.WHITE);
+		panel_3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "ID", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
+		panel_3.setBounds(12, 50, 664, 69);
+		frmPrestadorDeServico.getContentPane().add(panel_3);
+		
+		JLabel label = new JLabel("ID:");
+		label.setBounds(15, 22, 37, 14);
+		panel_3.add(label);
+		
+		txtId = new JTextField();
+		txtId.setEditable(false);
+		txtId.setColumns(10);
+		txtId.setBounds(15, 36, 355, 20);
+		panel_3.add(txtId);
+	}
+
+	public JFrame getFrmPrestadorDeServico() {
+		return frmPrestadorDeServico;
+	}
+
+	private void novo(){
+		
+	}
+	
+	private void salvarAlterar(){
+		
+	}
+	
+	private void chamarFormCartao(){
+		try{
+			FormCartao window = new FormCartao();
+			window.getFrmCartoes().setVisible(true);
+			frmPrestadorDeServico.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormCliente(){
+		try{
+			FormCliente window = new FormCliente();
+			window.getFrmClientes().setVisible(true);
+			frmPrestadorDeServico.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormFuncao(){
+		try{
+			FormFuncao window = new FormFuncao();
+			window.getFrmFuncao().setVisible(true);
+			frmPrestadorDeServico.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormProduto(){
+		try{
+			FormProduto window = new FormProduto();
+			window.getFrmProdutos().setVisible(true);
+			frmPrestadorDeServico.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }

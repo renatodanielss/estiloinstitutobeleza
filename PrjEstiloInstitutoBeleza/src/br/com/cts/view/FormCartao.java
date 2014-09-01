@@ -3,18 +3,32 @@ package br.com.cts.view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class FormCartao {
+@SuppressWarnings("serial")
+public class FormCartao extends JFrame{
 
-	private JFrame frmCartes;
+	private JFrame frmCartoes;
 	private JTextField txtNomeCartao;
 	private JTextField txtBandeira;
 	private JTextField txtDesconto;
+	private JMenuBar menuBar;
+	private JMenu mnArquivo;
+	private JMenuItem mntmNovo;
+	private JMenuItem mntmSalvar;
+	private JMenu mnIr;
+	private JMenuItem mntmFuncoes;
 
 	/**
 	 * Launch the application.
@@ -24,7 +38,7 @@ public class FormCartao {
 			public void run() {
 				try {
 					FormCartao window = new FormCartao();
-					window.frmCartes.setVisible(true);
+					window.frmCartoes.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,17 +57,78 @@ public class FormCartao {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmCartes = new JFrame();
-		frmCartes.setTitle("Cart\u00F5es");
-		frmCartes.setBounds(100, 100, 631, 255);
-		frmCartes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmCartes.getContentPane().setLayout(null);
+		frmCartoes = new JFrame();
+		frmCartoes.setTitle("Cart\u00F5es");
+		frmCartoes.setBounds(100, 100, 631, 255);
+		frmCartoes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCartoes.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Descri\u00E7\u00E3o", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
 		panel.setBounds(11, 46, 530, 121);
-		frmCartes.getContentPane().add(panel);
+		frmCartoes.getContentPane().add(panel);
 		panel.setLayout(null);
+		
+		menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 2000, 21);
+		frmCartoes.getContentPane().add(menuBar);
+		
+		mnArquivo = new JMenu("Arquivo");
+		menuBar.add(mnArquivo);
+		
+		mntmNovo = new JMenuItem("Novo");
+		mntmNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				novo();
+			}
+		});
+		mnArquivo.add(mntmNovo);
+		
+		mntmSalvar = new JMenuItem("Salvar");
+		mntmSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				salvarAlterar();
+			}
+		});
+		mnArquivo.add(mntmSalvar);
+		
+		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
+		mnArquivo.add(mntmGerarRelatorio);
+		
+		mnIr = new JMenu("Ir");
+		menuBar.add(mnIr);
+		
+		JMenuItem mntmClientes = new JMenuItem("Clientes");
+		mntmClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormCliente();
+			}
+		});
+		mnIr.add(mntmClientes);
+		
+		JMenuItem mntmPrestadoresDeServicos = new JMenuItem("Prestadores de Servi\u00E7os");
+		mntmPrestadoresDeServicos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormPrestadorDeServico();
+			}
+		});
+		
+		mntmFuncoes = new JMenuItem("Fun\u00E7\u00F5es");
+		mntmFuncoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormFuncao();
+			}
+		});
+		mnIr.add(mntmFuncoes);
+		mnIr.add(mntmPrestadoresDeServicos);
+		
+		JMenuItem mntmProdutos = new JMenuItem("Produtos");
+		mntmProdutos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormProduto();
+			}
+		});
+		mnIr.add(mntmProdutos);
 		
 		JLabel lblNome = new JLabel("Nome:");
 		lblNome.setBounds(15, 22, 46, 14);
@@ -81,5 +156,57 @@ public class FormCartao {
 		JLabel lblDesconto = new JLabel("Desconto:");
 		lblDesconto.setBounds(395, 61, 72, 14);
 		panel.add(lblDesconto);
+	}
+
+	public JFrame getFrmCartoes() {
+		return frmCartoes;
+	}
+	
+	private void novo(){
+		
+	}
+	
+	private void salvarAlterar(){
+		
+	}
+	
+	private void chamarFormCliente(){
+		try{
+			FormCliente window = new FormCliente();
+			window.getFrmClientes().setVisible(true);
+			frmCartoes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormFuncao(){
+		try{
+			FormFuncao window = new FormFuncao();
+			window.getFrmFuncao().setVisible(true);
+			frmCartoes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormPrestadorDeServico(){
+		try{
+			FormPrestadorDeServico window = new FormPrestadorDeServico();
+			window.getFrmPrestadorDeServico().setVisible(true);
+			frmCartoes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormProduto(){
+		try{
+			FormProduto window = new FormProduto();
+			window.getFrmProdutos().setVisible(true);
+			frmCartoes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }

@@ -19,12 +19,12 @@ import net.sf.jasperreports.view.JasperViewer;
 
 public class Relatorio {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void chamarRelatorio(String nome) throws Exception{
+	public static void chamarRelatorio(String valor, String campo, String tabela, String jrxml) throws Exception{
 		JasperReport relatorio = null;  
 		JasperDesign desenho;  
 		  
 		try {  
-		    desenho = JRXmlLoader.load("reports/clientereport2.jrxml");  
+		    desenho = JRXmlLoader.load(jrxml);  
 		    relatorio = JasperCompileManager.compileReport( desenho );  
 		  
 		} catch (JRException e2) {  
@@ -34,10 +34,10 @@ public class Relatorio {
 		  
 		ResultSet rs = null;  
 		try {  
-		        Connection con = ConnectionFactory.getConnection();
-		        Statement stm = con.createStatement();  
-		        String query = "select * from tbl_cliente where lower(nome) like lower('%" + nome + "%') order by id";
-		        rs = stm.executeQuery( query );  
+	        Connection con = ConnectionFactory.getConnection();
+	        Statement stm = con.createStatement();  
+	        String query = "select * from " + tabela + " where lower(" + campo + ") like lower('%" + valor + "%') order by id";
+	        rs = stm.executeQuery( query );
 		} catch (SQLException e1) {  
 		    e1.printStackTrace();  
 		}  
@@ -58,12 +58,12 @@ public class Relatorio {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void chamarRelatorio(int id) throws Exception{
+	public static void chamarRelatorio(int valor, String campo, String tabela, String jrxml) throws Exception{
 		JasperReport relatorio = null;  
 		JasperDesign desenho;  
 		  
 		try {  
-		    desenho = JRXmlLoader.load("reports/clientereport2.jrxml");  
+		    desenho = JRXmlLoader.load(jrxml);  
 		    relatorio = JasperCompileManager.compileReport( desenho );  
 		  
 		} catch (JRException e2) {  
@@ -73,10 +73,10 @@ public class Relatorio {
 		  
 		ResultSet rs = null;  
 		try {  
-		        Connection con = ConnectionFactory.getConnection();
-		        Statement stm = con.createStatement();  
-		        String query = "select * from tbl_cliente where id = " + id + " order by id";
-		        rs = stm.executeQuery( query );  
+	        Connection con = ConnectionFactory.getConnection();
+	        Statement stm = con.createStatement();  
+	        String query = "select * from " + tabela + " where " + campo + " = " + valor + " order by id";
+	        rs = stm.executeQuery( query );  
 		} catch (SQLException e1) {  
 		    e1.printStackTrace();  
 		}  

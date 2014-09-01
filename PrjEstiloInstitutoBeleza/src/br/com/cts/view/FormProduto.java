@@ -1,18 +1,22 @@
 package br.com.cts.view;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class FormProduto {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+
+@SuppressWarnings("serial")
+public class FormProduto extends JFrame{
 
 	private JFrame frmProdutos;
 	private JTextField txtNomeProduto;
@@ -25,6 +29,12 @@ public class FormProduto {
 	private JTextField txtValor;
 	private JTextField txtValorVenda;
 	private JLabel lblValorVenda;
+	private JMenuBar menuBar;
+	private JMenu mnArquivo;
+	private JMenuItem mntmNovo;
+	private JMenuItem mntmSalvar;
+	private JMenu mnIr;
+	private JMenuItem mntmFuncoes;
 
 	/**
 	 * Launch the application.
@@ -64,6 +74,67 @@ public class FormProduto {
 		panel.setBounds(10, 38, 530, 148);
 		frmProdutos.getContentPane().add(panel);
 		panel.setLayout(null);
+		
+		menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 2000, 21);
+		frmProdutos.getContentPane().add(menuBar);
+		
+		mnArquivo = new JMenu("Arquivo");
+		menuBar.add(mnArquivo);
+		
+		mntmNovo = new JMenuItem("Novo");
+		mntmNovo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				novo();
+			}
+		});
+		mnArquivo.add(mntmNovo);
+		
+		mntmSalvar = new JMenuItem("Salvar");
+		mntmSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				salvarAlterar();
+			}
+		});
+		mnArquivo.add(mntmSalvar);
+		
+		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
+		mnArquivo.add(mntmGerarRelatorio);
+		
+		mnIr = new JMenu("Ir");
+		menuBar.add(mnIr);
+		
+		JMenuItem mntmCartoes = new JMenuItem("Cart\u00F5es");
+		mntmCartoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormCartao();
+			}
+		});
+		mnIr.add(mntmCartoes);
+		
+		JMenuItem mntmClientes = new JMenuItem("Clientes");
+		mntmClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormCliente();
+			}
+		});
+		mnIr.add(mntmClientes);
+		
+		JMenuItem mntmPrestadoresDeServicos = new JMenuItem("Prestadores de Servi\u00E7os");
+		mntmPrestadoresDeServicos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormPrestadorDeServico();
+			}
+		});
+		
+		mntmFuncoes = new JMenuItem("Fun\u00E7\u00F5es");
+		mntmFuncoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormFuncao();
+			}
+		});
+		mnIr.add(mntmFuncoes);
+		mnIr.add(mntmPrestadoresDeServicos);
 		
 		txtNomeProduto = new JTextField();
 		txtNomeProduto.setBounds(10, 38, 285, 20);
@@ -117,5 +188,57 @@ public class FormProduto {
 		});
 		btnNewButton.setBounds(22, 195, 89, 23);
 		frmProdutos.getContentPane().add(btnNewButton);
+	}
+
+	public JFrame getFrmProdutos() {
+		return frmProdutos;
+	}
+	
+	private void novo(){
+		
+	}
+	
+	private void salvarAlterar(){
+		
+	}
+	
+	private void chamarFormCartao(){
+		try{
+			FormCartao window = new FormCartao();
+			window.getFrmCartoes().setVisible(true);
+			frmProdutos.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormCliente(){
+		try{
+			FormCliente window = new FormCliente();
+			window.getFrmClientes().setVisible(true);
+			frmProdutos.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormFuncao(){
+		try{
+			FormFuncao window = new FormFuncao();
+			window.getFrmFuncao().setVisible(true);
+			frmProdutos.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarFormPrestadorDeServico(){
+		try{
+			FormPrestadorDeServico window = new FormPrestadorDeServico();
+			window.getFrmPrestadorDeServico().setVisible(true);
+			frmProdutos.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }
