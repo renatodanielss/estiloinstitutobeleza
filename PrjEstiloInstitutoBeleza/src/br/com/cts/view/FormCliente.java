@@ -634,6 +634,9 @@ public class FormCliente extends JFrame{
 		frmClientes.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtNome, cbSexo, txtDataNascimento, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cbUf, txtCep, txtTelefone, txtCelular1, txtCelular2, txtEmail1, txtEmail2, txtPesquisar, jTblClientes, btnNovo, btnSalvar, btnExcluir}));
 
 		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+		if (Integer.valueOf(txtQtdPaginas.getText()) > 0)
+			txtPagina.setText("1");
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setForeground(Color.WHITE);
