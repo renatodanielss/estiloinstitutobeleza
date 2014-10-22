@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/commons-digester-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/groovy-all-2.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/iText-2.1.7.js2.jar"/>
+	<classpathentry kind="lib" path="lib/projetocontrolefinanceiro-util-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
