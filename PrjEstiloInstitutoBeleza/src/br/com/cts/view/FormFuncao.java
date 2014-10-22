@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.util.List;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -11,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,7 +27,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.DefaultComboBoxModel;
+
+import br.com.cts.bll.FuncaoBLL;
+import br.com.cts.model.Funcao;
+import br.com.cts.number.IntegerObject;
 
 @SuppressWarnings("serial")
 public class FormFuncao extends JFrame{
@@ -45,6 +53,10 @@ public class FormFuncao extends JFrame{
 	private JTable jTblFuncoes;
 	private JButton btnNovo;
 	private JButton btnSalvar;
+	private JComboBox<String> cbQtdPorPagina;
+	private FuncaoBLL funcaoBll;
+	private String message;
+	
 
 	/**
 	 * Launch the application.
@@ -64,20 +76,26 @@ public class FormFuncao extends JFrame{
 
 	/**
 	 * Create the application.
+	 * @throws Exception 
+	 * @throws NumberFormatException 
 	 */
-	public FormFuncao() {
+	public FormFuncao() throws NumberFormatException, Exception {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws Exception 
+	 * @throws NumberFormatException 
 	 */
-	private void initialize() {
+	private void initialize() throws NumberFormatException, Exception {
 		frmFuncao = new JFrame();
 		frmFuncao.setTitle("Fun\u00E7\u00F5es");
 		frmFuncao.setBounds(100, 100, 1137, 498);
 		frmFuncao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmFuncao.getContentPane().setLayout(null);
+		
+		funcaoBll = new FuncaoBLL();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Descri\u00E7\u00E3o", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
@@ -300,7 +318,7 @@ public class FormFuncao extends JFrame{
 		btnExcluir.setBounds(721, 387, 89, 23);
 		frmFuncao.getContentPane().add(btnExcluir);
 		
-		JComboBox<String> cbQtdPorPagina = new JComboBox<String>();
+		cbQtdPorPagina = new JComboBox<String>();
 		cbQtdPorPagina.setModel(new DefaultComboBoxModel<String>(new String[] {"10", "30", "50"}));
 		cbQtdPorPagina.setBounds(812, 387, 55, 23);
 		frmFuncao.getContentPane().add(cbQtdPorPagina);
@@ -340,6 +358,11 @@ public class FormFuncao extends JFrame{
 		});
 		btnLast.setBounds(1030, 387, 55, 23);
 		frmFuncao.getContentPane().add(btnLast);
+		
+		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+		if (Integer.valueOf(txtQtdPaginas.getText()) > 0)
+			txtPagina.setText("1");
 	}
 	
 	public JFrame getFrmFuncao() {
@@ -354,11 +377,81 @@ public class FormFuncao extends JFrame{
 	}
 	
 	private void salvarAlterar(){
-		
+		try {
+			Funcao funcao = new Funcao();
+			
+			if (jTblFuncoes.getSelectedRow() > -1)
+				funcao.setIdFuncao(Integer.valueOf(jTblFuncoes.getValueAt(jTblFuncoes.getSelectedRow(), 0).toString()));
+			funcao.setNomeFuncao(txtFuncao.getText());
+			funcao.setComissaoFuncao(Integer.parseInt(txtComissao.getText()));
+			
+			if (getQtdCamposIncorretos() < 1){
+				if (btnSalvar.getText() == "Salvar"){
+					funcaoBll.salvar(funcao);
+					JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+					if (IntegerObject.isInteger(txtPesquisar.getText()))
+						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+					else
+						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+					limparCampos();
+				}
+				else{
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja confirmar as alteraçções?","Alterar!", JOptionPane.YES_NO_OPTION);
+					if(dialogResult == JOptionPane.YES_OPTION){
+						funcaoBll.alterar(funcao);
+						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+						if (IntegerObject.isInteger(txtPesquisar.getText()))
+							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+						else
+							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+						limparCampos();
+					}
+				}
+			}
+			else{
+				JOptionPane.showMessageDialog(null, this.message);
+			}
+		}catch (ParseException ex) {
+			ex.printStackTrace();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 	
 	private void excluir(){
 		
+	}
+	
+	private int getQtdCamposIncorretos(){
+		int contador = 0;
+		this.message = "";
+		if (!estaCampoTextoPreenchido(txtFuncao, " - Preencha o campo função!\n"))
+			contador++;
+		
+		return contador;
+	}
+	
+	private boolean estaCampoTextoPreenchido(JTextField jTextField, String errorMessage){
+		if (jTextField.getText().equals("")){
+			setErrorTextField(jTextField);
+			this.message += errorMessage;
+			return false;
+		}
+		else{
+			setCorrectTextField(jTextField);
+			return true;
+		}
+	}
+	
+	private void setErrorTextField(JTextField jTextField){
+		Color errorColor = new Color(255, 102, 102);
+		jTextField.setBackground(errorColor);
+		jTextField.setForeground(Color.WHITE);
+	}
+	
+	private void setCorrectTextField(JTextField jTextField){
+		jTextField.setBackground(Color.WHITE);
+		jTextField.setForeground(Color.BLACK);
 	}
 	
 	private void chamarFormCartao(){
@@ -401,11 +494,50 @@ public class FormFuncao extends JFrame{
 		}
 	}
 	
+	private void popularJTableCompleto(int qtdPorPagina, int numeroDaPagina) throws Exception{
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblFuncoes.getModel();
+		List<Funcao> funcoes = funcaoBll.procuraFuncao(qtdPorPagina, numeroDaPagina);
+		
+		for (Funcao f : funcoes) {
+            modeloTable.addRow(new Object[] { f.getIdFuncao(), f.getNomeFuncao(), f.getComissaoFuncao() });
+        }
+	}
+	
+	private void popularJTablePorId(int id, int qtdPorPagina, int numeroDaPagina) throws Exception{
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblFuncoes.getModel();
+		Funcao f = funcaoBll.procuraFuncaoPorId(id);
+		
+		modeloTable.setNumRows(0);
+		modeloTable.addRow(new Object[] { f.getIdFuncao(), f.getIdFuncao(), f.getComissaoFuncao() });
+		txtPagina.setText(String.valueOf(numeroDaPagina));
+	}
+	
+	private void popularJTablePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblFuncoes.getModel();
+		List<Funcao> funcoes = funcaoBll.procuraFuncaoPorNome(nome, qtdPorPagina, numeroDaPagina);
+		
+		modeloTable.setNumRows(0);
+		
+		for (Funcao f : funcoes) {
+            modeloTable.addRow(new Object[] { f.getIdFuncao(), f.getNomeFuncao(), f.getComissaoFuncao() });
+        }
+		
+		txtPagina.setText(String.valueOf(numeroDaPagina));
+	}
+	
 	private void limparCampos(){
 		txtId.setText(null);
 		txtFuncao.setText(null);
 		txtComissao.setText(null);
 		txtFuncao.requestFocus();
+	}
+	
+	private int qtdPaginasJTable() throws Exception{
+		int qtdRegistros = funcaoBll.recordCount(txtPesquisar.getText());
+		int qtdPaginas = qtdRegistros / Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString());
+		if (qtdRegistros % Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()) > 0)
+			qtdPaginas++;
+		return qtdPaginas;
 	}
 	
 	private void goToFirst(){

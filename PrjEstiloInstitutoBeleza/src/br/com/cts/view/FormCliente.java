@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.List;
+
 import javax.swing.DefaultComboBoxModel;
 //import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,6 +39,7 @@ import javax.swing.text.MaskFormatter;
 
 import br.com.cts.bll.ClienteBLL;
 import br.com.cts.model.Cliente;
+import br.com.cts.number.IntegerObject;
 import br.com.cts.util.Calendario;
 import br.com.cts.util.FocusTraversalOnArray;
 import br.com.cts.util.Relatorio;
@@ -467,7 +469,7 @@ public class FormCliente extends JFrame{
 		cbQtdPorPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (isInteger(txtPesquisar.getText())){
+					if (IntegerObject.isInteger(txtPesquisar.getText())){
 						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 						txtQtdPaginas.setText("1");
 					}
@@ -494,7 +496,7 @@ public class FormCliente extends JFrame{
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == 10){
 					try {
-						if (isInteger(txtPesquisar.getText())){
+						if (IntegerObject.isInteger(txtPesquisar.getText())){
 							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 							txtQtdPaginas.setText("1");
 						}
@@ -590,21 +592,21 @@ public class FormCliente extends JFrame{
 					try {
 						if (Integer.valueOf(txtPagina.getText()) <= Integer.valueOf(txtQtdPaginas.getText())){
 							if (Integer.valueOf(txtPagina.getText()) > 0){
-								if (isInteger(txtPesquisar.getText()))
+								if (IntegerObject.isInteger(txtPesquisar.getText()))
 									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 								else
 									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 								txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 							}
 							else{
-								if (isInteger(txtPesquisar.getText()))
+								if (IntegerObject.isInteger(txtPesquisar.getText()))
 									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 								else
 									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 							}
 						}
 						else{
-							if (isInteger(txtPesquisar.getText()))
+							if (IntegerObject.isInteger(txtPesquisar.getText()))
 								popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
 							else
 								popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
@@ -690,7 +692,7 @@ public class FormCliente extends JFrame{
 				if (btnSalvar.getText() == "Salvar"){
 					clienteBll.salvar(cliente);
 					JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-					if (isInteger(txtPesquisar.getText()))
+					if (IntegerObject.isInteger(txtPesquisar.getText()))
 						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 					else
 						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
@@ -701,7 +703,7 @@ public class FormCliente extends JFrame{
 					if(dialogResult == JOptionPane.YES_OPTION){
 						clienteBll.alterar(cliente);
 						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
-						if (isInteger(txtPesquisar.getText()))
+						if (IntegerObject.isInteger(txtPesquisar.getText()))
 							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 						else
 							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
@@ -727,7 +729,7 @@ public class FormCliente extends JFrame{
 				clienteBll.excluir(cliente);
 				JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
 				jTblClientes.clearSelection();
-				if (isInteger(txtPesquisar.getText()))
+				if (IntegerObject.isInteger(txtPesquisar.getText()))
 					popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 				else
 					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
@@ -858,7 +860,6 @@ public class FormCliente extends JFrame{
         }
 	}
 	
-	//Aqui
 	private void popularJTablePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{
 		DefaultTableModel modeloTable = (DefaultTableModel) jTblClientes.getModel();
 		List<Cliente> clientes = clienteBll.procuraClientePorNome(nome, qtdPorPagina, numeroDaPagina);
@@ -998,29 +999,24 @@ public class FormCliente extends JFrame{
 			e.printStackTrace();
 		}
 	}
-	
-	private boolean isInteger(String number){
-		try  {
-			@SuppressWarnings("unused")
-			int numberInt = Integer.parseInt(number);
-		}catch(NumberFormatException nfe){
-			return false;  
-		}  
-		return true; 
-	}
 
 	public JFrame getFrmClientes() {
 		return frmClientes;
 	}
 	
 	private void chamarRelatorio(){
-		try{
-			if (isInteger(txtPesquisar.getText()))
-				Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()), "id", "tbl_cliente", "reports/clientereport2.jrxml");
-			else
-				Relatorio.chamarRelatorio(txtPesquisar.getText(), "nome", "tbl_cliente", "reports/clientereport2.jrxml");
-		}catch(Exception e1){
-			e1.printStackTrace();
-		}
+		Thread chamarRelatorioThread = new Thread(){
+			public void run(){
+				try{
+					if (IntegerObject.isInteger(txtPesquisar.getText()))
+						Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()), "id", "tbl_cliente", "reports/clientereport2.jrxml");
+					else
+						Relatorio.chamarRelatorio(txtPesquisar.getText(), "nome", "tbl_cliente", "reports/clientereport2.jrxml");
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
+			}
+		};
+		chamarRelatorioThread.start();
 	}
 }
