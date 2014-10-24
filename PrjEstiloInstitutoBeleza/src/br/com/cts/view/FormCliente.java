@@ -437,7 +437,7 @@ public class FormCliente extends JFrame{
 		jTblClientes.getColumnModel().getColumn(4).setPreferredWidth(242);
 		
 		
-		//aqui
+		//Definir comportamento de seleção de item no JTable
 		jTblClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 				Cliente cliente = new Cliente();
@@ -634,11 +634,6 @@ public class FormCliente extends JFrame{
 		txtQtdPaginas.setBounds(1140, 67, 85, 20);
 		frmClientes.getContentPane().add(txtQtdPaginas);
 		frmClientes.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtNome, cbSexo, txtDataNascimento, txtLogradouro, txtNumero, txtComplemento, txtBairro, txtCidade, cbUf, txtCep, txtTelefone, txtCelular1, txtCelular2, txtEmail1, txtEmail2, txtPesquisar, jTblClientes, btnNovo, btnSalvar, btnExcluir}));
-
-		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
-		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
-		if (Integer.valueOf(txtQtdPaginas.getText()) > 0)
-			txtPagina.setText("1");
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setForeground(Color.WHITE);
@@ -656,6 +651,13 @@ public class FormCliente extends JFrame{
 		txtId.setColumns(10);
 		txtId.setBounds(12, 36, 355, 20);
 		panel_2.add(txtId);
+		
+		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+		if (Integer.valueOf(txtQtdPaginas.getText()) > 0)
+			txtPagina.setText("1");
+		else
+			txtPagina.setText("0");
 	}
 	
 	private void novo(){
@@ -714,6 +716,7 @@ public class FormCliente extends JFrame{
 			else{
 				JOptionPane.showMessageDialog(null, this.message);
 			}
+			txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 		}catch (ParseException ex) {
 			ex.printStackTrace();
 		}catch(Exception ex){
@@ -735,6 +738,7 @@ public class FormCliente extends JFrame{
 					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 			}
 		}
+		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 	}
 	
 	private int getQtdCamposIncorretos(){
@@ -858,6 +862,8 @@ public class FormCliente extends JFrame{
 		for (Cliente c : clientes) {
             modeloTable.addRow(new Object[] { c.getIdCliente(), c.getNomeCliente(), c.getTelefoneCliente(), c.getCelular1Cliente(), c.getEmail1Cliente() });
         }
+		
+		txtPagina.setText(String.valueOf(numeroDaPagina));
 	}
 	
 	private void popularJTablePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{

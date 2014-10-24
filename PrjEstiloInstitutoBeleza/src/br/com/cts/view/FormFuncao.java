@@ -33,6 +33,9 @@ import br.com.cts.model.Funcao;
 import br.com.cts.number.IntegerObject;
 import br.com.cts.util.Relatorio;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 @SuppressWarnings("serial")
 public class FormFuncao extends JFrame{
 
@@ -95,6 +98,7 @@ public class FormFuncao extends JFrame{
 		frmFuncao.setBounds(100, 100, 1137, 498);
 		frmFuncao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmFuncao.getContentPane().setLayout(null);
+		frmFuncao.setMinimumSize(frmFuncao.getSize());
 		
 		funcaoBll = new FuncaoBLL();
 		
@@ -184,6 +188,12 @@ public class FormFuncao extends JFrame{
 		panel.add(lblComisso);
 		
 		txtComissao = new JTextField();
+		txtComissao.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				txtComissao.setText(txtComissao.getText().replaceAll("[^0-9.]", ""));
+			}
+		});
 		txtComissao.setColumns(10);
 		txtComissao.setBounds(439, 36, 81, 20);
 		panel.add(txtComissao);
@@ -210,6 +220,29 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(label_1);
 		
 		txtPesquisar = new JTextField();
+		txtPesquisar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == 10){
+					try {
+						if (IntegerObject.isInteger(txtPesquisar.getText())){
+							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+							txtQtdPaginas.setText("1");
+						}
+						else{
+							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+							txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+							if (txtQtdPaginas.getText().equals("0"))
+								txtPagina.setText("0");
+						}
+					} catch (Exception e1) {
+						txtPagina.setText("0");
+						txtQtdPaginas.setText("0");
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 		txtPesquisar.setColumns(10);
 		txtPesquisar.setBounds(547, 67, 363, 20);
 		frmFuncao.getContentPane().add(txtPesquisar);
@@ -219,6 +252,40 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(label_2);
 		
 		txtPagina = new JTextField();
+		txtPagina.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == 10){
+					try {
+						if (Integer.valueOf(txtPagina.getText()) <= Integer.valueOf(txtQtdPaginas.getText())){
+							if (Integer.valueOf(txtPagina.getText()) > 0){
+								if (IntegerObject.isInteger(txtPesquisar.getText()))
+									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+								else
+									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+								txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+							}
+							else{
+								if (IntegerObject.isInteger(txtPesquisar.getText()))
+									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+								else
+									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+							}
+						}
+						else{
+							if (IntegerObject.isInteger(txtPesquisar.getText()))
+								popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+							else
+								popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+						}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				else
+					txtPagina.setText(txtPagina.getText().replaceAll("[^0-9]", ""));
+			}
+		});
 		txtPagina.setColumns(10);
 		txtPagina.setBounds(913, 67, 85, 20);
 		frmFuncao.getContentPane().add(txtPagina);
@@ -245,7 +312,7 @@ public class FormFuncao extends JFrame{
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Função", "Comissão"
+				"ID", "Função", "Comissão (%)"
 			}
 		) {
 			@SuppressWarnings("rawtypes")
@@ -267,21 +334,21 @@ public class FormFuncao extends JFrame{
 		jTblFuncoes.getColumnModel().getColumn(1).setPreferredWidth(320);
 		jTblFuncoes.getColumnModel().getColumn(2).setPreferredWidth(118);
 		
-		//aqui
+		//Definir comportamento de seleção de item no JTable
 		jTblFuncoes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-				//Cliente cliente = new Cliente();
+				Funcao funcao = new Funcao();
 				try {
 					if (jTblFuncoes.getSelectedRow() > -1){
-						//cliente = clienteBll.procuraClientePorId(Integer.valueOf(jTblClientes.getValueAt(jTblClientes.getSelectedRow(), 0).toString()));
+						funcao = funcaoBll.procuraFuncaoPorId(Integer.valueOf(jTblFuncoes.getValueAt(jTblFuncoes.getSelectedRow(), 0).toString()));
 						btnSalvar.setText("Alterar");
 						mntmSalvar.setText("Alterar");
-						//preencherCampos(cliente);
+						preencherCampos(funcao);
 					}
 					else{
 						btnSalvar.setText("Salvar");
 						mntmSalvar.setText("Salvar");
-						//limparCampos();
+						limparCampos();
 					}
 				} catch (NumberFormatException e1) {
 					e1.printStackTrace();
@@ -318,13 +385,37 @@ public class FormFuncao extends JFrame{
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				excluir();
+				try {
+					excluir();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnExcluir.setBounds(721, 387, 89, 23);
 		frmFuncao.getContentPane().add(btnExcluir);
 		
 		cbQtdPorPagina = new JComboBox<String>();
+		cbQtdPorPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (IntegerObject.isInteger(txtPesquisar.getText())){
+						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+						txtQtdPaginas.setText("1");
+					}
+					else{
+						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+						txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+						if (txtQtdPaginas.getText().equals("0"))
+							txtPagina.setText("0");
+					}
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		cbQtdPorPagina.setModel(new DefaultComboBoxModel<String>(new String[] {"10", "30", "50"}));
 		cbQtdPorPagina.setBounds(812, 387, 55, 23);
 		frmFuncao.getContentPane().add(cbQtdPorPagina);
@@ -369,6 +460,8 @@ public class FormFuncao extends JFrame{
 		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 		if (Integer.valueOf(txtQtdPaginas.getText()) > 0)
 			txtPagina.setText("1");
+		else
+			txtPagina.setText("0");
 	}
 	
 	public JFrame getFrmFuncao() {
@@ -389,7 +482,7 @@ public class FormFuncao extends JFrame{
 			if (jTblFuncoes.getSelectedRow() > -1)
 				funcao.setIdFuncao(Integer.valueOf(jTblFuncoes.getValueAt(jTblFuncoes.getSelectedRow(), 0).toString()));
 			funcao.setNomeFuncao(txtFuncao.getText());
-			funcao.setComissaoFuncao(Integer.parseInt(txtComissao.getText()));
+			funcao.setComissaoFuncao(Float.parseFloat(txtComissao.getText()));
 			
 			if (getQtdCamposIncorretos() < 1){
 				if (btnSalvar.getText() == "Salvar"){
@@ -417,6 +510,7 @@ public class FormFuncao extends JFrame{
 			else{
 				JOptionPane.showMessageDialog(null, this.message);
 			}
+			txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 		}catch (ParseException ex) {
 			ex.printStackTrace();
 		}catch(Exception ex){
@@ -424,8 +518,21 @@ public class FormFuncao extends JFrame{
 		}
 	}
 	
-	private void excluir(){
-		
+	private void excluir() throws NumberFormatException, Exception{
+		if (jTblFuncoes.getSelectedRow() > -1){
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente excluir?","Excluir!", JOptionPane.YES_NO_OPTION);
+			if(dialogResult == JOptionPane.YES_OPTION){
+				Funcao funcao = funcaoBll.procuraFuncaoPorId(Integer.valueOf(jTblFuncoes.getValueAt(jTblFuncoes.getSelectedRow(), 0).toString()));
+				funcaoBll.excluir(funcao);
+				JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
+				jTblFuncoes.clearSelection();
+				if (IntegerObject.isInteger(txtPesquisar.getText()))
+					popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+				else
+					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+			}
+		}
+		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 	}
 	
 	private int getQtdCamposIncorretos(){
@@ -458,6 +565,12 @@ public class FormFuncao extends JFrame{
 	private void setCorrectTextField(JTextField jTextField){
 		jTextField.setBackground(Color.WHITE);
 		jTextField.setForeground(Color.BLACK);
+	}
+	
+	private void preencherCampos(Funcao funcao){
+		txtId.setText(String.valueOf(funcao.getIdFuncao()));
+		txtFuncao.setText(funcao.getNomeFuncao());
+		txtComissao.setText(String.valueOf(funcao.getComissaoFuncao()));
 	}
 	
 	private void chamarFormCartao(){
@@ -547,19 +660,51 @@ public class FormFuncao extends JFrame{
 	}
 	
 	private void goToFirst(){
-		
+		try {
+			if (Integer.valueOf(txtPagina.getText()) > 1){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void goToPrevious(){
-		
+		try {
+			if (Integer.valueOf(txtPagina.getText()) > 1){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText())-1);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void goToNext(){
-	
+		try {
+			if (Integer.valueOf(txtPagina.getText()) < Integer.valueOf(txtQtdPaginas.getText())){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText())+1);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void goToLast(){
-	
+		try {
+			if (!txtPagina.getText().equals(txtQtdPaginas.getText())){
+				popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void chamarRelatorio(){
