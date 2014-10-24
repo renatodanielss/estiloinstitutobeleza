@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import br.com.cts.bll.FuncaoBLL;
 import br.com.cts.model.Funcao;
 import br.com.cts.number.IntegerObject;
+import br.com.cts.util.Relatorio;
 
 @SuppressWarnings("serial")
 public class FormFuncao extends JFrame{
@@ -127,6 +128,11 @@ public class FormFuncao extends JFrame{
 		mnArquivo.add(mntmSalvar);
 		
 		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
+		mntmGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarRelatorio();
+			}
+		});
 		mnArquivo.add(mntmGerarRelatorio);
 		
 		mnIr = new JMenu("Ir");
@@ -554,5 +560,21 @@ public class FormFuncao extends JFrame{
 
 	private void goToLast(){
 	
+	}
+	
+	private void chamarRelatorio(){
+		Thread chamarRelatorioThread = new Thread(){
+			public void run(){
+				try{
+					if (IntegerObject.isInteger(txtPesquisar.getText()))
+						Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()), "id", "tbl_funcao", "reports/funcaoreport.jrxml");
+					else
+						Relatorio.chamarRelatorio(txtPesquisar.getText(), "nomefuncao", "tbl_funcao", "reports/funcaoreport.jrxml");
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
+			}
+		};
+		chamarRelatorioThread.start();
 	}
 }
