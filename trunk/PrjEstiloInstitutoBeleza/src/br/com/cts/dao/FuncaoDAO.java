@@ -56,6 +56,7 @@ public class FuncaoDAO {
 			ps = conn.prepareStatement(SQL);
 			ps.setString(1, funcao.getNomeFuncao());
 			ps.setFloat(2, funcao.getComissaoFuncao());
+			ps.setInt(3, funcao.getIdFuncao());
 			ps.executeUpdate();
 			conn.commit();
 		}catch(SQLException sqle){
