@@ -98,8 +98,10 @@ public class FormFuncao extends JFrame{
 		frmFuncao.setBounds(100, 100, 1137, 498);
 		frmFuncao.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmFuncao.getContentPane().setLayout(null);
+		//setar tamanho mínimo do formnulário
 		frmFuncao.setMinimumSize(frmFuncao.getSize());
 		
+		//instânciar bll
 		funcaoBll = new FuncaoBLL();
 		
 		JPanel panel = new JPanel();
@@ -116,6 +118,8 @@ public class FormFuncao extends JFrame{
 		menuBar.add(mnArquivo);
 		
 		mntmNovo = new JMenuItem("Novo");
+		
+		//Listener
 		mntmNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				novo();
@@ -124,6 +128,8 @@ public class FormFuncao extends JFrame{
 		mnArquivo.add(mntmNovo);
 		
 		mntmSalvar = new JMenuItem("Salvar");
+		
+		//Listener
 		mntmSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salvarAlterar();
@@ -132,6 +138,8 @@ public class FormFuncao extends JFrame{
 		mnArquivo.add(mntmSalvar);
 		
 		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
+		
+		//Listener
 		mntmGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarRelatorio();
@@ -143,6 +151,8 @@ public class FormFuncao extends JFrame{
 		menuBar.add(mnIr);
 		
 		JMenuItem mntmClientes = new JMenuItem("Clientes");
+		
+		//Listener
 		mntmClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormCliente();
@@ -150,6 +160,8 @@ public class FormFuncao extends JFrame{
 		});
 		
 		mntmCartoes = new JMenuItem("Cart\u00F5es");
+		
+		//Listener
 		mntmCartoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormCartao();
@@ -159,6 +171,8 @@ public class FormFuncao extends JFrame{
 		mnIr.add(mntmClientes);
 		
 		JMenuItem mntmPrestadoresDeServicos = new JMenuItem("Prestadores de Servi\u00E7os");
+		
+		//Listener
 		mntmPrestadoresDeServicos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormPrestadorDeServico();
@@ -167,6 +181,8 @@ public class FormFuncao extends JFrame{
 		mnIr.add(mntmPrestadoresDeServicos);
 		
 		JMenuItem mntmProdutos = new JMenuItem("Produtos");
+		
+		//Listener
 		mntmProdutos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormProduto();
@@ -188,6 +204,8 @@ public class FormFuncao extends JFrame{
 		panel.add(lblComisso);
 		
 		txtComissao = new JTextField();
+		
+		//Listener
 		txtComissao.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -220,6 +238,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(label_1);
 		
 		txtPesquisar = new JTextField();
+		
+		//Listener
 		txtPesquisar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -252,6 +272,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(label_2);
 		
 		txtPagina = new JTextField();
+		
+		//Listener
 		txtPagina.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -334,7 +356,7 @@ public class FormFuncao extends JFrame{
 		jTblFuncoes.getColumnModel().getColumn(1).setPreferredWidth(320);
 		jTblFuncoes.getColumnModel().getColumn(2).setPreferredWidth(118);
 		
-		//Definir comportamento de seleção de item no JTable
+		//Listener - Definir comportamento de seleção de item no JTable
 		jTblFuncoes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 				Funcao funcao = new Funcao();
@@ -359,12 +381,13 @@ public class FormFuncao extends JFrame{
 	    });
 		jTblFuncoes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
+		//Instanciando DefaultTableCellRenderer para gerenciar JTable
 		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) jTblFuncoes.getTableHeader().getDefaultRenderer();
 		renderer.setHorizontalAlignment(JLabel.LEFT);
 		
-		
-		
 		btnNovo = new JButton("Novo");
+		
+		//Listener
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				novo();
@@ -374,6 +397,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(btnNovo);
 		
 		btnSalvar = new JButton("Salvar");
+		
+		//Listener
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salvarAlterar();
@@ -383,6 +408,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(btnSalvar);
 		
 		JButton btnExcluir = new JButton("Excluir");
+		
+		//Listener
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -396,6 +423,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(btnExcluir);
 		
 		cbQtdPorPagina = new JComboBox<String>();
+		
+		//Listener
 		cbQtdPorPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -421,6 +450,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(cbQtdPorPagina);
 		
 		JButton btnFirst = new JButton("|<<");
+		
+		//Listener
 		btnFirst.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToFirst();
@@ -430,6 +461,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(btnFirst);
 		
 		JButton btnPrevious = new JButton("<<");
+		
+		//Listener
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToPrevious();
@@ -439,6 +472,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(btnPrevious);
 		
 		JButton btnNext = new JButton(">>");
+		
+		//Listener
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToNext();
@@ -448,6 +483,8 @@ public class FormFuncao extends JFrame{
 		frmFuncao.getContentPane().add(btnNext);
 		
 		JButton btnLast = new JButton(">>|");
+		
+		//Listener
 		btnLast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToLast();
@@ -456,6 +493,7 @@ public class FormFuncao extends JFrame{
 		btnLast.setBounds(1030, 387, 55, 23);
 		frmFuncao.getContentPane().add(btnLast);
 		
+		//Popular JTable na inicialização do formulário, setar quantidade de páginas e página inicial
 		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 		if (Integer.valueOf(txtQtdPaginas.getText()) > 0)
@@ -484,6 +522,9 @@ public class FormFuncao extends JFrame{
 			funcao.setNomeFuncao(txtFuncao.getText());
 			funcao.setComissaoFuncao(Float.parseFloat(txtComissao.getText()));
 			
+			if (Integer.parseInt(txtPagina.getText()) == 0)
+				txtPagina.setText("1");
+			
 			if (getQtdCamposIncorretos() < 1){
 				if (btnSalvar.getText() == "Salvar"){
 					funcaoBll.salvar(funcao);
@@ -495,7 +536,7 @@ public class FormFuncao extends JFrame{
 					limparCampos();
 				}
 				else{
-					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja confirmar as alteraçções?","Alterar!", JOptionPane.YES_NO_OPTION);
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja confirmar as alterações?","Alterar!", JOptionPane.YES_NO_OPTION);
 					if(dialogResult == JOptionPane.YES_OPTION){
 						funcaoBll.alterar(funcao);
 						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
@@ -533,6 +574,8 @@ public class FormFuncao extends JFrame{
 			}
 		}
 		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+		if (Integer.parseInt(txtQtdPaginas.getText()) == 0)
+			txtPagina.setText("0");
 	}
 	
 	private int getQtdCamposIncorretos(){
