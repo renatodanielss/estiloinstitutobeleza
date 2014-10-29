@@ -3,9 +3,8 @@ package br.com.cts.model;
 public class Produto {
 	private int idProduto;
 	private String nomeProduto;
-	private String codigoBarrasProduto;
-	private Double valorProduto;
-	private Double valorPraVendaProduto;
+	private Float valorProduto;
+	private Float valorPraVendaProduto;
 	private String tipoUnidadeProduto;
 	private int qtdEstoqueProduto;
 
@@ -13,11 +12,10 @@ public class Produto {
 		
 	}
 	
-	public Produto(int idProduto, String nomeProduto, String codigoBarrasProduto, Double valorProduto, Double valorPraVendaProduto, String tipoUnidadeProduto, int qtdEstoqueProduto) {
+	public Produto(int idProduto, String nomeProduto, Float valorProduto, Float valorPraVendaProduto, String tipoUnidadeProduto, int qtdEstoqueProduto) {
 		super();
 		this.idProduto = idProduto;
 		this.nomeProduto = nomeProduto;
-		this.codigoBarrasProduto = codigoBarrasProduto;
 		this.valorProduto = valorProduto;
 		this.valorPraVendaProduto = valorPraVendaProduto;
 		this.tipoUnidadeProduto = tipoUnidadeProduto;
@@ -40,27 +38,19 @@ public class Produto {
 		this.nomeProduto = nomeProduto;
 	}
 
-	public String getCodigoBarrasProduto() {
-		return codigoBarrasProduto;
-	}
-
-	public void setCodigoBarrasProduto(String codigoBarrasProduto) {
-		this.codigoBarrasProduto = codigoBarrasProduto;
-	}
-
-	public Double getValorProduto() {
+	public Float getValorProduto() {
 		return valorProduto;
 	}
 
-	public void setValorProduto(Double valorProduto) {
+	public void setValorProduto(Float valorProduto) {
 		this.valorProduto = valorProduto;
 	}
 
-	public Double getValorPraVendaProduto() {
+	public Float getValorPraVendaProduto() {
 		return valorPraVendaProduto;
 	}
 
-	public void setValorPraVendaProduto(Double valorPraVendaProduto) {
+	public void setValorPraVendaProduto(Float valorPraVendaProduto) {
 		this.valorPraVendaProduto = valorPraVendaProduto;
 	}
 
@@ -79,6 +69,4 @@ public class Produto {
 	public void setQtdEstoqueProduto(int qtdEstoqueProduto) {
 		this.qtdEstoqueProduto = qtdEstoqueProduto;
 	}
-
-	
 }

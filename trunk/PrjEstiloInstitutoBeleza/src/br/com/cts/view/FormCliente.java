@@ -125,8 +125,10 @@ public class FormCliente extends JFrame{
 		frmClientes.setTitle("Clientes");
 		frmClientes.setBounds(100, 100, 1251, 520);
 		frmClientes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setar tamanho mínimo do formnulário
 		frmClientes.setMinimumSize(frmClientes.getSize());
 		
+		//instânciar bll
 		clienteBll = new ClienteBLL();
 		
 		txtNome = new JTextField();
@@ -135,6 +137,8 @@ public class FormCliente extends JFrame{
 		
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setBounds(772, 387, 89, 23);
+		
+		//Listener
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -154,6 +158,8 @@ public class FormCliente extends JFrame{
 		menuBar.add(mnArquivo);
 		
 		mntmNovo = new JMenuItem("Novo");
+		
+		//Listener
 		mntmNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				novo();
@@ -162,6 +168,8 @@ public class FormCliente extends JFrame{
 		mnArquivo.add(mntmNovo);
 		
 		mntmSalvar = new JMenuItem("Salvar");
+		
+		//Listener
 		mntmSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salvarAlterar();
@@ -170,6 +178,8 @@ public class FormCliente extends JFrame{
 		mnArquivo.add(mntmSalvar);
 		
 		JMenuItem mntmGerarRelatorio = new JMenuItem("Gerar Relat\u00F3rio");
+		
+		//Listener
 		mntmGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarRelatorio();
@@ -181,6 +191,8 @@ public class FormCliente extends JFrame{
 		menuBar.add(mnIr);
 		
 		JMenuItem mntmPrestadoresDeServicos = new JMenuItem("Prestadores de Servi\u00E7os");
+		
+		//Listener
 		mntmPrestadoresDeServicos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormPrestadorDeServico();
@@ -188,6 +200,8 @@ public class FormCliente extends JFrame{
 		});
 		
 		JMenuItem mntmCartoes = new JMenuItem("Cart\u00F5es");
+		
+		//Listener
 		mntmCartoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormCartao();
@@ -196,6 +210,8 @@ public class FormCliente extends JFrame{
 		mnIr.add(mntmCartoes);
 		
 		JMenuItem mntmFuncoes = new JMenuItem("Fun\u00E7\u00F5es");
+		
+		//Listener
 		mntmFuncoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormFuncao();
@@ -205,6 +221,8 @@ public class FormCliente extends JFrame{
 		mnIr.add(mntmPrestadoresDeServicos);
 		
 		JMenuItem mntmProdutos = new JMenuItem("Produtos");
+		
+		//Listener
 		mntmProdutos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chamarFormProduto();
@@ -225,6 +243,8 @@ public class FormCliente extends JFrame{
 		MaskFormatter mfDataNascimento = new MaskFormatter("##/##/####");
 		mfDataNascimento.setPlaceholderCharacter('_');
 		txtDataNascimento = new JFormattedTextField(mfDataNascimento);
+		
+		//Listener
 		txtDataNascimento.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -244,6 +264,7 @@ public class FormCliente extends JFrame{
 		txtDataNascimento.setFocusLostBehavior(0);
 		frmClientes.getContentPane().add(txtDataNascimento);
 		
+		//Imagem
 		/*
 		ImageIcon icon = new ImageIcon("images/estiloicone.png");
 		Image img = icon.getImage();
@@ -273,6 +294,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(lblNmero);
 		
 		txtNumero = new JTextField();
+		
+		//Listener
 		txtNumero.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -437,7 +460,7 @@ public class FormCliente extends JFrame{
 		jTblClientes.getColumnModel().getColumn(4).setPreferredWidth(242);
 		
 		
-		//Definir comportamento de seleção de item no JTable
+		//Listener - Definir comportamento de seleção de item no JTable
 		jTblClientes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 				Cliente cliente = new Cliente();
@@ -462,10 +485,13 @@ public class FormCliente extends JFrame{
 	    });
 		jTblClientes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
+		//Instanciando DefaultTableCellRenderer para gerenciar JTable
 		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) jTblClientes.getTableHeader().getDefaultRenderer();
 		renderer.setHorizontalAlignment(JLabel.LEFT);
 		
 		cbQtdPorPagina = new JComboBox<String>();
+		
+		//Listener
 		cbQtdPorPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -491,6 +517,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(cbQtdPorPagina);
 		
 		txtPesquisar = new JTextField();
+		
+		//Listener
 		txtPesquisar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -524,6 +552,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(lblPesquisar);
 		
 		btnNovo = new JButton("Novo");
+		
+		//Listener
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				novo();
@@ -533,6 +563,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(btnNovo);
 		
 		btnExcluir = new JButton("Excluir");
+		
+		//Listener
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -546,6 +578,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(btnExcluir);
 		
 		JButton btnFirst = new JButton("|<<");
+		
+		//Listener
 		btnFirst.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToFirst();
@@ -555,6 +589,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(btnFirst);
 		
 		JButton btnPrevious = new JButton("<<");
+		
+		//Listener
 		btnPrevious.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToPrevious();
@@ -564,6 +600,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(btnPrevious);
 		
 		JButton btnNext = new JButton(">>");
+		
+		//Listener
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToNext();
@@ -573,6 +611,8 @@ public class FormCliente extends JFrame{
 		frmClientes.getContentPane().add(btnNext);
 		
 		JButton btnLast = new JButton(">>|");
+		
+		//Listener
 		btnLast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				goToLast();
@@ -585,6 +625,8 @@ public class FormCliente extends JFrame{
 		txtPagina.setBounds(1052, 67, 85, 20);
 		frmClientes.getContentPane().add(txtPagina);
 		txtPagina.setColumns(10);
+		
+		//Listener
 		txtPagina.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -652,6 +694,7 @@ public class FormCliente extends JFrame{
 		txtId.setBounds(12, 36, 355, 20);
 		panel_2.add(txtId);
 		
+		//Popular JTable na inicialização do formulário, setar quantidade de páginas e página inicial
 		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 		if (Integer.valueOf(txtQtdPaginas.getText()) > 0)
@@ -689,6 +732,9 @@ public class FormCliente extends JFrame{
 			cliente.setCelular2Cliente(txtCelular2.getText());
 			cliente.setEmail1Cliente(txtEmail1.getText());
 			cliente.setEmail2Cliente(txtEmail2.getText());
+			
+			if (Integer.parseInt(txtPagina.getText()) == 0)
+				txtPagina.setText("1");
 
 			if (getQtdCamposIncorretos() < 1){
 				if (btnSalvar.getText() == "Salvar"){
@@ -701,7 +747,7 @@ public class FormCliente extends JFrame{
 					limparCampos();
 				}
 				else{
-					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja confirmar as alteraçções?","Alterar!", JOptionPane.YES_NO_OPTION);
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja confirmar as alterações?","Alterar!", JOptionPane.YES_NO_OPTION);
 					if(dialogResult == JOptionPane.YES_OPTION){
 						clienteBll.alterar(cliente);
 						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
@@ -739,6 +785,8 @@ public class FormCliente extends JFrame{
 			}
 		}
 		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
+		if (Integer.parseInt(txtQtdPaginas.getText()) == 0)
+			txtPagina.setText("0");
 	}
 	
 	private int getQtdCamposIncorretos(){
