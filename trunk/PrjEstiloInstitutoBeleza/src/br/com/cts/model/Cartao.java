@@ -1,16 +1,16 @@
 package br.com.cts.model;
 
 public class Cartao {
-	private int idCartao;
+	private Integer idCartao;
 	private String nomeCartao;
 	private String bandeiraCartao;
-	private int pocentagemDescontoCartao;
+	private Float pocentagemDescontoCartao;
 	
 	public Cartao(){
 		
 	}
 	
-	public Cartao(int idCartao, String nomeCartao, String bandeiraCartao, int pocentagemDescontoCartao) {
+	public Cartao(Integer idCartao, String nomeCartao, String bandeiraCartao, Float pocentagemDescontoCartao) {
 		super();
 		this.idCartao = idCartao;
 		this.nomeCartao = nomeCartao;
@@ -18,10 +18,10 @@ public class Cartao {
 		this.pocentagemDescontoCartao = pocentagemDescontoCartao;
 	}
 	
-	public int getIdCartao() {
+	public Integer getIdCartao() {
 		return idCartao;
 	}
-	public void setIdCartao(int idCartao) {
+	public void setIdCartao(Integer idCartao) {
 		this.idCartao = idCartao;
 	}
 	public String getNomeCartao() {
@@ -36,10 +36,10 @@ public class Cartao {
 	public void setBandeiraCartao(String bandeiraCartao) {
 		this.bandeiraCartao = bandeiraCartao;
 	}
-	public int getPocentagemDescontoCartao() {
+	public Float getPocentagemDescontoCartao() {
 		return pocentagemDescontoCartao;
 	}
-	public void setPocentagemDescontoCartao(int pocentagemDescontoCartao) {
+	public void setPocentagemDescontoCartao(Float pocentagemDescontoCartao) {
 		this.pocentagemDescontoCartao = pocentagemDescontoCartao;
 	}
 }

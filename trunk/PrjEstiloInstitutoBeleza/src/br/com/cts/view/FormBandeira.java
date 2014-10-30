@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -31,38 +30,30 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import br.com.cts.bll.BandeiraBLL;
-import br.com.cts.bll.CartaoBLL;
 import br.com.cts.model.Bandeira;
-import br.com.cts.model.Cartao;
 import br.com.cts.number.IntegerObject;
 import br.com.cts.util.Relatorio;
 
 @SuppressWarnings("serial")
-public class FormCartao extends JFrame{
+public class FormBandeira extends JFrame{
 
-	private JFrame frmCartoes;
+	private JFrame frmBandeira;
 	private JTextField txtNome;
-	private JComboBox<String> cbBandeira;
 	private JMenuBar menuBar;
 	private JMenu mnArquivo;
 	private JMenuItem mntmNovo;
 	private JMenuItem mntmSalvar;
 	private JMenu mnIr;
-	private JPanel panel_1;
-	private JLabel label;
-	private JTextField txtId;
-	private JMenuItem mntmFuncoes;
+	private JMenuItem mntmCartoes;
 	private JTextField txtPesquisar;
 	private JTextField txtPagina;
 	private JTextField txtQtdPaginas;
-	private JTable jTblCartoes;
+	private JTable jTblBandeiras;
 	private JButton btnNovo;
 	private JButton btnSalvar;
 	private JComboBox<String> cbQtdPorPagina;
-	private CartaoBLL cartaoBll;
+	private BandeiraBLL bandeiraBll;
 	private String message;
-	private JLabel lblDesconto;
-	private JTextField txtPorcentagemDesconto;
 	
 
 	/**
@@ -72,8 +63,8 @@ public class FormCartao extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FormCartao window = new FormCartao();
-					window.frmCartoes.setVisible(true);
+					FormBandeira window = new FormBandeira();
+					window.frmBandeira.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -86,7 +77,7 @@ public class FormCartao extends JFrame{
 	 * @throws Exception 
 	 * @throws NumberFormatException 
 	 */
-	public FormCartao() throws NumberFormatException, Exception {
+	public FormBandeira() throws NumberFormatException, Exception {
 		initialize();
 	}
 
@@ -96,26 +87,26 @@ public class FormCartao extends JFrame{
 	 * @throws NumberFormatException 
 	 */
 	private void initialize() throws NumberFormatException, Exception {
-		frmCartoes = new JFrame();
-		frmCartoes.setTitle("Cart\u00F5es");
-		frmCartoes.setBounds(100, 100, 1137, 498);
-		frmCartoes.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmCartoes.getContentPane().setLayout(null);
+		frmBandeira = new JFrame();
+		frmBandeira.setTitle("Bandeiras");
+		frmBandeira.setBounds(100, 100, 1137, 498);
+		frmBandeira.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBandeira.getContentPane().setLayout(null);
 		//setar tamanho mínimo do formnulário
-		frmCartoes.setMinimumSize(frmCartoes.getSize());
+		frmBandeira.setMinimumSize(frmBandeira.getSize());
 		
 		//instânciar bll
-		cartaoBll = new CartaoBLL();
+		bandeiraBll = new BandeiraBLL();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Descri\u00E7\u00E3o", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		panel.setBounds(12, 120, 530, 108);
-		frmCartoes.getContentPane().add(panel);
+		panel.setBounds(12, 50, 530, 69);
+		frmBandeira.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 2000, 21);
-		frmCartoes.getContentPane().add(menuBar);
+		frmBandeira.getContentPane().add(menuBar);
 		
 		mnArquivo = new JMenu("Arquivo");
 		menuBar.add(mnArquivo);
@@ -135,7 +126,11 @@ public class FormCartao extends JFrame{
 		//Listener
 		mntmSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				salvarAlterar();
+				try {
+					salvarAlterar();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		mnArquivo.add(mntmSalvar);
@@ -161,6 +156,16 @@ public class FormCartao extends JFrame{
 				chamarFormCliente();
 			}
 		});
+		
+		mntmCartoes = new JMenuItem("Cart\u00F5es");
+		
+		//Listener
+		mntmCartoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chamarFormCartao();
+			}
+		});
+		mnIr.add(mntmCartoes);
 		mnIr.add(mntmClientes);
 		
 		JMenuItem mntmPrestadoresDeServicos = new JMenuItem("Prestadores de Servi\u00E7os");
@@ -171,16 +176,6 @@ public class FormCartao extends JFrame{
 				chamarFormPrestadorDeServico();
 			}
 		});
-		
-		mntmFuncoes = new JMenuItem("Fun\u00E7\u00F5es");
-		
-		//Listener
-		mntmFuncoes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chamarFormFuncao();
-			}
-		});
-		mnIr.add(mntmFuncoes);
 		mnIr.add(mntmPrestadoresDeServicos);
 		
 		JMenuItem mntmProdutos = new JMenuItem("Produtos");
@@ -193,7 +188,7 @@ public class FormCartao extends JFrame{
 		});
 		mnIr.add(mntmProdutos);
 		
-		JLabel lblFuncao = new JLabel("Cart\u00E3o:");
+		JLabel lblFuncao = new JLabel("Bandeira:");
 		lblFuncao.setBounds(15, 22, 66, 14);
 		panel.add(lblFuncao);
 		
@@ -202,52 +197,9 @@ public class FormCartao extends JFrame{
 		panel.add(txtNome);
 		txtNome.setColumns(10);
 		
-		JLabel lblBandeira = new JLabel("Bandeira:");
-		lblBandeira.setBounds(15, 60, 66, 14);
-		panel.add(lblBandeira);
-		
-		cbBandeira = new JComboBox<String>();
-		cbBandeira.setBounds(15, 74, 245, 20);
-		panel.add(cbBandeira);
-		
-		JButton btnAdicionarBandeira = new JButton("Adicionar");
-		btnAdicionarBandeira.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		btnAdicionarBandeira.setBounds(260, 74, 89, 20);
-		panel.add(btnAdicionarBandeira);
-		
-		lblDesconto = new JLabel("Desconto (%):");
-		lblDesconto.setBounds(350, 60, 89, 14);
-		panel.add(lblDesconto);
-		
-		txtPorcentagemDesconto = new JTextField();
-		txtPorcentagemDesconto.setColumns(10);
-		txtPorcentagemDesconto.setBounds(350, 74, 170, 21);
-		panel.add(txtPorcentagemDesconto);
-		
-		panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setForeground(Color.WHITE);
-		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "ID", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 100, 0)));
-		panel_1.setBounds(12, 50, 530, 69);
-		frmCartoes.getContentPane().add(panel_1);
-		
-		label = new JLabel("ID:");
-		label.setBounds(15, 22, 37, 14);
-		panel_1.add(label);
-		
-		txtId = new JTextField();
-		txtId.setEditable(false);
-		txtId.setColumns(10);
-		txtId.setBounds(15, 36, 355, 20);
-		panel_1.add(txtId);
-		
 		JLabel label_1 = new JLabel("Pesquisar");
 		label_1.setBounds(547, 50, 67, 14);
-		frmCartoes.getContentPane().add(label_1);
+		frmBandeira.getContentPane().add(label_1);
 		
 		txtPesquisar = new JTextField();
 		
@@ -258,7 +210,7 @@ public class FormCartao extends JFrame{
 				if (e.getKeyCode() == 10){
 					try {
 						if (IntegerObject.isInteger(txtPesquisar.getText())){
-							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+							popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 							txtQtdPaginas.setText("1");
 						}
 						else{
@@ -277,11 +229,11 @@ public class FormCartao extends JFrame{
 		});
 		txtPesquisar.setColumns(10);
 		txtPesquisar.setBounds(547, 67, 363, 20);
-		frmCartoes.getContentPane().add(txtPesquisar);
+		frmBandeira.getContentPane().add(txtPesquisar);
 		
 		JLabel label_2 = new JLabel("P\u00E1gina");
 		label_2.setBounds(913, 50, 67, 14);
-		frmCartoes.getContentPane().add(label_2);
+		frmBandeira.getContentPane().add(label_2);
 		
 		txtPagina = new JTextField();
 		
@@ -294,21 +246,21 @@ public class FormCartao extends JFrame{
 						if (Integer.valueOf(txtPagina.getText()) <= Integer.valueOf(txtQtdPaginas.getText())){
 							if (Integer.valueOf(txtPagina.getText()) > 0){
 								if (IntegerObject.isInteger(txtPesquisar.getText()))
-									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+									popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 								else
 									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 								txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
 							}
 							else{
 								if (IntegerObject.isInteger(txtPesquisar.getText()))
-									popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+									popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 								else
 									popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 							}
 						}
 						else{
 							if (IntegerObject.isInteger(txtPesquisar.getText()))
-								popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
+								popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
 							else
 								popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtQtdPaginas.getText()));
 						}
@@ -322,54 +274,52 @@ public class FormCartao extends JFrame{
 		});
 		txtPagina.setColumns(10);
 		txtPagina.setBounds(913, 67, 85, 20);
-		frmCartoes.getContentPane().add(txtPagina);
+		frmBandeira.getContentPane().add(txtPagina);
 		
 		JLabel label_3 = new JLabel("De");
 		label_3.setBounds(1001, 50, 57, 14);
-		frmCartoes.getContentPane().add(label_3);
+		frmBandeira.getContentPane().add(label_3);
 		
 		txtQtdPaginas = new JTextField();
 		txtQtdPaginas.setEditable(false);
 		txtQtdPaginas.setColumns(10);
 		txtQtdPaginas.setBounds(1001, 67, 85, 20);
-		frmCartoes.getContentPane().add(txtQtdPaginas);
+		frmBandeira.getContentPane().add(txtQtdPaginas);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(545, 92, 541, 295);
-		frmCartoes.getContentPane().add(scrollPane);
+		frmBandeira.getContentPane().add(scrollPane);
 		
-		jTblCartoes = new JTable();
-		jTblCartoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jTblBandeiras = new JTable();
+		jTblBandeiras.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		scrollPane.setViewportView(jTblCartoes);
-		jTblCartoes.setModel(new DefaultTableModel(
+		scrollPane.setViewportView(jTblBandeiras);
+		jTblBandeiras.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Cart\u00E3o", "Bandeira", "Desconto (%)"
+				"Bandeira"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
+				false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
 		});
-		jTblCartoes.getColumnModel().getColumn(1).setPreferredWidth(223);
-		jTblCartoes.getColumnModel().getColumn(2).setPreferredWidth(131);
-		jTblCartoes.getColumnModel().getColumn(3).setPreferredWidth(108);
+		jTblBandeiras.getColumnModel().getColumn(0).setPreferredWidth(538);
 		
 		//Listener - Definir comportamento de seleção de item no JTable
-		jTblCartoes.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		jTblBandeiras.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-				Cartao cartao = new Cartao();
+				Bandeira bandeira = new Bandeira();
 				try {
-					if (jTblCartoes.getSelectedRow() > -1){
-						cartao = cartaoBll.procuraCartaoPorId(Integer.valueOf(jTblCartoes.getValueAt(jTblCartoes.getSelectedRow(), 0).toString()));
+					if (jTblBandeiras.getSelectedRow() > -1){
+						bandeira = bandeiraBll.procuraBandeiraPorId(jTblBandeiras.getValueAt(jTblBandeiras.getSelectedRow(), 0).toString());
 						btnSalvar.setText("Alterar");
 						mntmSalvar.setText("Alterar");
-						preencherCampos(cartao);
+						preencherCampos(bandeira);
 					}
 					else{
 						btnSalvar.setText("Salvar");
@@ -383,10 +333,10 @@ public class FormCartao extends JFrame{
 				}
 	        }
 	    });
-		jTblCartoes.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		jTblBandeiras.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		//Instanciando DefaultTableCellRenderer para gerenciar JTable
-		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) jTblCartoes.getTableHeader().getDefaultRenderer();
+		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) jTblBandeiras.getTableHeader().getDefaultRenderer();
 		renderer.setHorizontalAlignment(JLabel.LEFT);
 		
 		btnNovo = new JButton("Novo");
@@ -398,18 +348,22 @@ public class FormCartao extends JFrame{
 			}
 		});
 		btnNovo.setBounds(545, 387, 89, 23);
-		frmCartoes.getContentPane().add(btnNovo);
+		frmBandeira.getContentPane().add(btnNovo);
 		
 		btnSalvar = new JButton("Salvar");
 		
 		//Listener
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				salvarAlterar();
+				try {
+					salvarAlterar();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnSalvar.setBounds(633, 387, 89, 23);
-		frmCartoes.getContentPane().add(btnSalvar);
+		frmBandeira.getContentPane().add(btnSalvar);
 		
 		JButton btnExcluir = new JButton("Excluir");
 		
@@ -424,7 +378,7 @@ public class FormCartao extends JFrame{
 			}
 		});
 		btnExcluir.setBounds(721, 387, 89, 23);
-		frmCartoes.getContentPane().add(btnExcluir);
+		frmBandeira.getContentPane().add(btnExcluir);
 		
 		cbQtdPorPagina = new JComboBox<String>();
 		
@@ -433,7 +387,7 @@ public class FormCartao extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (IntegerObject.isInteger(txtPesquisar.getText())){
-						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+						popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 						txtQtdPaginas.setText("1");
 					}
 					else{
@@ -451,7 +405,7 @@ public class FormCartao extends JFrame{
 		});
 		cbQtdPorPagina.setModel(new DefaultComboBoxModel<String>(new String[] {"10", "30", "50"}));
 		cbQtdPorPagina.setBounds(812, 387, 55, 23);
-		frmCartoes.getContentPane().add(cbQtdPorPagina);
+		frmBandeira.getContentPane().add(cbQtdPorPagina);
 		
 		JButton btnFirst = new JButton("|<<");
 		
@@ -462,7 +416,7 @@ public class FormCartao extends JFrame{
 			}
 		});
 		btnFirst.setBounds(868, 387, 55, 23);
-		frmCartoes.getContentPane().add(btnFirst);
+		frmBandeira.getContentPane().add(btnFirst);
 		
 		JButton btnPrevious = new JButton("<<");
 		
@@ -473,7 +427,7 @@ public class FormCartao extends JFrame{
 			}
 		});
 		btnPrevious.setBounds(922, 387, 55, 23);
-		frmCartoes.getContentPane().add(btnPrevious);
+		frmBandeira.getContentPane().add(btnPrevious);
 		
 		JButton btnNext = new JButton(">>");
 		
@@ -484,7 +438,7 @@ public class FormCartao extends JFrame{
 			}
 		});
 		btnNext.setBounds(976, 387, 55, 23);
-		frmCartoes.getContentPane().add(btnNext);
+		frmBandeira.getContentPane().add(btnNext);
 		
 		JButton btnLast = new JButton(">>|");
 		
@@ -495,14 +449,7 @@ public class FormCartao extends JFrame{
 			}
 		});
 		btnLast.setBounds(1030, 387, 55, 23);
-		frmCartoes.getContentPane().add(btnLast);
-		
-		cbBandeira.addItem("");
-		BandeiraBLL bandeiraBll = new BandeiraBLL();
-		List<Bandeira> bandeiras = bandeiraBll.procuraBandeiraPorNome("", bandeiraBll.recordCount(), 1);
-		
-		for(Bandeira bandeira : bandeiras)
-			cbBandeira.addItem(bandeira.getNomeBandeira());
+		frmBandeira.getContentPane().add(btnLast);
 		
 		//Popular JTable na inicialização do formulário, setar quantidade de páginas e página inicial
 		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
@@ -513,47 +460,54 @@ public class FormCartao extends JFrame{
 			txtPagina.setText("0");
 	}
 	
-	public JFrame getFrmCartoes() {
-		return frmCartoes;
+	public JFrame getFrmBandeira() {
+		return frmBandeira;
 	}
 
 	private void novo(){
 		limparCampos();
-		jTblCartoes.clearSelection();
+		jTblBandeiras.clearSelection();
 		btnSalvar.setText("Salvar");
 		mntmSalvar.setText("Salvar");
 	}
 	
-	private void salvarAlterar(){
+	private void salvarAlterar() throws Exception{
+		Bandeira bandeiraNula = bandeiraBll.procuraBandeiraPorId(txtNome.getText());
+		Bandeira bandeira = new Bandeira();
 		try {
-			Cartao cartao = new Cartao();
+			String novoNome = "";
 			
-			if (jTblCartoes.getSelectedRow() > -1)
-				cartao.setIdCartao(Integer.valueOf(jTblCartoes.getValueAt(jTblCartoes.getSelectedRow(), 0).toString()));
-			cartao.setNomeCartao(txtNome.getText());
-			cartao.setBandeiraCartao(cbBandeira.getSelectedItem().toString());
-			cartao.setPocentagemDescontoCartao(Float.valueOf(txtPorcentagemDesconto.getText()));
+			if (jTblBandeiras.getSelectedRow() > -1){
+				bandeira.setNomeBandeira(jTblBandeiras.getValueAt(jTblBandeiras.getSelectedRow(), 0).toString());
+				novoNome = txtNome.getText();
+			}
+			else
+				bandeira.setNomeBandeira(txtNome.getText());
 			
 			if (Integer.parseInt(txtPagina.getText()) == 0)
 				txtPagina.setText("1");
 			
 			if (getQtdCamposIncorretos() < 1){
 				if (btnSalvar.getText() == "Salvar"){
-					cartaoBll.salvar(cartao);
-					JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
-					if (IntegerObject.isInteger(txtPesquisar.getText()))
-						popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+					if (bandeiraNula == null){
+						bandeiraBll.salvar(bandeira);
+						JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+						if (IntegerObject.isInteger(txtPesquisar.getText()))
+							popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+						else
+							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+						limparCampos();
+					}
 					else
-						popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
-					limparCampos();
+						JOptionPane.showMessageDialog(null, "Não foi possível efetuar o cadastro, bandeira já está cadastrada!");
 				}
 				else{
 					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja confirmar as alterações?","Alterar!", JOptionPane.YES_NO_OPTION);
 					if(dialogResult == JOptionPane.YES_OPTION){
-						cartaoBll.alterar(cartao);
+						bandeiraBll.alterar(bandeira, novoNome);
 						JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
 						if (IntegerObject.isInteger(txtPesquisar.getText()))
-							popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
+							popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 						else
 							popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), Integer.valueOf(txtPagina.getText()));
 						limparCampos();
@@ -572,15 +526,15 @@ public class FormCartao extends JFrame{
 	}
 	
 	private void excluir() throws NumberFormatException, Exception{
-		if (jTblCartoes.getSelectedRow() > -1){
+		if (jTblBandeiras.getSelectedRow() > -1){
 			int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente excluir?","Excluir!", JOptionPane.YES_NO_OPTION);
 			if(dialogResult == JOptionPane.YES_OPTION){
-				Cartao cartao = cartaoBll.procuraCartaoPorId(Integer.valueOf(jTblCartoes.getValueAt(jTblCartoes.getSelectedRow(), 0).toString()));
-				cartaoBll.excluir(cartao);
+				Bandeira bandeira = bandeiraBll.procuraBandeiraPorId(jTblBandeiras.getValueAt(jTblBandeiras.getSelectedRow(), 0).toString());
+				bandeiraBll.excluir(bandeira);
 				JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
-				jTblCartoes.clearSelection();
+				jTblBandeiras.clearSelection();
 				if (IntegerObject.isInteger(txtPesquisar.getText()))
-					popularJTablePorId(Integer.valueOf(txtPesquisar.getText()), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
+					popularJTablePorId(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 				else
 					popularJTablePorNome(txtPesquisar.getText(), Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 			}
@@ -622,18 +576,15 @@ public class FormCartao extends JFrame{
 		jTextField.setForeground(Color.BLACK);
 	}
 	
-	private void preencherCampos(Cartao cartao){
-		txtId.setText(String.valueOf(cartao.getIdCartao()));
-		txtNome.setText(cartao.getNomeCartao());
-		cbBandeira.setSelectedItem(cartao.getBandeiraCartao());
-		txtPorcentagemDesconto.setText(String.valueOf(cartao.getPocentagemDescontoCartao()));
+	private void preencherCampos(Bandeira bandeira){
+		txtNome.setText(bandeira.getNomeBandeira());
 	}
 	
-	private void chamarFormFuncao(){
+	private void chamarFormCartao(){
 		try{
-			FormFuncao window = new FormFuncao();
-			window.getFrmFuncao().setVisible(true);
-			frmCartoes.setVisible(false);
+			FormCartao window = new FormCartao();
+			window.getFrmCartoes().setVisible(true);
+			frmBandeira.setVisible(false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -643,7 +594,7 @@ public class FormCartao extends JFrame{
 		try{
 			FormCliente window = new FormCliente();
 			window.getFrmClientes().setVisible(true);
-			frmCartoes.setVisible(false);
+			frmBandeira.setVisible(false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -653,7 +604,7 @@ public class FormCartao extends JFrame{
 		try{
 			FormPrestadorDeServico window = new FormPrestadorDeServico();
 			window.getFrmPrestadorDeServico().setVisible(true);
-			frmCartoes.setVisible(false);
+			frmBandeira.setVisible(false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -663,53 +614,50 @@ public class FormCartao extends JFrame{
 		try{
 			FormProduto window = new FormProduto();
 			window.getFrmProdutos().setVisible(true);
-			frmCartoes.setVisible(false);
+			frmBandeira.setVisible(false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
 	private void popularJTableCompleto(int qtdPorPagina, int numeroDaPagina) throws Exception{
-		DefaultTableModel modeloTable = (DefaultTableModel) jTblCartoes.getModel();
-		List<Cartao> cartoes = cartaoBll.procuraCartao(qtdPorPagina, numeroDaPagina);
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblBandeiras.getModel();
+		List<Bandeira> bandeiras = bandeiraBll.procuraBandeira(qtdPorPagina, numeroDaPagina);
 		
-		for (Cartao cartao : cartoes) {
-            modeloTable.addRow(new Object[] { cartao.getIdCartao(), cartao.getNomeCartao(), cartao.getBandeiraCartao(), cartao.getPocentagemDescontoCartao() });
+		for (Bandeira bandeira : bandeiras) {
+            modeloTable.addRow(new Object[] { bandeira.getNomeBandeira() });
         }
 	}
 	
-	private void popularJTablePorId(int id, int qtdPorPagina, int numeroDaPagina) throws Exception{
-		DefaultTableModel modeloTable = (DefaultTableModel) jTblCartoes.getModel();
-		Cartao cartao = cartaoBll.procuraCartaoPorId(id);
+	private void popularJTablePorId(String id, int qtdPorPagina, int numeroDaPagina) throws Exception{
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblBandeiras.getModel();
+		Bandeira bandeira = bandeiraBll.procuraBandeiraPorId(id);
 		
 		modeloTable.setNumRows(0);
-		modeloTable.addRow(new Object[] { cartao.getIdCartao(), cartao.getNomeCartao(), cartao.getBandeiraCartao(), cartao.getPocentagemDescontoCartao() });
+		modeloTable.addRow(new Object[] { bandeira.getNomeBandeira() });
 		txtPagina.setText(String.valueOf(numeroDaPagina));
 	}
 	
 	private void popularJTablePorNome(String nome, int qtdPorPagina, int numeroDaPagina) throws Exception{
-		DefaultTableModel modeloTable = (DefaultTableModel) jTblCartoes.getModel();
-		List<Cartao> cartoes = cartaoBll.procuraCartaoPorNome(nome, qtdPorPagina, numeroDaPagina);
+		DefaultTableModel modeloTable = (DefaultTableModel) jTblBandeiras.getModel();
+		List<Bandeira> bandeiras = bandeiraBll.procuraBandeiraPorNome(nome, qtdPorPagina, numeroDaPagina);
 		
 		modeloTable.setNumRows(0);
 		
-		for (Cartao cartao : cartoes) {
-            modeloTable.addRow(new Object[] { cartao.getIdCartao(), cartao.getNomeCartao(), cartao.getBandeiraCartao(), cartao.getPocentagemDescontoCartao() });
+		for (Bandeira bandeira : bandeiras) {
+            modeloTable.addRow(new Object[] { bandeira.getNomeBandeira() });
         }
 		
 		txtPagina.setText(String.valueOf(numeroDaPagina));
 	}
 	
 	private void limparCampos(){
-		txtId.setText(null);
 		txtNome.setText(null);
-		cbBandeira.setSelectedIndex(-1);
-		txtPorcentagemDesconto.setText(null);
 		txtNome.requestFocus();
 	}
 	
 	private int qtdPaginasJTable() throws Exception{
-		int qtdRegistros = cartaoBll.recordCount(txtPesquisar.getText());
+		int qtdRegistros = bandeiraBll.recordCount(txtPesquisar.getText());
 		int qtdPaginas = qtdRegistros / Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString());
 		if (qtdRegistros % Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()) > 0)
 			qtdPaginas++;
@@ -769,9 +717,9 @@ public class FormCartao extends JFrame{
 			public void run(){
 				try{
 					if (IntegerObject.isInteger(txtPesquisar.getText()))
-						Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()), "id", "tbl_cartao", "reports/cartaoreport.jrxml");
+						Relatorio.chamarRelatorio(Integer.valueOf(txtPesquisar.getText()), "id", "tbl_bandeira", "reports/bandeirareport.jrxml");
 					else
-						Relatorio.chamarRelatorio(txtPesquisar.getText(), "nomecartao", "tbl_cartao", "reports/cartaoreport.jrxml");
+						Relatorio.chamarRelatorio(txtPesquisar.getText(), "nomebandeira", "tbl_bandeira", "reports/bandeirareport.jrxml");
 				}catch(Exception e1){
 					e1.printStackTrace();
 				}
