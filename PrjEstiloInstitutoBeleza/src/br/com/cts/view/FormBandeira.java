@@ -34,6 +34,9 @@ import br.com.cts.model.Bandeira;
 import br.com.cts.number.IntegerObject;
 import br.com.cts.util.Relatorio;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 @SuppressWarnings("serial")
 public class FormBandeira extends JFrame{
 
@@ -90,7 +93,7 @@ public class FormBandeira extends JFrame{
 		frmBandeira = new JFrame();
 		frmBandeira.setTitle("Bandeiras");
 		frmBandeira.setBounds(100, 100, 1137, 498);
-		frmBandeira.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBandeira.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		frmBandeira.getContentPane().setLayout(null);
 		//setar tamanho mínimo do formnulário
 		frmBandeira.setMinimumSize(frmBandeira.getSize());
@@ -451,6 +454,20 @@ public class FormBandeira extends JFrame{
 		btnLast.setBounds(1030, 387, 55, 23);
 		frmBandeira.getContentPane().add(btnLast);
 		
+		frmBandeira.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (estaAlterandoCartao()){
+					try {
+						FormCartao.getInstance().popularCbBandeira();
+						FormCartao.getInstance().getFrmCartoes().setEnabled(true);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		
 		//Popular JTable na inicialização do formulário, setar quantidade de páginas e página inicial
 		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
 		txtQtdPaginas.setText(String.valueOf(qtdPaginasJTable()));
@@ -522,6 +539,12 @@ public class FormBandeira extends JFrame{
 			ex.printStackTrace();
 		}catch(Exception ex){
 			ex.printStackTrace();
+		}
+		
+		if (estaAlterandoCartao()){
+			FormCartao.getInstance().popularCbBandeira();
+			FormCartao.getInstance().getFrmCartoes().setEnabled(true);
+			frmBandeira.setVisible(false);
 		}
 	}
 	
@@ -726,5 +749,11 @@ public class FormBandeira extends JFrame{
 			}
 		};
 		chamarRelatorioThread.start();
+	}
+	
+	private boolean estaAlterandoCartao(){
+		if (frmBandeira.getTitle().equals("Bandeiras - Alterar"))
+			return true;
+		return false;
 	}
 }

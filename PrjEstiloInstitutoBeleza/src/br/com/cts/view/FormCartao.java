@@ -41,6 +41,7 @@ import br.com.cts.util.Relatorio;
 public class FormCartao extends JFrame{
 
 	private JFrame frmCartoes;
+	private static FormCartao instancia;
 	private JTextField txtNome;
 	private JComboBox<String> cbBandeira;
 	private JMenuBar menuBar;
@@ -72,8 +73,8 @@ public class FormCartao extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FormCartao window = new FormCartao();
-					window.frmCartoes.setVisible(true);
+					instancia = new FormCartao();
+					instancia.frmCartoes.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -213,7 +214,7 @@ public class FormCartao extends JFrame{
 		JButton btnAdicionarBandeira = new JButton("Adicionar");
 		btnAdicionarBandeira.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				chamarAdicionarBandeira();
 			}
 		});
 		btnAdicionarBandeira.setBounds(260, 74, 89, 20);
@@ -497,12 +498,7 @@ public class FormCartao extends JFrame{
 		btnLast.setBounds(1030, 387, 55, 23);
 		frmCartoes.getContentPane().add(btnLast);
 		
-		cbBandeira.addItem("");
-		BandeiraBLL bandeiraBll = new BandeiraBLL();
-		List<Bandeira> bandeiras = bandeiraBll.procuraBandeiraPorNome("", bandeiraBll.recordCount(), 1);
-		
-		for(Bandeira bandeira : bandeiras)
-			cbBandeira.addItem(bandeira.getNomeBandeira());
+		popularCbBandeira();
 		
 		//Popular JTable na inicialização do formulário, setar quantidade de páginas e página inicial
 		popularJTableCompleto(Integer.valueOf(cbQtdPorPagina.getSelectedItem().toString()), 1);
@@ -634,6 +630,18 @@ public class FormCartao extends JFrame{
 			FormFuncao window = new FormFuncao();
 			window.getFrmFuncao().setVisible(true);
 			frmCartoes.setVisible(false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarAdicionarBandeira(){
+		try{
+			FormBandeira window = new FormBandeira();
+			window.setTitle("Alterar");
+			window.getFrmBandeira().setTitle("Bandeiras - Alterar");
+			window.getFrmBandeira().setVisible(true);
+			frmCartoes.setEnabled(false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -778,5 +786,21 @@ public class FormCartao extends JFrame{
 			}
 		};
 		chamarRelatorioThread.start();
+	}
+	
+	public static synchronized FormCartao getInstance() throws NumberFormatException, Exception{
+		if (instancia == null)
+			instancia = new FormCartao();
+		return instancia;
+	}
+	
+	public void popularCbBandeira() throws Exception{
+		cbBandeira.removeAllItems();
+		cbBandeira.addItem("");
+		BandeiraBLL bandeiraBll = new BandeiraBLL();
+		List<Bandeira> bandeiras = bandeiraBll.procuraBandeiraPorNome("", bandeiraBll.recordCount(), 1);
+		
+		for(Bandeira bandeira : bandeiras)
+			cbBandeira.addItem(bandeira.getNomeBandeira());
 	}
 }
