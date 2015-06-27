@@ -21,7 +21,6 @@ public class Funcionario {
 	private Funcionario funcionario;
 	
 	public Funcionario(){
-		
 	}
 	
 	public Funcionario(int idFuncionario, String nomeFuncionario, int sexoFuncionario, String dataNascimentoFuncionario, String logradouroFuncionario, int numeroFuncionario, String complementoFuncionario, String bairroFuncionario, String cidadeFuncionario, int ufFuncionario, String cepFuncionario, String telefoneFuncionario, String celular1Funcionario, String celular2Funcionario, String email1Funcionario, String email2Funcionario, Funcao[] funcao, Funcionario funcionario) {

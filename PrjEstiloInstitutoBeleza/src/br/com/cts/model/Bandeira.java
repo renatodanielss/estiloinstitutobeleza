@@ -3,8 +3,7 @@ package br.com.cts.model;
 public class Bandeira {
 	private String nomeBandeira;
 	
-	public Bandeira(){
-		
+	public Bandeira(){	
 	}
 	
 	public Bandeira(String nomeBandeira) {

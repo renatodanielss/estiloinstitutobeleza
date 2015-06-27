@@ -6,7 +6,6 @@ public class Venda {
 	private Produto[] produto;
 	
 	public Venda(){
-		
 	}
 	
 	public Venda(int id, Double valorTotal, Produto[] produto) {

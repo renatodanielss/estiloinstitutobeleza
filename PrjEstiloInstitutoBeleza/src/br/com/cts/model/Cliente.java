@@ -19,7 +19,6 @@ public class Cliente {
 	private String email2Cliente;
 	
 	public Cliente(){
-		
 	}
 
 	public Cliente(int idCliente, String nomeCliente, int sexoCliente, String dataNascimentoCliente, String logradouroCliente, int numeroCliente, String complementoCliente, String bairroCliente, String cidadeCliente, int ufCliente, String cepCliente, String telefoneCliente, String celular1Cliente, String celular2Cliente, String email1Cliente, String email2Cliente) {

@@ -9,7 +9,6 @@ public class Produto {
 	private int qtdEstoqueProduto;
 
 	public Produto(){
-		
 	}
 	
 	public Produto(int idProduto, String nomeProduto, Float valorProduto, Float valorPraVendaProduto, String tipoUnidadeProduto, int qtdEstoqueProduto) {

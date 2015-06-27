@@ -6,7 +6,6 @@ public class Funcao {
 	private float comissaoFuncao;
 	
 	public Funcao(){
-		
 	}
 	
 	public Funcao(int idFuncao, String nomeFuncao, float comissaoFuncao) {

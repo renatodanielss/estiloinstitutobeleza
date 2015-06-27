@@ -13,7 +13,6 @@ public class Servico {
 	private Cartao[] cartao;
 
 	public Servico(){
-		
 	}
 	
 	public Servico(int id, Date dataHora, String statusServico, Double valor, Double comissao, Cliente cliente, Funcionario funcionario, Cartao[] cartao){

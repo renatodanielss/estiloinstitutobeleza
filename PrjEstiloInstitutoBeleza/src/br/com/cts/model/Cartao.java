@@ -7,7 +7,6 @@ public class Cartao {
 	private Float pocentagemDescontoCartao;
 	
 	public Cartao(){
-		
 	}
 	
 	public Cartao(Integer idCartao, String nomeCartao, String bandeiraCartao, Float pocentagemDescontoCartao) {
