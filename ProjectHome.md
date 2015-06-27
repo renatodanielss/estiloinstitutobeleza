@@ -1,0 +1,1 @@
+Projeto que registra funcionários, clientes, produtos, controla a agenda e caixa de um salão de cabeleireiros.
